@@ -85,6 +85,11 @@ class TopNavigationBarMenu extends NavigationBarCollectionElementBase {
 }
 
 class NavigationBarElement extends NavigationBarElementBase {
+    public function __construct($link = "#", $title = "_") {
+        $this->setLink($link);
+        $this->setTitle($title);
+    }
+
     public function render() {
         echo "<li " . ($this->getIsActive() ? "class=\"active\"" : "") . "><a href=\"" . PathUtils::getLink($this->getLink()) . "\">" . $this->getTitle() . "</a></li>";
     }
