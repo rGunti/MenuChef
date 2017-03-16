@@ -7,3 +7,4 @@ function rgunti_require_all($path, $pattern = '*.inc') {
 }
 
 rgunti_require_all(__DIR__);
+require_once __DIR__ . '/../.cfg/config.inc';
