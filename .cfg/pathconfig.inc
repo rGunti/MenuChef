@@ -1,4 +1,6 @@
 <?php
 return [
-    "/" => new HomeRequest()
+    "/" => new HomeRequest(),
+    "/Debug" => new DebugViewRequest(),
+    "/Debug/PhpInfo" => new PhpInfoRequest()
 ];
