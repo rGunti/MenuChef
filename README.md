@@ -11,6 +11,9 @@ cost per distance and for general recording purposes.
 - MySQL  (_though another DBMS could theoretically be used instead_)
 - ...
 
+## Setup
+_This project is not in a working state right now so you cannot use it right now._
+
 ## License
 This Project  is licensed under the MIT License. More information in the dedicated LICENSE
 file.
