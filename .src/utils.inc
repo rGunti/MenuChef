@@ -4,6 +4,8 @@
  * Class AppUtils
  */
 class AppUtils {
+    private static $basePath;
+
     /**
      * Returns a default value if the given value is null or empty
      * @param mixed $value Value to check
@@ -12,6 +14,19 @@ class AppUtils {
      */
     public static function getDefaultValue($value, $default = '') {
         return (!isset($value) || is_null($value)) ? $default : $value;
+    }
+
+    /**
+     * Returns the applications base path for usage in Links etc.
+     * @return string
+     */
+    public static function getBasePath() {
+        if (empty(self::$basePath)) {
+            $base = explode(PathUtils::PATH_DELIMITER, $_SERVER['SCRIPT_NAME']);
+            array_pop($base);
+            self::$basePath = implode(PathUtils::PATH_DELIMITER, $base);
+        }
+        return self::$basePath;
     }
 }
 
@@ -85,27 +100,54 @@ class PathUtils {
      */
     public static function pathMatches($path, $check_path) {
         $current_path = $path;
-        $current_path_arr = explode($current_path, self::PATH_DELIMITER);
-        $check_path_arr = explode($check_path, self::PATH_DELIMITER);
+        $current_path_arr = explode(self::PATH_DELIMITER, $current_path);
+        $check_path_arr = explode(self::PATH_DELIMITER, $check_path);
+
+        //echo "<pre>Path:    $path\nPattern: $check_path</pre>";
+        //echo "<pre>";
+        //print_r($current_path_arr);
+        //print_r($check_path_arr);
+        //echo "</pre>";
 
         // An unequal amount of Path Elements means that the paths are not equal
         if (count($current_path_arr) != count($check_path_arr)) {
             return false;
         }
 
+        //echo "<pre>";
         $expr_els = [];
         for ($i = 0; $i < count($check_path_arr); $i++) {
             //$el_current = $current_path[$i];
             $el_check = $check_path_arr[$i];
+            //echo "$i : $el_check\n";
 
-            if ($el_check == "*") {
+            if (empty($el_check)) {
+                array_push($expr_els, "");
+            } else if ($el_check == "*") {
                 array_push($expr_els, "([0-9]*)");
-            } else {
+            } else {/*
+                $expr_el = "";
+                for ($k=0; $k < strlen($el_check); $k++) {
+                    $expr_el .= "\\" . $el_check[$k];
+                }
+                echo " - $expr_el";
+                array_push($expr_els, $expr_el);*/
                 array_push($expr_els, $el_check);
             }
         }
+        //echo "</pre>";
 
         $expr = implode("\\/", $expr_els);
-        return (preg_match("/^$expr$/", $current_path) == 1);
+        //echo "<pre>Expression: /^$expr$/</pre>";
+        return (preg_match("/^$expr" . '$/', $current_path) == 1);
+    }
+
+    /**
+     * Returns an internal link to use within the application
+     * @param $absolute_link
+     * @return string
+     */
+    public static function getLink($absolute_link) {
+        return AppUtils::getBasePath() . $absolute_link;
     }
 }

@@ -27,12 +27,15 @@ class RequestProcessor {
         $mapping = self::getRequestProcessConfig();
         $current_path = PathUtils::getCurrentPath();
         foreach ($mapping as $path => $request) {
+            //echo "<pre>$path</pre>";
             if (PathUtils::currentPathMatches($path)) {
                 self::$processedRequest = $request;
                 $request->process($current_path, @$_GET, @$_POST);
+                //echo "<pre>Path processed, ended</pre>";
                 return;
             }
         }
+        //echo "<pre>Path unknown, 404ing...</pre>";
         $pageNotFoundRequest = self::getPageNotFoundRequest();
         self::$processedRequest = $pageNotFoundRequest;
         $pageNotFoundRequest->process($current_path, @$_GET, @$_POST);
@@ -40,8 +43,40 @@ class RequestProcessor {
 }
 
 abstract class BaseRequest {
+    protected $storage_values = [];
+
+    /**
+     * Gets a value from the requests value storage
+     * @param $key string
+     * @return mixed
+     */
+    public function getStorageValue($key) { return $this->storage_values[$key]; }
+
+    /**
+     * Puts a value to the request value storage
+     * @param $key string
+     * @param $value mixed
+     */
+    public function setStorageValue($key, $value) { $this->storage_values[$key] = $value; }
+
+    /**
+     * Gets the page title
+     * @return string
+     */
     public function getPageTitle() { return "Unknown Page"; }
 
+    /**
+     * Gets the name of the Page Form file
+     * @return string
+     */
     public abstract function getFormPath();
+
+    /**
+     * Method called then request gets processed
+     * @param string $path Current Navigation Path
+     * @param array $get
+     * @param array $post
+     * @return mixed
+     */
     public abstract function process($path, $get = [], $post = []);
 }
