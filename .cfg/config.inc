@@ -3,6 +3,13 @@ class AppConfig {
     const APP_NAME = "DriverLog";
     const INSTANCE_NAME = "dev";
     const SHOW_INSTANCE_NAME = true;
+
+    const LOG_ENABLED = true;
+    const LOG_MIN_LEVEL = 0;
+    const LOG_DATE_PATTERN = 'Y-m-d H:i:s P';
+    const LOG_DYN_REQUIRES = false;
+    const LOG_REQUESTS = true;
+    const LOG_PATH = "/www/sites/driverlog/log/driverlog.%date%.log";
 }
 
 class DbConfig {

@@ -151,3 +151,14 @@ class PathUtils {
         return AppUtils::getBasePath() . $absolute_link;
     }
 }
+
+/**
+ * Class RequestUtils
+ */
+class RequestUtils {
+    public static function getRemoteIP() { return $_SERVER['REMOTE_ADDR']; }
+    public static function getRequestTime() { return $_SERVER['REQUEST_TIME']; }
+    public static function getRequestMethod() { return $_SERVER['REQUEST_METHOD']; }
+    public static function getUserAgentString() { return $_SERVER['HTTP_USER_AGENT']; }
+    public static function getUserAcceptLang() { return $_SERVER['HTTP_ACCEPT_LANGUAGE']; }
+}

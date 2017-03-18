@@ -1,7 +1,10 @@
 <?php
+require_once __DIR__ . '/log.inc';
+Logger::logRequest();
 
 function rgunti_require_all($path, $pattern = '*.inc') {
     foreach (glob($path . '/' . $pattern, GLOB_MARK) as $file) {
+        Logger::logRequire($file);
         require_once $file;
     }
 }
