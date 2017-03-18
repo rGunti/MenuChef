@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="XAMPP (CLI-RIG)">
+  <component name="PublishConfigData" autoUpload="Always" serverName="XAMPP (macOS)">
     <serverData>
       <paths name="XAMPP (CLI-RIG)">
         <serverdata>
           <mappings>
             <mapping deploy="/driverlog" local="$PROJECT_DIR$" web="/driverlog" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="XAMPP (macOS)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="driverlog/wwwroot" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
