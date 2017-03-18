@@ -65,7 +65,9 @@ class DatabaseTools {
             while ($obj = $stmt->fetch()) {
                 array_push($objs, $obj);
             }
-        } catch (PDOException $ex) { }
+        } catch (PDOException $ex) {
+            // TODO: Add Error Handling
+        }
         return $objs;
     }
 
@@ -97,7 +99,9 @@ class DatabaseTools {
             while ($obj = $stmt->fetch()) {
                 array_push($objs, $obj);
             }
-        } catch (PDOException $ex) { }
+        } catch (PDOException $ex) {
+            // TODO: Add Error Handling
+        }
         return $objs;
     }
 
@@ -120,17 +124,48 @@ class DatabaseTools {
         $orderSql = self::renderOrderBySql($order);
         $limitSql = "LIMIT $skip, $take";
 
-        $whereSql = [];
+        $whereSqlArr = [];
         $binds = [];
         $paramCounter = 0;
         foreach ($whereArray as $whereCond) {
-            array_push($whereSql, $whereCond->getRenderSql($paramCounter));
+            array_push($whereSqlArr, $whereCond->getRenderSql($paramCounter));
             if ($whereCond->hasValue()) {
                 $binds["param$paramCounter"] = $whereCond->getValue();
             }
             $paramCounter++;
         }
 
+        $whereSql = implode(" ", $whereSqlArr);
+        $sql = "SELECT * FROM $tbl" . (empty($whereSql) ? " WHERE $whereSql" : "") . " $orderSql $limitSql";
+        $totalCountSql = "SELECT COUNT(0) AS 'count' FROM $tbl";
+        $filterCountSql = "$totalCountSql" . (empty($whereSql) ? " WHERE $whereSql" : "");
+
+        try {
+            // Count Total Rows
+            $stmt = self::getPdoStatement($totalCountSql);
+            $stmt->execute($binds);
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $objsTotal = $row['count'];
+            }
+
+            // Count Filtered Rows
+            $stmt = self::getPdoStatement($filterCountSql);
+            $stmt->execute($binds);
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $objsFilter = $row['count'];
+            }
+
+            // Get Data
+            $stmt = self::getPdoObjectStatement($objClass, $sql);
+            $stmt->execute($binds);
+            while ($obj = $stmt->fetch()) {
+                array_push($objs, $obj);
+            }
+        } catch (PDOException $ex) {
+            // TODO: Add Error Handling
+        }
+
+        // Return Data
         return new PagedResultObject($objs, $objsTotal, $objsFilter);
     }
 
