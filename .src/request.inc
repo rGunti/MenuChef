@@ -80,3 +80,30 @@ abstract class BaseRequest {
      */
     public abstract function process($path, $get = [], $post = []);
 }
+
+abstract class BaseMultiRequest extends BaseRequest {
+    public function process($path, $get = [], $post = []) {
+        switch (RequestUtils::getRequestMethod()) {
+            case RequestUtils::REQ_GET: $this->get($get); break;
+            case RequestUtils::REQ_POST: $this->post($post); break;
+            case RequestUtils::REQ_PUT:
+                parse_str(file_get_contents('php://input'), $put_vars);
+                $this->put($put_vars);
+                break;
+            case RequestUtils::REQ_DELETE: $this->delete($_GET); break;
+        }
+    }
+
+    public function get($vars = []) {
+        Logger::warn("Request Method GET has not been implemented by Request " . get_class($this));
+    }
+    public function post($vars = []) {
+        Logger::warn("Request Method POST has not been implemented by Request " . get_class($this));
+    }
+    public function put($vars = []) {
+        Logger::warn("Request Method PUT has not been implemented by Request " . get_class($this));
+    }
+    public function delete($vars = []) {
+        Logger::warn("Request Method DELETE has not been implemented by Request " . get_class($this));
+    }
+}

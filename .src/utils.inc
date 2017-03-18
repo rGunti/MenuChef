@@ -156,6 +156,11 @@ class PathUtils {
  * Class RequestUtils
  */
 class RequestUtils {
+    const REQ_GET = "GET";
+    const REQ_POST = "POST";
+    const REQ_PUT = "PUT";
+    const REQ_DELETE = "DELETE";
+
     public static function getRemoteIP() { return $_SERVER['REMOTE_ADDR']; }
     public static function getRequestTime() { return $_SERVER['REQUEST_TIME']; }
     public static function getRequestMethod() { return $_SERVER['REQUEST_METHOD']; }
