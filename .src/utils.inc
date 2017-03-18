@@ -150,6 +150,14 @@ class PathUtils {
     public static function getLink($absolute_link) {
         return AppUtils::getBasePath() . $absolute_link;
     }
+
+    /**
+     * Redirects to an app-internal link
+     * @param $link string
+     */
+    public static function internalRedirect($link) {
+        header("Location: " . self::getLink($link));
+    }
 }
 
 /**
