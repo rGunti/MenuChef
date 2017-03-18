@@ -24,6 +24,7 @@ $request = RequestProcessor::getProcessedRequest();
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css" />
         -->
         <link rel="stylesheet" href="css/bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
+        <link rel="stylesheet" href="css/superhero.min.css" />
         <link rel="stylesheet" href="css/rgunti.css" />
 
         <script src="js/jquery.min.js"></script>
