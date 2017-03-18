@@ -1,10 +1,12 @@
 <?php
 class MUser {
-    public $ID;
-    public $Username;
+    const TABLE_NAME = 'USER';
+
+    public $id;
+    public $username;
     public $PassHash;
     public $Is_Blocked;
-    public $Is_Admin;
-    public $Is_Batch;
-    public $Mail;
+    public $is_admin;
+    public $is_batch;
+    public $mail;
 }

@@ -9,6 +9,7 @@ class DatabaseTools {
             ";dbname=" . DbConfig::DB,
             DbConfig::USER,
             DbConfig::PASS, [
+            PDO::ATTR_CASE                  => PDO::CASE_LOWER,
             PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE    => PDO::FETCH_CLASS,
             PDO::ATTR_EMULATE_PREPARES      => false,
@@ -22,6 +23,7 @@ class DatabaseTools {
      * @return PDOStatement
      */
     public static function getPdoStatement($sql) {
+        Logger::debug("New PDO with SQL: $sql");
         return self::getNewPdo()->prepare($sql);
     }
 
@@ -66,7 +68,7 @@ class DatabaseTools {
                 array_push($objs, $obj);
             }
         } catch (PDOException $ex) {
-            // TODO: Add Error Handling
+            Logger::error("An error occured while fetching data: " . $ex->getMessage());
         }
         return $objs;
     }
@@ -89,9 +91,10 @@ class DatabaseTools {
         $whereSql = implode(" AND ", $whereSqlArr);
         $sql = "SELECT * FROM $tbl WHERE $whereSql";
         try {
-            $stmt = self::getPdoObjectStatement($sql, $objClass);
+            $stmt = self::getPdoObjectStatement($objClass, $sql);
 
             foreach ($whereMap as $whereCol => $whereVal) {
+                Logger::verbose(" - Statement Parameter $whereCol = $whereVal");
                 $stmt->bindValue(":$whereCol", $whereVal);
             }
 
@@ -100,7 +103,7 @@ class DatabaseTools {
                 array_push($objs, $obj);
             }
         } catch (PDOException $ex) {
-            // TODO: Add Error Handling
+            Logger::error("An error occured while fetching data: " . $ex->getMessage());
         }
         return $objs;
     }
@@ -178,6 +181,15 @@ class DatabaseTools {
         if (empty($cols) || count($cols) == 0) { return ""; }
         $sql = "ORDER BY " . implode(',', $cols);
         return $sql;
+    }
+
+    /**
+     * Returns a password as a hashed and salted string
+     * @param $password string Password
+     * @return string Hashed and salted string
+     */
+    public static function hashNSaltPassword($password) {
+        return hash('sha256', 'DRIVER/LOG-' . strrev($password));
     }
 }
 

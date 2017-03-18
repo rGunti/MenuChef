@@ -10,5 +10,6 @@ function rgunti_require_all($path, $pattern = '*.inc') {
 }
 
 rgunti_require_all(__DIR__);
+require_once __DIR__ . '/models/.requireAll.inc';
 require_once __DIR__ . '/../.cfg/config.inc';
 require_once __DIR__ . '/../.cfg/navconfig.inc';

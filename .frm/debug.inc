@@ -19,7 +19,15 @@ function debug_view_render_table($rq_key, $title) {
                     <div class="row">
                         <div class="col-md-4"><b><?= $key ?></b></div>
                         <div class="col-md-8" style="word-wrap:break-word;"><?php
-                            if ($rq_key == "_server" && ($key == "PATH" || $key == "PATHEXT")) {
+                            if (is_array($value)) {
+                                foreach ($value as $subkey => $subval) {
+                                    echo '<div class="row"><div class="col-md-4"><i>' .
+                                        $subkey .
+                                        '</i></div><div class="col-md-8">' .
+                                        $subval .
+                                        '</div></div>';
+                                }
+                            } else if ($rq_key == "_server" && ($key == "PATH" || $key == "PATHEXT")) {
                                 echo "<ul>";
                                 foreach (explode(';', $value) as $value_item) {
                                     echo "<li>$value_item</li>";
@@ -45,6 +53,7 @@ function debug_view_render_table($rq_key, $title) {
 
 <div class="panel-group" id="debugAccordion" role="tablist" aria-multiselectable="true">
     <?php debug_view_render_table('_server', 'SERVER') ?>
+    <?php debug_view_render_table('_session', 'SESSION') ?>
     <?php debug_view_render_table('_get', 'GET') ?>
     <?php debug_view_render_table('_post', 'POST') ?>
     <?php debug_view_render_table('_cookie', 'COOKIE') ?>

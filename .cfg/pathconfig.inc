@@ -5,4 +5,5 @@ return [
     "/Debug/PhpInfo" => new PhpInfoRequest(),
 
     "/Login" => new LoginRequest(),
+    "/Logout" => new LoginRequest()
 ];
