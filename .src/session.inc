@@ -7,6 +7,20 @@ class Session {
      */
     public static function isLoggedIn() { return !empty(self::getUserInfo()); }
 
+    /**
+     * Checks if the user is logged in.
+     * If not the application will redirect the user to a given internal URL (if no URL is given, the Home Page is used)
+     * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/')
+     */
+    public static function enforceLoggedIn($redirect_url = "/") {
+        if (!self::isLoggedIn()) {
+            Logger::error("Session enforcement failed at " . PathUtils::getCurrentPath() . ", falling back to $redirect_url");
+            // TODO: Should create a message onscreen
+            PathUtils::internalRedirect($redirect_url);
+            exit(0);
+        }
+    }
+
     private static $loggedInUser;
 
     /**
@@ -62,5 +76,9 @@ class Session {
      */
     public static function setSessionInfo($key, $value) {
         $_SESSION['session_user'][$key] = $value;
+    }
+
+    public static function getAllSessionInfo() {
+        return $_SESSION['session_user'];
     }
 }

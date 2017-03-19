@@ -5,7 +5,7 @@ class MUser {
     public $id;
     public $username;
     public $PassHash;
-    public $Is_Blocked;
+    public $is_blocked;
     public $is_admin;
     public $is_batch;
     public $mail;

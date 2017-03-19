@@ -75,5 +75,9 @@ $request = RequestProcessor::getProcessedRequest();
             </div>
             <?php require_once '.frm/' . $request->getFormPath(); ?>
         </div>
+        <hr>
+        <footer>
+            <div class="container"><?php require_once '.frm/general/footer.inc' ?></div>
+        </footer>
     </body>
 </html>
