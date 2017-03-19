@@ -58,6 +58,24 @@ class StringUtils {
         }
         return (substr($haystack, -$length) === $needle);
     }
+
+    /**
+     * @param string $s String to check
+     * @param string $allowedChars Allowed characters
+     * @return string String with only allowed characters
+     */
+    public static function removeIllegalChars($s, $allowedChars) {
+        $allowedCharsArr = str_split($allowedChars);
+        for ($i = 0; $i < strlen($s); ) {
+            $char = $s[$i];
+            if (in_array($char, $allowedCharsArr)) { $i++; }
+            else {
+                $s = str_replace($char, '', $s);
+                $i = 0;
+            }
+        }
+        return $s;
+    }
 }
 
 /**
@@ -84,6 +102,20 @@ class PathUtils {
     }
 
     /**
+     * Returns the last element of the given path
+     * @param $path string|string[] Path to check (as array or string)
+     * @return string Last path element
+     */
+    public static function getLastPathElement($path) {
+        if (is_array($path)) {
+            return $path[count($path) - 1];
+        } else {
+            $arr = explode(self::PATH_DELIMITER, $path);
+            return $arr[count($arr) - 1];
+        }
+    }
+
+    /**
      * Returns true if the Current Path matches a given pattern.
      * @param $check_path string Path Pattern to check against. Wildcard * matches with a numeric element.
      * @return bool True, if the pattern matches the current path
@@ -95,7 +127,7 @@ class PathUtils {
     /**
      * Returns true if the given Path matches a given pattern.
      * @param $path string Path to check
-     * @param $check_path string Path Pattern to check against. Wildcard * matches with a numeric element.
+     * @param $check_path string Path Pattern to check against. Wildcard * matches with an alpha-numeric element.
      * @return bool True, if the pattern matches the given path
      */
     public static function pathMatches($path, $check_path) {
@@ -124,7 +156,7 @@ class PathUtils {
             if (empty($el_check)) {
                 array_push($expr_els, "");
             } else if ($el_check == "*") {
-                array_push($expr_els, "([0-9]*)");
+                array_push($expr_els, "([^\\" . self::PATH_DELIMITER . "]*)");
             } else {/*
                 $expr_el = "";
                 for ($k=0; $k < strlen($el_check); $k++) {
