@@ -13,7 +13,7 @@ function debug_view_render_table($rq_key, $title) {
         <div id="collapse<?= $rq_key ?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?= $rq_key ?>">
             <div class="panel-body">
                 <?php if (count($col) == 0) { ?>
-                    <p>No Items</p>
+                    <p><?= t('debug_no_items') ?></p>
                 <?php } ?>
                 <?php foreach ($col as $key => $value) { ?>
                     <div class="row">

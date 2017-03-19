@@ -1,6 +1,6 @@
 <?php
 class LoginRequest extends BaseMultiRequest {
-    public function getPageTitle() { return "Login"; }
+    public function getPageTitle() { return t('login'); }
     public function getFormPath() { return "login.inc"; }
 
     public function get($vars = []) {

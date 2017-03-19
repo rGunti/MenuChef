@@ -2,7 +2,7 @@
 
 class DebugViewRequest extends BaseRequest {
     public function getFormPath() { return "debug.inc"; }
-    public function getPageTitle() { return "Debug Info"; }
+    public function getPageTitle() { return t('debug_title'); }
 
     public function process($path, $get = [], $post = []) {
         $this->setStorageValue('_server', $_SERVER);
