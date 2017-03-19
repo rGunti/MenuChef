@@ -14,19 +14,25 @@ class UserSettingsRequest extends BaseMultiRequest {
     public function post($vars = []) {
         Session::enforceLoggedIn();
 
+        $update_data = [];
+
         $user = Session::getUserInfo();
         $form = UserSettingsForm::getFromPost($vars);
         $submit = true;
         if (!empty($form->newPassword1)) {
             if ($form->newPassword1 != $form->newPassword2) {
+                Logger::debug("User $user->id tried to change password with unequal entries: $form->newPassword1 =/= $form->newPassword2");
                 $submit = false;
                 // TODO: Write Error
+            } else {
+                $update_data['passhash'] = DatabaseTools::hashNSaltPassword($form->newPassword1);
             }
         }
-        $user->mail = $form->mail;
+        $update_data['mail'] = $form->mail;
 
         if ($submit) {
-            // TODO: Update DB
+            DatabaseTools::update(MUser::TABLE_NAME, MUser::KEY_NAME, $user->id, $update_data);
+            $user = DatabaseTools::getWhereSimple(MUser::TABLE_NAME, new MUser(), [ MUser::KEY_NAME => $user->id ])[0];
             Session::login($user, true);
             PathUtils::internalRedirect("/MySettings");
         } else {

@@ -20,22 +20,54 @@ class DatabaseTools {
 
     /**
      * @param $sql string SQL statement
+     * @param $pdo PDO|null PDO object to work with. If null, a new PDO object will be created
      * @return PDOStatement
      */
-    public static function getPdoStatement($sql) {
+    public static function getPdoStatement($sql, $pdo = null) {
         Logger::debug("New PDO with SQL: $sql");
-        return self::getNewPdo()->prepare($sql);
+        if (is_null($pdo)) {
+            $pdo = self::getNewPdo();
+        }
+        return $pdo->prepare($sql);
     }
 
     /**
      * @param $class
      * @param $sql string SQL statement
+     * @param $pdo PDO|null PDO object to work with. If null, a new PDO object will be created
      * @return PDOStatement
      */
-    public static function getPdoObjectStatement($class, $sql) {
-        $stmt = self::getPdoStatement($sql);
+    public static function getPdoObjectStatement($class, $sql, $pdo = null) {
+        $stmt = self::getPdoStatement($sql, $pdo);
         $stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $class);
         return $stmt;
+    }
+
+    /**
+     * Returns a new PDO object with a transaction started
+     * @return PDO
+     */
+    public static function startNewTransaction() {
+        $pdo = self::getNewPdo();
+        Logger::debug("PDO Begin New Transaction");
+        $pdo->beginTransaction();
+        return $pdo;
+    }
+
+    /**
+     * @param $pdo PDO
+     */
+    public static function commitTransaction($pdo) {
+        Logger::debug("PDO Commit");
+        $pdo->commit();
+    }
+
+    /**
+     * @param $pdo PDO
+     */
+    public static function rollbackTransaction($pdo) {
+        Logger::debug("PDO Rollback");
+        $pdo->rollBack();
     }
 
     /**
@@ -133,7 +165,7 @@ class DatabaseTools {
         foreach ($whereArray as $whereCond) {
             array_push($whereSqlArr, $whereCond->getRenderSql($paramCounter));
             if ($whereCond->hasValue()) {
-                $binds["param$paramCounter"] = $whereCond->getValue();
+                $binds[":param$paramCounter"] = $whereCond->getValue();
             }
             $paramCounter++;
         }
@@ -190,6 +222,50 @@ class DatabaseTools {
      */
     public static function hashNSaltPassword($password) {
         return hash('sha256', 'DRIVER/LOG-' . strrev($password));
+    }
+
+    /**
+     * @param $table string Table to update
+     * @param $key_col string The column containing the primary key
+     * @param $key_value mixed The value of the primary key
+     * @param $key_value_map array A map of properties and their values to update
+     * @return int Rows effected
+     */
+    public static function update($table, $key_col, $key_value, $key_value_map) {
+        // Pre-build SQL
+        $params = [];
+        foreach ($key_value_map as $col => $val) {
+            array_push($params, "$col = :$col");
+        }
+        $params_sql = implode(",", $params);
+        $sql = "UPDATE $table SET $params_sql WHERE $key_col = :PRIMARY_KEY";
+
+        // Open PDO
+        $pdo = self::startNewTransaction();
+        try {
+            // Bind SQL Params
+            $stmt = self::getPdoStatement($sql, $pdo);
+            foreach ($key_value_map as $col => $val) {
+                if (is_array($val)) {
+                    Logger::verbose(" - Statement Parameter $col = $val[0]");
+                    $stmt->bindValue(":$col", $val[0], $val[1]);
+                } else {
+                    Logger::verbose(" - Statement Parameter $col = $val");
+                    $stmt->bindValue(":$col", $val);
+                }
+            }
+            Logger::verbose(" - Statement Parameter PRIMARY_KEY ($key_col) = $key_value");
+            $stmt->bindValue(":PRIMARY_KEY", $key_value);
+            $stmt->execute();
+
+            Logger::verbose("Updated values in Table $table, rows affected: " . $stmt->rowCount());
+            self::commitTransaction($pdo);
+            return $stmt->rowCount();
+        } catch (PDOException $ex) {
+            Logger::fatal("An exception occurred while updating data: " . $ex->getMessage());
+            self::rollbackTransaction($pdo);
+            return 0;
+        }
     }
 }
 
