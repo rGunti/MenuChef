@@ -24,7 +24,7 @@ $request = RequestProcessor::getProcessedRequest();
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css" />
         -->
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap-checkbox/awesome-bootstrap-checkbox.css') ?>" />
-        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/superhero.min.css') ?>" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootswatch.min.css') ?>" />
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/rgunti.css') ?>" />
 
         <script src="<?= PathUtils::getLink('/js/jquery.min.js') ?>"></script>
