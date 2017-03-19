@@ -2,6 +2,7 @@
 return [
     '_LANG_NAME' => 'English (default)',
     '_LANG_AUTHOR' => 'rGunti',
+    '_LANG_BY_STRING' => 'by %1$s',
 
     'app_version' => 'App Version',
 
@@ -9,6 +10,7 @@ return [
     'copyright_content' => 'Copyright &COPY; %1$s rGunti',
 
     'language' => 'Language',
+    'languages' => 'Languages',
 
     'login' => 'Login',
     'logout' => 'Logout',

@@ -1,4 +1,3 @@
-
 <div class="row">
     <div class="col-md-4">
         <h4><?= t('copyright_title') ?></h4>
@@ -20,7 +19,7 @@
             <div class="col-md-4"><b><?= t('language') ?></b></div>
             <div class="col-md-8">
                 <?= L10N::getLanguageName() ?><br>
-                by <?= L10N::getLanguageAuthor() ?>
+                <?= t('_LANG_BY_STRING', [L10N::getLanguageAuthor()]) ?>
             </div>
         </div>
         <div class="row">

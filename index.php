@@ -1,7 +1,7 @@
 <?php
 require_once '.src/.requireAll.inc';
+L10N::initL10N();
 require_once '.req/.requireAll.inc';
-
 RequestProcessor::processRequest();
 $request = RequestProcessor::getProcessedRequest();
 ?>

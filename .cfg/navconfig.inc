@@ -18,8 +18,24 @@ if (Session::isLoggedIn()) {
     $nav_right->addItem(new NavigationBarElement("/Login", "<span class='glyphicon glyphicon-log-in'></span> " . t('login')));
 }
 
+// Build Language Menu
+$nav_lang = new TopNavigationBarCollection();
+$nav_lang->setSide(TopNavigationBarCollection::SIDE_RIGHT);
+$nav_lang_dropdown = new TopNavigationBarMenu();
+$nav_lang_dropdown->setTitle(t('languages'));
+foreach (L10N::getLanguageList() as $lang_code => $lang_name) {
+    $title = "[$lang_code] $lang_name";
+    $i = new NavigationBarElement(PathUtils::getCurrentPath() . "?lang=$lang_code", $title);
+    if (L10N::getLanguageCookie() == $lang_code) {
+        $i->setTitle("<b>$title</b>");
+    }
+    $nav_lang_dropdown->addItem($i);
+}
+$nav_lang->addItem($nav_lang_dropdown);
+
 $nav_els = [
 //    $nav_left,
-    $nav_right
+    $nav_lang,
+    $nav_right,
 ];
 NavigationBarManager::setNavEls($nav_els);
