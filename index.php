@@ -18,18 +18,18 @@ $request = RequestProcessor::getProcessedRequest();
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700">
-        <link rel="stylesheet" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap.min.css') ?>" />
         <!--
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css" />
         -->
-        <link rel="stylesheet" href="css/bootstrap-checkbox/awesome-bootstrap-checkbox.css" />
-        <link rel="stylesheet" href="css/superhero.min.css" />
-        <link rel="stylesheet" href="css/rgunti.css" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap-checkbox/awesome-bootstrap-checkbox.css') ?>" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/superhero.min.css') ?>" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/rgunti.css') ?>" />
 
-        <script src="js/jquery.min.js"></script>
-        <script src="js/tether.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="<?= PathUtils::getLink('/js/jquery.min.js') ?>"></script>
+        <script src="<?= PathUtils::getLink('/js/tether.min.js') ?>"></script>
+        <script src="<?= PathUtils::getLink('/js/bootstrap.min.js') ?>"></script>
         <!--
         <script src="js/parallax.min.js"></script>
         -->
