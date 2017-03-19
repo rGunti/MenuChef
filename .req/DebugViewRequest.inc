@@ -10,6 +10,6 @@ class DebugViewRequest extends BaseRequest {
         $this->setStorageValue('_get', $get);
         $this->setStorageValue('_post', $post);
         $this->setStorageValue('_cookie', $_COOKIE);
-        $this->setStorageValue('_files', $_COOKIE);
+        $this->setStorageValue('_files', $_FILES);
     }
 }
