@@ -6,6 +6,7 @@ class L10N {
 
     const L10N_LANG_INFO_NAME = '_LANG_NAME';
     const L10N_LANG_INFO_AUTHOR = '_LANG_AUTHOR';
+    const L10N_LANG_INFO_FLAG = '_LANG_FLAG';
 
     const L10N_ALLOWED_CHARS = 'abcdefghijklmnopqrstuvwxyz';
 
@@ -124,7 +125,10 @@ class L10N {
         foreach (glob(__DIR__ . '/..' . self::L10N_DICTIONARY . '/*.inc', GLOB_MARK) as $file) {
             $lang = str_replace('.inc', '', basename($file));
             $lang_c = require self::getL10NPath($lang);
-            $languages[$lang] = $lang_c[self::L10N_LANG_INFO_NAME];
+            $languages[$lang] = [
+                'name' => $lang_c[self::L10N_LANG_INFO_NAME],
+                'flag' => $lang_c[self::L10N_LANG_INFO_FLAG]
+            ];
         }
         return $languages;
     }

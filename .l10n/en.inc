@@ -3,6 +3,7 @@ return [
     '_LANG_NAME' => 'English (default)',
     '_LANG_AUTHOR' => 'rGunti',
     '_LANG_BY_STRING' => 'by %1$s',
+    '_LANG_FLAG' => '/img/lang/flag-united-kingdom.png',
 
     'app_version' => 'App Version',
 

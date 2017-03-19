@@ -22,9 +22,9 @@ if (Session::isLoggedIn()) {
 $nav_lang = new TopNavigationBarCollection();
 $nav_lang->setSide(TopNavigationBarCollection::SIDE_RIGHT);
 $nav_lang_dropdown = new TopNavigationBarMenu();
-$nav_lang_dropdown->setTitle(t('languages'));
-foreach (L10N::getLanguageList() as $lang_code => $lang_name) {
-    $title = "[$lang_code] $lang_name";
+$nav_lang_dropdown->setTitle('<img src="' . PathUtils::getLink(t(L10N::L10N_LANG_INFO_FLAG)) . '">');
+foreach (L10N::getLanguageList() as $lang_code => $lang_info) {
+    $title = "<img src=\"" . PathUtils::getLink($lang_info['flag']) . "\"> $lang_info[name]";
     $i = new NavigationBarElement(PathUtils::getCurrentPath() . "?lang=$lang_code", $title);
     if (L10N::getLanguageCookie() == $lang_code) {
         $i->setTitle("<b>$title</b>");
