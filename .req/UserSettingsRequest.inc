@@ -21,7 +21,6 @@ class UserSettingsRequest extends BaseMultiRequest {
         $submit = true;
         if (!empty($form->newPassword1)) {
             if ($form->newPassword1 != $form->newPassword2) {
-                Logger::debug("User $user->id tried to change password with unequal entries: $form->newPassword1 =/= $form->newPassword2");
                 $submit = false;
                 // TODO: Write Error
             } else {
