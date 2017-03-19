@@ -4,18 +4,23 @@ class DatabaseTools {
      * @return PDO
      */
     public static function getNewPdo() {
-        return new PDO(
-            "mysql:host=" . DbConfig::HOST .
-            ";dbname=" . DbConfig::DB,
-            DbConfig::USER,
-            DbConfig::PASS, [
-            PDO::ATTR_CASE                  => PDO::CASE_LOWER,
-            PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE    => PDO::FETCH_CLASS,
-            PDO::ATTR_EMULATE_PREPARES      => false,
-            PDO::ATTR_ORACLE_NULLS          => PDO::NULL_EMPTY_STRING,
-            PDO::ATTR_AUTOCOMMIT            => false,
-        ]);
+        try {
+            return new PDO(
+                "mysql:host=" . DbConfig::HOST .
+                ";dbname=" . DbConfig::DB,
+                DbConfig::USER,
+                DbConfig::PASS, [
+                PDO::ATTR_CASE                  => PDO::CASE_LOWER,
+                PDO::ATTR_ERRMODE               => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE    => PDO::FETCH_CLASS,
+                PDO::ATTR_EMULATE_PREPARES      => false,
+                PDO::ATTR_ORACLE_NULLS          => PDO::NULL_EMPTY_STRING,
+                PDO::ATTR_AUTOCOMMIT            => false,
+            ]);
+        } catch (Exception $ex) {
+            Logger::fatal("Fatal Error while trying to connect to Database! " . $ex->getMessage());
+            return null;
+        }
     }
 
     /**
