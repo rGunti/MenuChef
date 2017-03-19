@@ -12,7 +12,7 @@ class Session {
      * If not the application will redirect the user to a given internal URL (if no URL is given, the Home Page is used)
      * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/')
      */
-    public static function enforceLoggedIn($redirect_url = "/") {
+    public static function enforceLoggedIn($redirect_url = "/Login") {
         if (!self::isLoggedIn()) {
             Logger::error("Session enforcement failed at " . PathUtils::getCurrentPath() . ", falling back to $redirect_url");
             // TODO: Should create a message onscreen
@@ -43,14 +43,17 @@ class Session {
     /**
      * Logs in the given user
      * @param $user MUser
+     * @param $onlyUpdate bool If true, the session-stored user info will only be updated.
      */
-    public static function login($user) {
+    public static function login($user, $onlyUpdate = false) {
         $_SESSION['session_user']['id'] = $user->id;
         $_SESSION['session_user']['name'] = $user->username;
         $_SESSION['session_user']['is_admin'] = $user->is_admin;
         $_SESSION['session_user']['is_batch'] = $user->is_batch;
         $_SESSION['session_user']['mail'] = $user->mail;
-        $_SESSION['session_user']['login_at'] = date('U');
+        if (!$onlyUpdate) {
+            $_SESSION['session_user']['login_at'] = date('U');
+        }
         self::$loggedInUser = $user;
     }
 

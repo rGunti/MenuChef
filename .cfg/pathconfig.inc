@@ -5,5 +5,7 @@ return [
     "/Debug/PhpInfo" => new PhpInfoRequest(),
 
     "/Login" => new LoginRequest(),
-    "/Logout" => new LoginRequest()
+    "/Logout" => new LoginRequest(),
+
+    "/MySettings" => new UserSettingsRequest(),
 ];
