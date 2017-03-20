@@ -11,6 +11,8 @@ class Session {
      * Checks if the user is logged in.
      * If not the application will redirect the user to a given internal URL (if no URL is given, the Home Page is used)
      * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/')
+     * @param $add_redirect_url bool If true, a GET parameter ('to') will be added to the URL indicating where the last
+     * request went to
      */
     public static function enforceLoggedIn($redirect_url = "/Login", $add_redirect_url = true) {
         if (!self::isLoggedIn()) {
