@@ -37,4 +37,17 @@ return [
 
     'tos_title' => 'Nutzungsbedingungen',
     'tos_content' => 'Nutzungsbedingungen wurden noch nicht erstellt.',
+
+    'message_logged_in' => 'Willkommen, %1$s',
+    'message_logged_in_content' => 'Du wurdest erfolgreich angemeldet!',
+    'message_logged_out' => 'Du wurdest erfolgreich abgemeldet!',
+
+    'error_login_invalid' => 'Ungültige Login-Daten',
+    'error_login_invalid_content' => 'Deine Login-Daten scheinen ungültig zu sein. Bitte überprüfe deine Eingabe und versuche es noch einmal.',
+
+    'error_login_blocked' => 'Gesperrt',
+    'error_login_blocked_content' => 'Dein Account wurde gesperrt.',
+
+    'error_navigation_login_needed' => 'Login benötigt',
+    'error_navigation_login_needed_content' => 'Bitte melde dich an, um diesen Inhalt sehen zu können.',
 ];

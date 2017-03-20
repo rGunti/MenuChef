@@ -69,6 +69,7 @@ $request = RequestProcessor::getProcessedRequest();
             </div>
         </nav>
         <div class="container-spacer"></div>
+        <?php require_once '.frm/general/notifications.inc'; ?>
         <div class="container">
             <div class="page-header">
                 <h1><?= $request->getPageTitle() ?></h1>

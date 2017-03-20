@@ -8,7 +8,7 @@ class LoginRequest extends BaseMultiRequest {
     public function get($vars = []) {
         if (PathUtils::currentPathMatches("/Logout")) {
             Session::logout();
-            // TODO: Write Notification Message: Logged Out
+            Session::addNotification(new SessionNotification('message_logged_out', null, null, null, SessionNotification::LEVEL_SUCCESS));
             PathUtils::internalRedirect("/");
         } else {
             $form = new LoginForm();
@@ -19,6 +19,7 @@ class LoginRequest extends BaseMultiRequest {
         }
     }
     public function post($vars = []) {
+        Session::clearAllNotifications();
         $form = LoginForm::getFromPost($vars);
 
         $users = DatabaseTools::getWhereSimple(MUser::TABLE_NAME, new MUser(), [
@@ -27,13 +28,25 @@ class LoginRequest extends BaseMultiRequest {
         ]);
         Logger::debug("Found " . count($users) . " users with given creds");
         if (count($users) != 1) {
-            //$this->setStorageValue('')
-            // TODO: Write Error Message: Creds invalid
+            Session::addNotification(new SessionNotification(
+                'error_login_invalid', [],
+                'error_login_invalid_content', [],
+                SessionNotification::LEVEL_ERROR
+            ));
         } else if ($users[0]->is_blocked) {
-            // TODO: Write Error Message: User is blocked
+            Session::addNotification(new SessionNotification(
+                'error_login_blocked', [],
+                'error_login_blocked_content', [],
+                SessionNotification::LEVEL_ERROR
+            ));
         } else {
-            // TODO: Write Notification Message: Logged In
             Session::login($users[0]);
+            Session::addNotification(
+                new SessionNotification(
+                    'message_logged_in', [$users[0]->username],
+                    'message_logged_in_content', null,
+                    SessionNotification::LEVEL_SUCCESS)
+            );
             if (empty($form->redirectUrl)) {
                 PathUtils::internalRedirect("/");
             } else {

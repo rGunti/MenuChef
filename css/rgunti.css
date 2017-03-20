@@ -6,3 +6,7 @@ body {
 .debug .row:hover {
     background-color: #485563;
 }
+
+.notification-container .alert:first-child {
+    margin-top: 60px;
+}

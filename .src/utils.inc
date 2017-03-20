@@ -188,6 +188,7 @@ class PathUtils {
      * @param $link string
      */
     public static function internalRedirect($link) {
+        SessionNotification::preventNotificationClear();
         header("Location: " . self::getLink($link));
     }
 }

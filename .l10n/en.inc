@@ -37,4 +37,17 @@ return [
 
     'tos_title' => 'Terms Of Use',
     'tos_content' => 'Terms of use have not been defined yet.',
+
+    'message_logged_in' => 'Welcome, %1$s',
+    'message_logged_in_content' => 'Your login was successful!',
+    'message_logged_out' => 'You have been logged out!',
+
+    'error_login_invalid' => 'Invalid Login Credentials',
+    'error_login_invalid_content' => 'Your Login Credentials seem to be invalid. Please check your entry and try again.',
+
+    'error_login_blocked' => 'Blocked',
+    'error_login_blocked_content' => 'Your account has been blocked.',
+
+    'error_navigation_login_needed' => 'Login needed',
+    'error_navigation_login_needed_content' => 'Please login in order to access this content.',
 ];

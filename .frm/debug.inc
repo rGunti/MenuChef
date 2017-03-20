@@ -21,9 +21,9 @@ function debug_view_render_table($rq_key, $title) {
                         <div class="col-md-8" style="word-wrap:break-word;"><?php
                             if (is_array($value)) {
                                 foreach ($value as $subkey => $subval) {
-                                    echo '<div class="row"><div class="col-md-4"><i>' .
+                                    echo '<div class="row"><div class="col-md-2"><i>' .
                                         $subkey .
-                                        '</i></div><div class="col-md-8">' .
+                                        '</i></div><div class="col-md-10">' .
                                         $subval .
                                         '</div></div>';
                                 }
