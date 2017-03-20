@@ -15,8 +15,8 @@ cost per distance and for general recording purposes.
 _This project is not in a working state right now so you cannot use it right now._
 
 ## License
-This Project is licensed under the MIT License. More information in the dedicated LICENSE
-file.
+This Project is licensed under the MIT License. More information in the dedicated
+[LICENSE file](LICENSE).
 
 ## TODOs
 [TODOs.md](TODOs.md)
