@@ -11,7 +11,11 @@ class LoginRequest extends BaseMultiRequest {
             // TODO: Write Notification Message: Logged Out
             PathUtils::internalRedirect("/");
         } else {
-            $this->setStorageValue(self::KEY_FORM, new LoginForm());
+            $form = new LoginForm();
+            if (!empty($vars['to'])) {
+                $form->redirectUrl = urldecode($vars['to']);
+            }
+            $this->setStorageValue(self::KEY_FORM, $form);
         }
     }
     public function post($vars = []) {
@@ -30,7 +34,11 @@ class LoginRequest extends BaseMultiRequest {
         } else {
             // TODO: Write Notification Message: Logged In
             Session::login($users[0]);
-            PathUtils::internalRedirect("/");
+            if (empty($form->redirectUrl)) {
+                PathUtils::internalRedirect("/");
+            } else {
+                PathUtils::internalRedirect($form->redirectUrl);
+            }
         }
         // Passwort wird vor dem Übertragen aus dem Form entfernt
         $form->password = null;
@@ -41,11 +49,13 @@ class LoginRequest extends BaseMultiRequest {
 class LoginForm {
     public $username;
     public $password;
+    public $redirectUrl;
 
     public static function getFromPost($req) {
         $form = new LoginForm();
         $form->username = $req['loginUsername'];
         $form->password = $req['loginPassword'];
+        $form->redirectUrl = $req['loginRedirectUrl'];
         return $form;
     }
 }

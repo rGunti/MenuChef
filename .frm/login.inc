@@ -1,5 +1,6 @@
 <?php $loginForm = RequestProcessor::getProcessedRequest()->getStorageValue(LoginRequest::KEY_FORM) ?>
 <form action="<?= PathUtils::getLink("/Login") ?>" method="post">
+    <input type="hidden" name="loginRedirectUrl" value="<?= htmlspecialchars($loginForm->redirectUrl) ?>">
     <div class="form-group">
         <label for="loginUsername"><?= t('username') ?></label>
         <input type="text"

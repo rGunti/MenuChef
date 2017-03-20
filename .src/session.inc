@@ -12,11 +12,12 @@ class Session {
      * If not the application will redirect the user to a given internal URL (if no URL is given, the Home Page is used)
      * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/')
      */
-    public static function enforceLoggedIn($redirect_url = "/Login") {
+    public static function enforceLoggedIn($redirect_url = "/Login", $add_redirect_url = true) {
         if (!self::isLoggedIn()) {
             Logger::error("Session enforcement failed at " . PathUtils::getCurrentPath() . ", falling back to $redirect_url");
             // TODO: Should create a message onscreen
-            PathUtils::internalRedirect($redirect_url);
+            $url = ($add_redirect_url) ? "$redirect_url?to=" . urlencode(PathUtils::getCurrentPath()) : $redirect_url;
+            PathUtils::internalRedirect($url);
             exit(0);
         }
     }
