@@ -23,11 +23,13 @@ $nav_lang = new TopNavigationBarCollection();
 $nav_lang->setSide(TopNavigationBarCollection::SIDE_RIGHT);
 $nav_lang_dropdown = new TopNavigationBarMenu();
 $nav_lang_dropdown->setTitle('<img src="' . PathUtils::getLink(t(L10N::L10N_LANG_INFO_FLAG)) . '">');
+$nav_lang_dropdown->addItem(new NavigationBarElement('#', t('languages'), false, true));
 foreach (L10N::getLanguageList() as $lang_code => $lang_info) {
     $title = "<img src=\"" . PathUtils::getLink($lang_info['flag']) . "\"> $lang_info[name]";
     $i = new NavigationBarElement(PathUtils::getCurrentPath() . "?lang=$lang_code", $title);
     if (L10N::getLanguageCookie() == $lang_code) {
-        $i->setTitle("<b>$title</b>");
+        //$i->setTitle("<b>$title</b>");
+        $i->setIsActive(true);
     }
     $nav_lang_dropdown->addItem($i);
 }

@@ -20,6 +20,12 @@ abstract class NavigationBarElementBase {
     /** @param $active bool */
     public function setIsActive($active) { $this->active = $active; }
 
+    protected $disabled;
+    /** @return bool */
+    public function getIsDisabled() { return $this->disabled; }
+    /** @param $disabled bool */
+    public function setIsDisabled($disabled) { $this->disabled = $disabled; }
+
     protected $link;
     /** @return string */
     public function getLink() { return $this->link; }
@@ -74,7 +80,8 @@ class TopNavigationBarMenu extends NavigationBarCollectionElementBase {
     public function render() {
         echo "<li class=\"dropdown\" " . ($this->getIsActive() ? "class=\"active\"" : "") . ">";
         echo "<a href=\"" . PathUtils::getLink($this->getLink()) .
-            "\" class=\"dropdown-toggle\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">" .
+            "\" class=\"dropdown-toggle " . ($this->getIsDisabled() ? 'disabled' : '') .
+            "\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">" .
             $this->getTitle() . " <span class=\"caret\"></span></a>";
         echo "<ul class=\"dropdown-menu\">";
         foreach ($this->getItemCollection() as $item) {
@@ -85,13 +92,18 @@ class TopNavigationBarMenu extends NavigationBarCollectionElementBase {
 }
 
 class NavigationBarElement extends NavigationBarElementBase {
-    public function __construct($link = "#", $title = "_") {
+    public function __construct($link = "#", $title = "_", $active = false, $disabled = false) {
         $this->setLink($link);
         $this->setTitle($title);
+        $this->setIsActive($active);
+        $this->setIsDisabled($disabled);
     }
 
     public function render() {
-        echo "<li " . ($this->getIsActive() ? "class=\"active\"" : "") . "><a href=\"" . PathUtils::getLink($this->getLink()) . "\">" . $this->getTitle() . "</a></li>";
+        echo "<li class=\"" .
+            ($this->getIsActive() ? "active " : "") .
+            ($this->getIsDisabled() ? "disabled " : "") .
+            "\"><a href=\"" . PathUtils::getLink($this->getLink()) . "\">" . $this->getTitle() . "</a></li>";
     }
 }
 
