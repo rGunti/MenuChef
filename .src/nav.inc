@@ -38,6 +38,22 @@ abstract class NavigationBarElementBase {
     /** @param $title string */
     public function setTitle($title) { $this->title = $title; }
 
+    protected $activeOnPath;
+    /** @return string */
+    public function getActiveOnPath() { return $this->activeOnPath; }
+    /** @param $activeOnPath string */
+    public function setActiveOnPath($activeOnPath) { $this->activeOnPath = $activeOnPath; }
+
+    /** @return bool */
+    public function getIsActiveOnPath() {
+        if (empty($this->getActiveOnPath())) {
+            return false;
+        } else {
+            $path = ($this->getActiveOnPath() == "*") ? $this->getLink() : $this->getActiveOnPath();
+            return PathUtils::pathMatches(PathUtils::getCurrentPath(), $path);
+        }
+    }
+
     public abstract function render();
 }
 
@@ -47,6 +63,7 @@ abstract class NavigationBarCollectionElementBase extends NavigationBarElementBa
         $this->setLink('#');
     }
 
+    /** @var NavigationBarElementBase[] */
     protected $item_collection;
     /** @return \NavigationBarElementBase[] */
     public function getItemCollection() { return $this->item_collection; }
@@ -55,6 +72,14 @@ abstract class NavigationBarCollectionElementBase extends NavigationBarElementBa
 
     /** @param $item NavigationBarElementBase */
     public function addItem($item) { array_push($this->item_collection, $item); }
+
+    /** @return bool */
+    public function hasEnabledItems() {
+        foreach ($this->item_collection as $item) {
+            if ($item->getIsActiveOnPath()) { return true; }
+        }
+        return false;
+    }
 }
 
 class TopNavigationBarCollection extends NavigationBarCollectionElementBase {
@@ -78,7 +103,7 @@ class TopNavigationBarCollection extends NavigationBarCollectionElementBase {
 
 class TopNavigationBarMenu extends NavigationBarCollectionElementBase {
     public function render() {
-        echo "<li class=\"dropdown\" " . ($this->getIsActive() ? "class=\"active\"" : "") . ">";
+        echo "<li class=\"dropdown " . ($this->getIsActive() || $this->hasEnabledItems() ? "active" : "") . "\">";
         echo "<a href=\"" . PathUtils::getLink($this->getLink()) .
             "\" class=\"dropdown-toggle " . ($this->getIsDisabled() ? 'disabled' : '') .
             "\" data-toggle=\"dropdown\" role=\"button\" aria-haspopup=\"true\" aria-expanded=\"false\">" .
@@ -92,16 +117,17 @@ class TopNavigationBarMenu extends NavigationBarCollectionElementBase {
 }
 
 class NavigationBarElement extends NavigationBarElementBase {
-    public function __construct($link = "#", $title = "_", $active = false, $disabled = false) {
+    public function __construct($link = "#", $title = "_", $active = false, $disabled = false, $activeOnPath = "*") {
         $this->setLink($link);
         $this->setTitle($title);
         $this->setIsActive($active);
         $this->setIsDisabled($disabled);
+        $this->setActiveOnPath($activeOnPath);
     }
 
     public function render() {
         echo "<li class=\"" .
-            ($this->getIsActive() ? "active " : "") .
+            ($this->getIsActive() || (!$this->getIsDisabled() && $this->getIsActiveOnPath()) ? "active " : "") .
             ($this->getIsDisabled() ? "disabled " : "") .
             "\"><a href=\"" . PathUtils::getLink($this->getLink()) . "\">" . $this->getTitle() . "</a></li>";
     }
