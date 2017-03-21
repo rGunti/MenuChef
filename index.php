@@ -4,6 +4,14 @@ L10N::initL10N();
 require_once '.req/.requireAll.inc';
 RequestProcessor::processRequest();
 $request = RequestProcessor::getProcessedRequest();
+
+$themes = [
+    'default' => '/css/bootstrap.min.css',
+    'darkmode' => '/css/bootswatch.min.css',
+    'darkadmin' => '/css/darkadmin.min.css',
+    'superhero' => '/css/superhero.min.css',
+];
+$usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], 'darkmode')];
 ?>
 <html>
     <head>
@@ -19,12 +27,12 @@ $request = RequestProcessor::getProcessedRequest();
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700">
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap.min.css') ?>" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink($usedTheme) ?>" />
         <!--
         <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/dataTables.bootstrap.min.css" />
         <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.1.1/css/responsive.dataTables.min.css" />
         -->
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap-checkbox/awesome-bootstrap-checkbox.css') ?>" />
-        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootswatch.min.css') ?>" />
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/rgunti.css') ?>" />
 
         <script src="<?= PathUtils::getLink('/js/jquery.min.js') ?>"></script>
