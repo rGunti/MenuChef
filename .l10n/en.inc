@@ -50,4 +50,16 @@ return [
 
     'error_navigation_login_needed' => 'Login needed',
     'error_navigation_login_needed_content' => 'Please login in order to access this content.',
+
+    'admin_tools' => 'Admin Tools',
+    'admin_tools_users' => 'Manage Users',
+
+    'id' => 'ID',
+    'admin_permission' => 'Administrative Permissions',
+    'admin_permission_short' => 'Admin',
+    'batch' => 'Batch User',
+    'batch_short' => 'Batch',
+    'disabled' => 'User Disabled',
+    'disabled_short' => 'Disabled',
+    'actions' => 'Actions',
 ];

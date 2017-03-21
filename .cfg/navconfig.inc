@@ -7,6 +7,15 @@ $nav_right->setSide(TopNavigationBarCollection::SIDE_RIGHT);
 
 $nav_right->addItem(new NavigationBarElement("/Debug", t('debug_title')));
 if (Session::isLoggedIn()) {
+    if (Session::isAdmin()) {
+        $nav_admin = new TopNavigationBarMenu();
+        $nav_admin->setTitle(t('admin_tools'));
+        $nav_admin->setLink('/AdminTools');
+        $nav_admin->addItem(new NavigationBarElement("/AdminTools/Users", "<span class='glyphicon glyphicon-briefcase'></span> " . t('admin_tools_users')));
+
+        $nav_right->addItem($nav_admin);
+    }
+
     $nav_user = new TopNavigationBarMenu();
     $nav_user->setTitle(Session::getUserInfo()->username);
     $nav_user->addItem(new NavigationBarElement("/MySettings", "<span class='glyphicon glyphicon-user'></span> " . t('user_settings_title')));

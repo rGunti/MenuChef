@@ -50,4 +50,16 @@ return [
 
     'error_navigation_login_needed' => 'Login benötigt',
     'error_navigation_login_needed_content' => 'Bitte melde dich an, um diesen Inhalt sehen zu können.',
+
+    'admin_tools' => 'Admin Tools',
+    'admin_tools_users' => 'Benutzer verwalten',
+
+    'id' => 'ID',
+    'admin_permission' => 'Administrative Rechte',
+    'admin_permission_short' => 'Admin',
+    'batch' => 'Batch-Benutzer',
+    'batch_short' => 'Batch',
+    'disabled' => 'Benutzer gesperrt',
+    'disabled_short' => 'Gesperrt',
+    'actions' => 'Aktionen',
 ];

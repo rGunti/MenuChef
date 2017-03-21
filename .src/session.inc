@@ -48,6 +48,14 @@ class Session {
     }
 
     /**
+     * Returns true if, and only if, the user is logged in and has Administrative Privileges.
+     * @return bool
+     */
+    public static function isAdmin() {
+        return self::isLoggedIn() && self::getUserInfo()->is_admin;
+    }
+
+    /**
      * Logs in the given user
      * @param $user MUser
      * @param $onlyUpdate bool If true, the session-stored user info will only be updated.

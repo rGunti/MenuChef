@@ -8,4 +8,7 @@ return [
     "/Logout" => new LoginRequest(),
 
     "/MySettings" => new UserSettingsRequest(),
+
+    "/AdminTools" => new PageNotFoundRequest(),
+    "/AdminTools/Users" => new UserManagerRequest(),
 ];
