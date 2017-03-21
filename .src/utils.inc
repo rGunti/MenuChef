@@ -28,6 +28,21 @@ class AppUtils {
         }
         return self::$basePath;
     }
+
+    /** Starts the Render Buffer */
+    public static function startRenderBuffer() { ob_start(); }
+
+    /** Gets the content of the Render Buffer */
+    public static function getRenderBufferContent() { return ob_get_contents(); }
+
+    /**
+     * Clears the currently rendered content from the buffer.
+     * @param $restart_buffer bool|true If True, the buffer will be restarted after it was cleared.
+     */
+    public static function clearRenderedContent($restart_buffer = true) {
+        ob_clean();
+        if ($restart_buffer) { self::startRenderBuffer(); }
+    }
 }
 
 /**
@@ -189,6 +204,7 @@ class PathUtils {
      */
     public static function internalRedirect($link) {
         SessionNotification::preventNotificationClear();
+        AppUtils::clearRenderedContent();
         header("Location: " . self::getLink($link));
     }
 }
