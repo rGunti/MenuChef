@@ -16,6 +16,8 @@ and contain a Title, Body and a Level of Severity (Info, Warning, Error).*
 A system that allows data to be retrieved via AJAX and be displayed on-screen. 
 [DataTables.js](https://datatables.net/) should be a good foundation for this and has 
 previously been used in (non-public) projects like _Momoka Web Interface_.
+**Update**: The user list uses this technique now. In the future, this could maybe be abstracted
+so we don't have to write such a big chunck of code. But we might want to delay this for a while.
 
 - **Extend PDO Methods**<br>
 The currently available PDO methods (found in [.src/db.inc](.src/db.inc)) are not
