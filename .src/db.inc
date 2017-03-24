@@ -162,7 +162,7 @@ class DatabaseTools {
         $objClass = self::getClassName($classOrEmptyObj);
 
         $orderSql = self::renderOrderBySql($order);
-        $limitSql = "LIMIT $skip, $take";
+        $limitSql = "LIMIT $skip,$take";
 
         $whereSqlArr = [];
         $binds = [];
@@ -176,24 +176,21 @@ class DatabaseTools {
         }
 
         $whereSql = implode(" ", $whereSqlArr);
-        $sql = "SELECT * FROM $tbl" . (empty($whereSql) ? " WHERE $whereSql" : "") . " $orderSql $limitSql";
+        $sql = "SELECT * FROM $tbl" . (!empty($whereSql) ? " WHERE $whereSql" : "") . " $orderSql $limitSql";
         $totalCountSql = "SELECT COUNT(0) AS 'count' FROM $tbl";
-        $filterCountSql = "$totalCountSql" . (empty($whereSql) ? " WHERE $whereSql" : "");
+        $filterCountSql = (!empty($whereSql) ? "SELECT COUNT(0) AS 'count' FROM $tbl WHERE $whereSql" : "");
+
+        $combinedSql = "SELECT " .
+            "(SELECT COUNT(0) FROM $tbl) AS 'count_total'," .
+            "(SELECT COUNT(0) FROM $tbl" . (!empty($whereSql) ? " WHERE $whereSql" : "") . ") AS 'count_filter'"
+        ;
 
         try {
-            // Count Total Rows
-            $stmt = self::getPdoStatement($totalCountSql);
-            $stmt->execute($binds);
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $objsTotal = $row['count'];
-            }
-
-            // Count Filtered Rows
-            $stmt = self::getPdoStatement($filterCountSql);
-            $stmt->execute($binds);
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $objsFilter = $row['count'];
-            }
+            $stmt_count = self::getPdoStatement($combinedSql);
+            $stmt_count->execute($binds);
+            $result = $stmt_count->fetchAll(PDO::FETCH_ASSOC)[0];
+            $objsTotal = $result['count_total'];
+            $objsFilter = $result['count_filter'];
 
             // Get Data
             $stmt = self::getPdoObjectStatement($objClass, $sql);
@@ -202,7 +199,14 @@ class DatabaseTools {
                 array_push($objs, $obj);
             }
         } catch (PDOException $ex) {
-            // TODO: Add Error Handling
+            $objs = [
+                ['id' => 'EXCEPTION', 'errorInfo' => [$ex->getCode(), $ex->getMessage()]],
+                ['id' => 'SQL', 'errorInfo' => [$totalCountSql,$filterCountSql,$sql]],
+                ['id' => 'ORDER', 'errorInfo' => [$order]],
+                ['id' => 'PATH', 'errorInfo' => [PathUtils::getCurrentPath()]],
+                ['id' => 'PARAMS', 'errorInfo' => $_GET]
+            ];
+            $objsTotal = -1;
         }
 
         // Return Data
@@ -299,7 +303,7 @@ class TableWhereObject {
      * Creates a new TableWhereObject.
      * @param $column string Column name
      * @param $condition string Condition
-     * @param $value object Value
+     * @param $value mixed Value
      * @param null|string $prefix
      * @param null|string $suffix
      */
@@ -339,7 +343,7 @@ class TableWhereObject {
     /**
      * Returns a new TableWhereObject for an equals statement
      * @param $column string
-     * @param $value object
+     * @param $value mixed
      * @param null|string $prefix
      * @param null|string $suffix
      * @return TableWhereObject
@@ -347,15 +351,27 @@ class TableWhereObject {
     public static function getEq($column, $value, $prefix = null, $suffix = null) {
         return new TableWhereObject($column, self::COND_EQUALS, $value, $prefix, $suffix);
     }
+
+    /**
+     * Returns a new TableWhereObject for a LIKE statement
+     * @param $column string
+     * @param $value string
+     * @param null|string $prefix
+     * @param null|string $suffix
+     * @return TableWhereObject
+     */
+    public static function getLike($column, $value, $prefix = null, $suffix = null) {
+        return new TableWhereObject($column, self::COND_LIKE, "%$value%", $prefix, $suffix);
+    }
 }
 
 class PagedResultObject {
     /** @var int Total number of objects in table */
-    public $objectsTotal;
+    public $recordsTotal;
     /** @var int Total number of objects in table when filter is applied */
-    public $objectsFiltered;
+    public $recordsFiltered;
     /** @var object[] Objects selected */
-    public $objects;
+    public $data;
 
     /**
      * Creates a new PagedResultObject.
@@ -363,9 +379,9 @@ class PagedResultObject {
      * @param int $c_total Total number of objects in table
      * @param int $c_filtered Total number of objects in table when filter is applied
      */
-    public function __construct($objects = [], $c_total = 0, $c_filtered = 0) {
-        $this->objects = $objects;
-        $this->objectsTotal = $c_total;
-        $this->objectsFiltered = $c_filtered;
+    public function __construct($objects, $c_total, $c_filtered) {
+        $this->data = $objects;
+        $this->recordsTotal = $c_total;
+        $this->recordsFiltered = $c_filtered;
     }
 }

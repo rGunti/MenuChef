@@ -11,4 +11,7 @@ return [
 
     "/AdminTools" => new PageNotFoundRequest(),
     "/AdminTools/Users" => new UserManagerRequest(),
+
+    // AJAX Requests
+    "/AJAX/Users" => new AjaxUserRequest(),
 ];

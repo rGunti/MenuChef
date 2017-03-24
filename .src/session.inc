@@ -10,7 +10,7 @@ class Session {
     /**
      * Checks if the user is logged in.
      * If not the application will redirect the user to a given internal URL (if no URL is given, the Home Page is used)
-     * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/')
+     * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/Login')
      * @param $add_redirect_url bool If true, a GET parameter ('to') will be added to the URL indicating where the last
      * request went to
      */
@@ -24,6 +24,26 @@ class Session {
             ));
             $url = ($add_redirect_url) ? "$redirect_url?to=" . urlencode(PathUtils::getCurrentPath()) : $redirect_url;
             PathUtils::internalRedirect($url);
+            exit(0);
+        }
+    }
+
+    /**
+     * Checks if the user is logged in and has admin permissions.
+     * Works like Session::enforceLoggedIn()
+     * @param $redirect_url string Direct URL which will be used if the user is not logged in (default: '/Login', is not used if logged in but permission missing)
+     * @param $add_redirect_url bool If true, a GET parameter ('to') will be added to the URL indicating where the last
+     */
+    public static function enforceAdmin($redirect_url = "/Login", $add_redirect_url = true) {
+        self::enforceLoggedIn($redirect_url, $add_redirect_url);
+        if (!self::isAdmin()) {
+            Logger::error("Administrator enforcement failed at " . PathUtils::getCurrentPath() . ", falling back to $redirect_url");
+            Session::addNotification(new SessionNotification(
+                'error_navigation_admin_needed', [],
+                'error_navigation_admin_needed_content', [],
+                SessionNotification::LEVEL_ERROR
+            ));
+            PathUtils::internalRedirect("/", false);
             exit(0);
         }
     }

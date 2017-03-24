@@ -1,5 +1,5 @@
 body {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', sans-serif;
     padding-top: 35px;
 }
 
@@ -9,4 +9,8 @@ body {
 
 .notification-container .alert:first-child {
     margin-top: 60px;
+}
+
+.table tbody td {
+    vertical-align: middle !important;
 }

@@ -1,10 +1,7 @@
 <?php
-class UserManagerRequest extends BaseMultiRequest {
+class UserManagerRequest extends BaseRequest {
     public function getFormPath() { return "manage_user.inc"; }
     public function getPageTitle() { return t('admin_tools_users'); }
 
-    public function get($vars = []) {
-        $users = DatabaseTools::getAll(MUser::TABLE_NAME, new MUser());
-        $this->setStorageValue('users', $users);
-    }
+    public function process($path, $get = [], $post = []) { Session::enforceAdmin(); }
 }

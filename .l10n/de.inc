@@ -51,6 +51,9 @@ return [
     'error_navigation_login_needed' => 'Login benötigt',
     'error_navigation_login_needed_content' => 'Bitte melde dich an, um diesen Inhalt sehen zu können.',
 
+    'error_navigation_admin_needed' => 'Administrative Rechte benötigt',
+    'error_navigation_admin_needed_content' => 'Du kannst nicht auf diese Inhalte zugreifen, weil du nicht die erforderlichen Rechte hast.',
+
     'admin_tools' => 'Admin Tools',
     'admin_tools_users' => 'Benutzer verwalten',
 
@@ -62,4 +65,28 @@ return [
     'disabled' => 'Benutzer gesperrt',
     'disabled_short' => 'Gesperrt',
     'actions' => 'Aktionen',
+
+    'disable_login' => 'Account sperren',
+    'enable_login' => 'Account entsperren',
+    'reset_password' => 'Passwort zurückgesetzen',
+    'delete_user' => 'Account löschen',
+
+    'datatable_decimal' => '.',
+    'datatable_thousands' => ' ',
+    'datatable_empty' => 'Keine Daten verfügbar',
+    'datatable_info' => 'Zeige _START_ bis _END_ von _TOTAL_ Einträgen',
+    'datatable_info_empty' => 'Keine Einträge vorhanden',
+    'datatable_info_filtered' => '(gefiltert von insgesamt _MAX_ Einträgen)',
+    'datatable_info_postfix' => '',
+    'datatable_length_menu' => 'Zeige _MENU_ Einträge',
+    'datatable_loading' => 'Lade...',
+    'datatable_processing' => 'Verarbeite...',
+    'datatable_search' => 'Schnellsuche: ',
+    'datatable_zero_records' => 'Kein passender Eintrag gefunden',
+    'datatable_paginate_first' => 'Erste Seite',
+    'datatable_paginate_last' => 'Letzte Seite',
+    'datatable_paginate_next' => 'Nächste',
+    'datatable_paginate_prev' => 'Vorherige',
+    'datatable_aria_sort_asc' => ': zum aufsteigenden Sortieren klicken',
+    'datatable_aria_sort_desc' => ': zum absteigenden Sortieren klicken',
 ];

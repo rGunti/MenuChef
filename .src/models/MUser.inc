@@ -1,6 +1,7 @@
 <?php
 class MUser {
     const TABLE_NAME = 'USER';
+    const VIEW_NAME = 'V_USER';
     const KEY_NAME = 'ID';
 
     public $id;

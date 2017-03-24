@@ -107,3 +107,216 @@ abstract class BaseMultiRequest extends BaseRequest {
         Logger::warn("Request Method DELETE has not been implemented by Request " . get_class($this));
     }
 }
+
+abstract class BaseAjaxRequest extends BaseMultiRequest {
+    // HTTP 100
+    const HTTP_CODE_CONTINUE = 100;
+    const HTTP_CODE_PROCESSING = 102;
+
+    // HTTP 200
+    const HTTP_CODE_OK = 200;
+    const HTTP_CODE_CREATED = 201;
+    const HTTP_CODE_ACCEPTED = 202;
+    const HTTP_CODE_NON_AUTHORITATIVE_INFO = 203;
+    const HTTP_CODE_NO_CONTENT = 204;
+    const HTTP_CODE_RESET_CONTENT = 205;
+    const HTTP_CODE_PARTIAL_CONTENT = 206;
+
+    // HTTP 300
+    const HTTP_CODE_MULTIPLE_CHOICES = 300;
+    const HTTP_CODE_MOVED_PERM = 301;
+    const HTTP_CODE_MOVED_TEMP = 302;
+    const HTTP_CODE_SEE_OTHER = 303;
+    const HTTP_CODE_NOT_MODIFIED = 304;
+    const HTTP_CODE_REDIRECT_TEMP = 307;
+    const HTTP_CODE_REDIRECT_PERM = 308;
+
+    // HTTP 400
+    const HTTP_CODE_BAD_REQUEST = 400;
+    const HTTP_CODE_UNAUTHORIZED = 401;
+    const HTTP_CODE_FORBIDDEN = 403;
+    const HTTP_CODE_NOT_FOUND = 404;
+    const HTTP_CODE_METHOD_NOT_ALLOWED = 405;
+    const HTTP_CODE_NOT_ACCEPTABLE = 406;
+    const HTTP_CODE_REQ_TIMEOUT = 408;
+    const HTTP_CODE_GONE = 410;
+    const HTTP_CODE_TEAPOT = 418;
+    const HTTP_CODE_LOCKED = 423;
+    const HTTP_CODE_TOO_MANY_REQUESTS = 429;
+    const HTTP_CODE_UNAVAILABLE_LEGAL = 451;
+
+    // HTTP 500
+    const HTTP_CODE_INTERNAL_ERROR = 500;
+    const HTTP_CODE_NOT_IMPLEMENTED = 501;
+    const HTTP_CODE_SERVICE_UNAVAILABLE = 503;
+    const HTTP_CODE_VER_NOT_SUPPORTED = 505;
+    const HTTP_CODE_INSUFFICIENT_STORAGE = 507;
+    const HTTP_CODE_LOOP_DETECTED = 508;
+    const HTTP_CODE_NETWORK_AUTH_REQUIRED = 511;
+
+    // Permission Level
+    const PERM_LEVEL_NOT_LOGGED_IN = -1;
+    const PERM_LEVEL_NONE = 0;
+    const PERM_LEVEL_LOGGED_IN = 1;
+    const PERM_LEVEL_ADMIN = 100;
+
+    public function getFormPath() { return null; }
+    public function getPageTitle() { return 'AJAX Request'; }
+
+    /**
+     * Parses the input (e.g. from $_GET) into a AjaxDataTableParameter object
+     * @param array $vars
+     * @return AjaxDataTableParameter
+     */
+    protected function prepareDataTableArguments($vars = []) {
+        return new AjaxDataTableParameter(
+            AppUtils::getKeyDefault($vars, 'start'),
+            AppUtils::getKeyDefault($vars, 'length'),
+            AppUtils::getKeyDefault($vars, 'search' , []),
+            AppUtils::getKeyDefault($vars, 'columns', []),
+            AppUtils::getKeyDefault($vars, 'order'  , [])
+        );
+    }
+
+    /**
+     * @param mixed $data Data to send with
+     * @param int $errorCode Error Code (BaseAjaxRequest contains Constants for these)
+     */
+    protected function sendErrorResponse($data, $errorCode = self::HTTP_CODE_INTERNAL_ERROR) {
+        AppUtils::clearRenderedContent(false);
+        header('Content-Type: application/json');
+        http_response_code($errorCode);
+        die(json_encode([
+            'HasError' => 1,
+            'ErrorInfo' => $data
+        ]));
+    }
+
+    /**
+     * Gets the current Permission Level for AJAX requests
+     * @return int
+     */
+    protected function getCurrentPermissionLevel() {
+        if (Session::isLoggedIn()) {
+            if (Session::isAdmin()) {
+                return self::PERM_LEVEL_ADMIN;
+            } else {
+                return self::PERM_LEVEL_LOGGED_IN;
+            }
+        } else {
+            return self::PERM_LEVEL_NONE;
+        }
+    }
+
+    /**
+     * Checks the current users permission level. If the required permission level
+     * does not meet the permission level the user has, a response will be sent containing
+     * error detail about the failed permission check and the request will be dropped.
+     * @param int $neededPermission Permission Level (BaseAjaxRequest provides constants)
+     */
+    protected function checkPermissions($neededPermission = 0) {
+        if ($neededPermission == self::PERM_LEVEL_NOT_LOGGED_IN) {
+            if (Session::isLoggedIn()) {
+                $this->sendErrorResponse(
+                    new AjaxPermissionErrorObject(
+                        self::PERM_LEVEL_NOT_LOGGED_IN,
+                        self::PERM_LEVEL_LOGGED_IN,
+                        'You have to be logged out in order to use this.'
+                    )
+                );
+            }
+        } else {
+            $currentPermission = $this->getCurrentPermissionLevel();
+            if ($currentPermission < $neededPermission) {
+                $this->sendErrorResponse(
+                    new AjaxPermissionErrorObject(
+                        $neededPermission,
+                        $currentPermission,
+                        'Your permission level was too low to access this resource.'
+                    ),
+                    self::HTTP_CODE_FORBIDDEN
+                );
+            }
+        }
+    }
+
+    /**
+     * Converts the given Object to JSON and prints it.
+     * All previous output will be removed from the Buffer.
+     * Execution will then be terminated!
+     * @param $data mixed Data to send
+     */
+    protected function sendObjectResponse($data) {
+        AppUtils::clearRenderedContent(false);
+        header('Content-Type: application/json');
+        die(json_encode($data));
+    }
+
+    public function get($vars = []) {
+        $this->sendErrorResponse('GET', self::HTTP_CODE_METHOD_NOT_ALLOWED);
+    }
+
+    public function post($vars = []) {
+        $this->sendErrorResponse('POST', self::HTTP_CODE_METHOD_NOT_ALLOWED);
+    }
+
+    public function put($vars = []) {
+        $this->sendErrorResponse('PUT', self::HTTP_CODE_METHOD_NOT_ALLOWED);
+    }
+
+    public function delete($vars = []) {
+        $this->sendErrorResponse('DELETE', self::HTTP_CODE_METHOD_NOT_ALLOWED);
+    }
+}
+
+class AjaxPermissionErrorObject {
+    public function __construct($requiredPermission, $currentPermission, $message) {
+        $this->requiredPermission = $requiredPermission;
+        $this->currentPermission = $currentPermission;
+        $this->message = $message;
+    }
+
+    public $requiredPermission;
+    public $currentPermission;
+    public $message;
+}
+
+class AjaxDataTableParameter {
+    public function __construct($start, $length, $search, $cols, $order) {
+        $this->start = $start;
+        $this->length = $length;
+        $this->search = $search;
+        $this->cols = $cols;
+        $this->order = $order;
+    }
+
+    /** @var int */
+    public $start;
+    /** @var int */
+    public $length;
+    /** @var array */
+    public $search;
+    /** @var array */
+    public $cols;
+    /** @var array */
+    public $order;
+
+    /** @return bool */
+    public function hasOrderColumns() { return !empty($this->order); }
+    /** @return bool */
+    public function hasSearchTerm() { return !empty($this->search['value']); }
+
+    /** @return string */
+    public function getSearchTerm() { return $this->search['value']; }
+
+    /** @return array */
+    public function getSqlOrderColumns() {
+        $order = [];
+        if ($this->hasOrderColumns()) {
+            foreach ($this->order as $param) {
+                array_push($order, $this->cols[$param['column']]['data'] . ' ' . $param['dir']);
+            }
+        }
+        return $order;
+    }
+}

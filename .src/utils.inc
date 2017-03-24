@@ -17,6 +17,18 @@ class AppUtils {
     }
 
     /**
+     * Returns a value of an assoc array or a given default value if the key does not exist.
+     * @param $arr array
+     * @param $key string
+     * @param $default mixed Default value to return if key cannot be found
+     * @return mixed
+     */
+    public static function getKeyDefault($arr, $key, $default = 0) {
+        if (isset($arr[$key])) { return $arr[$key]; }
+        else { return $default; }
+    }
+
+    /**
      * Returns the applications base path for usage in Links etc.
      * @return string
      */

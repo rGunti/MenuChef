@@ -51,6 +51,9 @@ return [
     'error_navigation_login_needed' => 'Login needed',
     'error_navigation_login_needed_content' => 'Please login in order to access this content.',
 
+    'error_navigation_admin_needed' => 'Administrative Permission required',
+    'error_navigation_admin_needed_content' => 'You cannot access this content because you do not have the required administrative permission.',
+
     'admin_tools' => 'Admin Tools',
     'admin_tools_users' => 'Manage Users',
 
@@ -62,4 +65,28 @@ return [
     'disabled' => 'User Disabled',
     'disabled_short' => 'Disabled',
     'actions' => 'Actions',
+
+    'disable_login' => 'Lock account',
+    'enable_login' => 'Unlock account',
+    'reset_password' => 'Reset password',
+    'delete_user' => 'Delete account',
+
+    'datatable_decimal' => '.',
+    'datatable_thousands' => ',',
+    'datatable_empty' => 'No data available',
+    'datatable_info' => 'Showing _START_ to _END_ of _TOTAL_ entries',
+    'datatable_info_empty' => 'No entries available',
+    'datatable_info_filtered' => '(filtered from _MAX_ total entries)',
+    'datatable_info_postfix' => '',
+    'datatable_length_menu' => 'Show _MENU_ entries',
+    'datatable_loading' => 'Loading...',
+    'datatable_processing' => 'Processing...',
+    'datatable_search' => 'Quick Search: ',
+    'datatable_zero_records' => 'No matching records found',
+    'datatable_paginate_first' => 'First',
+    'datatable_paginate_last' => 'Last',
+    'datatable_paginate_next' => 'Next',
+    'datatable_paginate_prev' => 'Prev.',
+    'datatable_aria_sort_asc' => ': activate to sort column ascending',
+    'datatable_aria_sort_desc' => ': activate to sort column descending',
 ];
