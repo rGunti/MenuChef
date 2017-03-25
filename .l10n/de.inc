@@ -85,6 +85,8 @@ return [
     'modal_reset_user_question' => 'Möchtest Du das Passwort von %1$s wirklich zurücksetzen?</p></p>' .
         '%1$s ist danach nicht mehr in der Lage, sich anzumelden ohne die Mitteilung des neuen Passworts.',
     'modal_reset_user_success' => 'Das Passwort von %1$s wurde erfolgreich zurückgesetzt. Das neue Passwort lautet:</p><p>%2$s',
+    'modal_delete_user_question' => 'Möchtest Du den Account von %1$s wirklich löschen?</p><p>' .
+        'Das Löschen dieses Accounts führt ebenfalls zur Löschung aller personenbezogenen Daten.',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ' ',
@@ -117,4 +119,6 @@ return [
     'ajax_response_user_enable_already' => 'Account ist schon entsperrt.',
     'ajax_response_user_enable_yourself' => 'Du kannst dich nicht selbst entsperren.',
     'ajax_response_user_reset_yourself' => 'Du kannst dein eigenes Passwort nicht zurücksetzen.',
+    'ajax_response_user_delete_yourself' => 'Du kannst dich nicht selbst löschen.',
+    'ajax_response_user_delete_protected' => 'Dieser Account ist geschützt und kann nicht gelöscht werden.',
 ];

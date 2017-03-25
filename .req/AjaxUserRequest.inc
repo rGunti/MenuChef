@@ -42,18 +42,19 @@ class AjaxUserRequest extends BaseAjaxRequest {
         if (empty($PARAM_action)) {
             $this->sendErrorResponse(t('ajax_response_no_action'), self::HTTP_CODE_BAD_REQUEST);
         } else {
+            $PARAM_user_id = AppUtils::getKeyDefault($vars, 'id', null);
             switch ($PARAM_action) {
                 case 'lockUser':
-                    $PARAM_user_id = AppUtils::getKeyDefault($vars, 'id', null);
                     $this->updateBlockedStatus($PARAM_user_id, 1);
                     break;
                 case 'unlockUser':
-                    $PARAM_user_id = AppUtils::getKeyDefault($vars, 'id', null);
                     $this->updateBlockedStatus($PARAM_user_id, 0);
                     break;
                 case 'resetUser':
-                    $PARAM_user_id = AppUtils::getKeyDefault($vars, 'id', null);
                     $this->resetUserPassword($PARAM_user_id);
+                    break;
+                case 'deleteUser':
+                    $this->deleteUser($PARAM_user_id);
                     break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
@@ -136,6 +137,34 @@ class AjaxUserRequest extends BaseAjaxRequest {
                     'UserName' => $user->username,
                     'NewPassword' => $new_password
                 ], self::HTTP_CODE_OK);
+            }
+        }
+    }
+
+    private function deleteUser($user_id) {
+        $this->checkUserID($user_id, true, t('ajax_response_user_delete_yourself'));
+
+        if (in_array($user_id, MUser::PROTECTED_USER_IDS)) {
+            $this->sendErrorResponse(t('ajax_response_user_delete_protected'), self::HTTP_CODE_BAD_REQUEST);
+            return;
+        }
+
+        $users = DatabaseTools::getWhereSimple(
+            MUser::TABLE_NAME,
+            new MUser(),
+            [ MUser::KEY_NAME => $user_id ]
+        );
+        if (count($users) != 1) {
+            $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
+        } else {
+            /** @var MUser $user */
+            $user = $users[0];
+
+            $res = DatabaseTools::delete(MUser::TABLE_NAME, MUser::KEY_NAME, $user->id);
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
             }
         }
     }

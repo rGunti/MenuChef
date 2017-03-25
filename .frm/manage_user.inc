@@ -1,5 +1,6 @@
 <?php require_once __DIR__ . '/modals/lockUser.inc' ?>
 <?php require_once __DIR__ . '/modals/resetUser.inc' ?>
+<?php require_once __DIR__ . '/modals/deleteUser.inc' ?>
 <table class="table table-hover table-condensed table-striped" id="userTable">
     <thead>
         <tr>
@@ -63,20 +64,16 @@
                         'title="<?= htmlspecialchars(t('reset_password')) ?>">' +
                         '<span class="glyphicon glyphicon-refresh"></span>' +
                         '</a>';
-                    var deleteLink = '<a href="#" class="btn btn-default btn-xs" id="deleteUser' + r.id + '" title="<?= htmlspecialchars(t('delete_user')) ?>">' +
+                    var deleteLink = '<a href="#" class="btn btn-default btn-xs" id="deleteUser' + r.id + '" ' +
+                        'data-toggle="modal" data-target="#modalDeleteUser" data-user-id="' + r.id + '" data-user-name="' + escapeHtml(r.username) + '"' +
+                        'title="<?= htmlspecialchars(t('delete_user')) ?>">' +
                         '<span class="glyphicon glyphicon-trash"></span>' +
                         '</a>';
-
-                    setTimeout(function(data) {
-                        $('#deleteUser' + data.id).off('click').click(function() {
-                            alert('del');
-                        });
-                    }, 100, r);
 
                     return '<div class="btn-group btn-group-xs">' +
                         (r.is_blocked ? enableLink : disableLink) +
                         (r.is_blocked || r.is_batch ? '' : resetPasswordLink) +
-                        (r.id < 10000 ? '' : deleteLink) +
+                        deleteLink +
                         '</div>';
                 } }
             ],

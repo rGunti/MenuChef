@@ -276,6 +276,35 @@ class DatabaseTools {
             return 0;
         }
     }
+
+    /**
+     * @param $table string Table to delete from
+     * @param $key_col string The column containing the primary key
+     * @param $key_value mixed The value of the primary key
+     * @return int Rows effected
+     */
+    public static function delete($table, $key_col, $key_value) {
+        $sql = "DELETE FROM $table WHERE $key_col = :ID";
+        $pdo = self::startNewTransaction();
+        try {
+            // Bind SQL Params
+            $stmt = self::getPdoStatement($sql, $pdo);
+            Logger::verbose(" - Statement Parameter ID ($key_col): $key_value");
+            $stmt->bindValue(':ID', $key_value);
+            $stmt->execute();
+
+            Logger::verbose(
+                "Deleted entry in Table $table with Primary Key $key_col = $key_value, rows affected: " .
+                $stmt->rowCount()
+            );
+            self::commitTransaction($pdo);
+            return $stmt->rowCount();
+        } catch (PDOException $ex) {
+            Logger::fatal("An exception occurred while deleting data: " . $ex->getMessage());
+            self::rollbackTransaction($pdo);
+            return 0;
+        }
+    }
 }
 
 class TableWhereObject {
