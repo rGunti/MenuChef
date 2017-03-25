@@ -66,10 +66,21 @@ return [
     'disabled_short' => 'Disabled',
     'actions' => 'Actions',
 
+    'ok' => 'OK',
+    'cancel' => 'Cancel',
+    'yes' => 'Yes',
+    'no' => 'No',
+
     'disable_login' => 'Lock account',
     'enable_login' => 'Unlock account',
     'reset_password' => 'Reset password',
     'delete_user' => 'Delete account',
+
+    'modal_unhandled_error_title' => 'Unexpected Error',
+    'modal_unhandled_error_text' => 'An unexpected error has occured. Below is some information about the error:',
+
+    'modal_disable_login_question' => 'Would you like to disable %1$s?</p><p>' .
+        '%1$s cannot log in and cannot access their data until the account is unlocked again.',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ',',

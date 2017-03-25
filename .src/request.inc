@@ -245,10 +245,12 @@ abstract class BaseAjaxRequest extends BaseMultiRequest {
      * All previous output will be removed from the Buffer.
      * Execution will then be terminated!
      * @param $data mixed Data to send
+     * @param $httpCode int|null HTTP Response Code to use
      */
-    protected function sendObjectResponse($data) {
+    protected function sendObjectResponse($data, $httpCode = null) {
         AppUtils::clearRenderedContent(false);
         header('Content-Type: application/json');
+        if (!empty($httpCode)) { http_response_code($httpCode); }
         die(json_encode($data));
     }
 

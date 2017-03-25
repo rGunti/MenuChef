@@ -66,10 +66,22 @@ return [
     'disabled_short' => 'Gesperrt',
     'actions' => 'Aktionen',
 
+    'ok' => 'OK',
+    'cancel' => 'Abbrechen',
+    'yes' => 'Ja',
+    'no' => 'Nein',
+
     'disable_login' => 'Account sperren',
     'enable_login' => 'Account entsperren',
     'reset_password' => 'Passwort zurückgesetzen',
     'delete_user' => 'Account löschen',
+
+    'modal_unhandled_error_title' => 'Unerwarteter Fehler',
+    'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
+
+    'modal_disable_login_question' => 'Möchtest Du den Benutzer %1$s sperren?</p><p>' .
+        '%1$s kann sich nicht neu anmelden und hat keinen Zugriff auf die eigenen Daten, bis die Sperre aufgehoben wird.',
+    'modal_enable_login_question' => 'Möchtest Du den Benutzer %1$s entsperren?',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ' ',
@@ -89,4 +101,17 @@ return [
     'datatable_paginate_prev' => 'Vorherige',
     'datatable_aria_sort_asc' => ': zum aufsteigenden Sortieren klicken',
     'datatable_aria_sort_desc' => ': zum absteigenden Sortieren klicken',
+
+    'ajax_response_no_action' => 'Keine Action übergeben.',
+    'ajax_response_unknown_action' => 'Aktion "%1$s" wird nicht unterstützt.',
+
+    'ajax_response_db_save_fail' => 'Beim Speichern der Änderungen ist ein unbekannter Fehler aufgetreten.',
+
+    'ajax_response_user_no_id' => 'Keine User-ID übergeben.',
+    'ajax_response_user_id_not_found' => 'User-ID nicht gefunden.',
+    'ajax_response_user_disable_already' => 'Account ist schon gesperrt.',
+    'ajax_response_user_disable_yourself' => 'Du kannst dich nicht selbst sperren.',
+    'ajax_response_user_enable_already' => 'Account ist schon entsperrt.',
+    'ajax_response_user_enable_yourself' => 'Du kannst dich nicht selbst entsperren.',
+
 ];

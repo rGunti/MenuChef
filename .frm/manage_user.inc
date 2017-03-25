@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/modals/lockUser.inc' ?>
 <table class="table table-hover table-condensed table-striped" id="userTable">
     <thead>
         <tr>
@@ -43,11 +44,15 @@
                     return getHtmlCheckbox(d);
                 } },
                 { data: null, render: function(d,t,r) {
-                    var disableLink = '<a href="#" class="btn btn-default btn-xs" id="disableLogin' + r.id + '" title="<?= htmlspecialchars(t('disable_login')) ?>">' +
+                    var disableLink = '<a href="#" class="btn btn-default btn-xs" id="disableLogin' + r.id + '" ' +
+                        'data-toggle="modal" data-target="#modalLockUser" data-user-id="' + r.id + '" data-user-name="' + escapeHtml(r.username) + '"' +
+                        'title="<?= htmlspecialchars(t('disable_login')) ?>">' +
                         '<span class="glyphicon glyphicon-lock"></span>' +
                         '</a>';
-                    var enableLink = '<a href="#" class="btn btn-default btn-xs" id="enableLogin' + r.id + '" title="<?= htmlspecialchars(t('enable_login')) ?>">' +
-                        '<span class="glyphicon glyphicon-lock"></span>' +
+                    var enableLink = '<a href="#" class="btn btn-default btn-xs" id="enableLogin' + r.id + '" ' +
+                        'data-toggle="modal" data-target="#modalUnlockUser" data-user-id="' + r.id + '" data-user-name="' + escapeHtml(r.username) + '"' +
+                        'title="<?= htmlspecialchars(t('enable_login')) ?>">' +
+                        '<span class="glyphicon glyphicon-check"></span>' +
                         '</a>';
                     var resetPasswordLink = '<a href="#" class="btn btn-default btn-xs" id="resetPassword' + r.id + '" title="<?= htmlspecialchars(t('reset_password')) ?>">' +
                         '<span class="glyphicon glyphicon-refresh"></span>' +
@@ -57,12 +62,6 @@
                         '</a>';
 
                     setTimeout(function(data) {
-                        $('#enableLogin' + data.id).off('click').click(function() {
-                            alert('derp');
-                        });
-                        $('#disableLogin' + data.id).off('click').click(function() {
-                            alert('foo');
-                        });
                         $('#resetPassword' + data.id).off('click').click(function() {
                             alert('bar');
                         });
