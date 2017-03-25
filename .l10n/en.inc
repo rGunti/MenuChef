@@ -79,8 +79,16 @@ return [
     'modal_unhandled_error_title' => 'Unexpected Error',
     'modal_unhandled_error_text' => 'An unexpected error has occured. Below is some information about the error:',
 
+    'modal_default_error_title' => 'Error',
+
     'modal_disable_login_question' => 'Would you like to disable %1$s?</p><p>' .
         '%1$s cannot log in and cannot access their data until the account is unlocked again.',
+    'modal_enable_login_question' => 'Would you like to enable %1$s?',
+    'modal_reset_user_question' => 'Would you like to reset the login password of %1$s?</p></p>' .
+        '%1$s will not be able to log into their account without their new password.',
+    'modal_reset_user_success' => 'The password of %1$s has been reset. The new password is:</p><p>%2$s',
+    'modal_delete_user_question' => 'Would you like to delete the account of %1$s?</p><p>' .
+        'Deleting the account will also delete related data!',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ',',
@@ -100,4 +108,19 @@ return [
     'datatable_paginate_prev' => 'Prev.',
     'datatable_aria_sort_asc' => ': activate to sort column ascending',
     'datatable_aria_sort_desc' => ': activate to sort column descending',
+
+    'ajax_response_no_action' => 'No action provided.',
+    'ajax_response_unknown_action' => 'Action "%1$s" not supported.',
+
+    'ajax_response_db_save_fail' => 'An unknown error occured while saving data.',
+
+    'ajax_response_user_no_id' => 'No User ID provided.',
+    'ajax_response_user_id_not_found' => 'User ID not found.',
+    'ajax_response_user_disable_already' => 'Account is already disabled.',
+    'ajax_response_user_disable_yourself' => 'You cannot disable yourself.',
+    'ajax_response_user_enable_already' => 'Account is already enabled.',
+    'ajax_response_user_enable_yourself' => 'You cannot enable yourself.',
+    'ajax_response_user_reset_yourself' => 'You cannot reset your own password.',
+    'ajax_response_user_delete_yourself' => 'You cannot delete yourself.',
+    'ajax_response_user_delete_protected' => 'This account is protected and cannot be deleted.',
 ];
