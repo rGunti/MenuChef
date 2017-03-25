@@ -48,6 +48,7 @@ it does not have to be selected each time. But this feature is low in priority.
 - MySQL  (_though another DBMS could theoretically be used instead_)
 - [jQuery](http://jquery.com) 1.12.4
 - [DataTables](https://datatables.net/) 1.10.13
+- [js-cookie](https://github.com/js-cookie/js-cookie) 2.1.3
 - ...
 
 ## Roadmap
