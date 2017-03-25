@@ -42,7 +42,7 @@ MODAL_createSimpleDialog(
                     $('#modalResetUserSuccess').modal('show');
                     reloadUserListOnSuccess();
                 },
-                onAjaxError,
+                onUserModificationError,
                 function(jqXHR, textStatus) {
                     // Complete
                     $('#modalResetUser button[type=submit]').prop('disabled', false);

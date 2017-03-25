@@ -79,6 +79,8 @@ return [
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
     'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
 
+    'modal_default_error_title' => 'Fehler',
+
     'modal_disable_login_question' => 'Möchtest Du den Benutzer %1$s sperren?</p><p>' .
         '%1$s kann sich nicht neu anmelden und hat keinen Zugriff auf die eigenen Daten, bis die Sperre aufgehoben wird.',
     'modal_enable_login_question' => 'Möchtest Du den Benutzer %1$s entsperren?',

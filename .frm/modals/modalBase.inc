@@ -31,7 +31,7 @@ function MODAL_createSimpleDialog($id, $title, $text, $cancelLabel, $okLabel = n
 }
 ?>
 
-<!-- START OF ERROR DIALOG -->
+<!-- START OF UNHANDLED ERROR DIALOG -->
 <div class="modal fade" tabindex="-1" role="dialog" id="unhandledErrorDialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -53,7 +53,30 @@ function MODAL_createSimpleDialog($id, $title, $text, $cancelLabel, $okLabel = n
     </div>
 </div>
 <!-- <button type="button" class="btn btn-danger" onclick="showUnhandledError('This is a test')">Show Error Modal</button> -->
-<!-- END OF ERROR DIALOG -->
+<!-- END OF UNHANDLED ERROR DIALOG -->
+
+<!-- START OF NORMAL ERROR DIALOG -->
+<div class="modal fade" tabindex="-1" role="dialog" id="defaultErrorDialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <span class="error-title"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <p class="error-text"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><?= t('ok') ?></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <button type="button" class="btn btn-danger" onclick="showUnhandledError('This is a test')">Show Error Modal</button> -->
+<!-- END OF NORMAL ERROR DIALOG -->
 
 <script src="<?= PathUtils::getLink('/js/ajaxSubmitTools.js') ?>"></script>
 <script>

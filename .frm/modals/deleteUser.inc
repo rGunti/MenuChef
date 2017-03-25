@@ -30,7 +30,7 @@ MODAL_createSimpleDialog(
                     $('#modalDeleteUser button[type=submit]').prop('disabled', true);
                 },
                 reloadUserListOnSuccess,
-                onAjaxError,
+                onUserModificationError,
                 function (jqXHR, textStatus) {
                     // Complete
                     $('#modalDeleteUser button[type=submit]').prop('disabled', false);

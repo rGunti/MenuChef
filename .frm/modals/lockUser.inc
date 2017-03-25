@@ -20,6 +20,10 @@ MODAL_createSimpleDialog(
         userTable.ajax.reload(null, false); // false: Keep page
     }
 
+    function onUserModificationError(jqXHR, textStatus, errorThrown) {
+        showError('<?= t('modal_default_error_title') ?>', jqXHR.responseJSON.ErrorInfo);
+    }
+
     $('#modalLockUser,#modalUnlockUser').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var userID = button.data('user-id');
@@ -38,7 +42,7 @@ MODAL_createSimpleDialog(
                     $('#modalLockUser button[type=submit]').prop('disabled',true);
                 },
                 reloadUserListOnSuccess,
-                onAjaxError,
+                onUserModificationError,
                 function(jqXHR, textStatus) {
                     // Complete
                     $('#modalLockUser button[type=submit]').prop('disabled',false);

@@ -37,6 +37,17 @@ function showUnhandledError(errorText) {
     $('#unhandledErrorDialog').modal('show');
 }
 
+/**
+ * Display the Default Error Modal Box with the given Title and Text
+ * @param errorTitle string
+ * @param errorText string
+ */
+function showError(errorTitle, errorText) {
+    $('#defaultErrorDialog .error-title').text(errorTitle);
+    $('#defaultErrorDialog .error-text').text(errorText);
+    $('#defaultErrorDialog').modal('show');
+}
+
 
 function limitString(s,max,trim) {
     if (s.length > max) {
