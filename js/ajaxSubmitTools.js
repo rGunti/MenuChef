@@ -33,7 +33,7 @@ function onAjaxError(jqXHR, textStatus, errorThrown) {
 
 function submitSimplePostRequest(_url,_data,onBeforeSend,onSuccess,onError,onComplete) {
     $.ajax({
-        url: _url,
+        url: _url + '?lang=' + Cookies.get('ForcedLanguage'),
         method: 'post',
         data: _data,
         beforeSend: onBeforeSend,

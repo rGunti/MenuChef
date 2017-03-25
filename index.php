@@ -61,6 +61,9 @@ $usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], 'darkmode
         <script src="<?= PathUtils::getLink('/js/dataTables.responsive.min.js') ?>"></script>
         -->
 
+        <!-- Other Libraries -->
+        <script src="<?= PathUtils::getLink('/js/js.cookie.js') ?>"></script>
+
         <!-- Custom Scripts -->
         <script src="<?= PathUtils::getLink('/js/rgunti.js') ?>"></script>
     </head>
