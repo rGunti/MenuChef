@@ -44,7 +44,6 @@ MODAL_createSimpleDialog(
                     $('#modalLockUser button[type=submit]').prop('disabled',false);
                     $('#modalLockUser').modal('hide');
                 });
-            $('#modalLockUser').modal('hide');
         });
 
 

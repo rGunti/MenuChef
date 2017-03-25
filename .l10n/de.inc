@@ -73,7 +73,7 @@ return [
 
     'disable_login' => 'Account sperren',
     'enable_login' => 'Account entsperren',
-    'reset_password' => 'Passwort zurückgesetzen',
+    'reset_password' => 'Passwort zurücksetzen',
     'delete_user' => 'Account löschen',
 
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
@@ -82,6 +82,9 @@ return [
     'modal_disable_login_question' => 'Möchtest Du den Benutzer %1$s sperren?</p><p>' .
         '%1$s kann sich nicht neu anmelden und hat keinen Zugriff auf die eigenen Daten, bis die Sperre aufgehoben wird.',
     'modal_enable_login_question' => 'Möchtest Du den Benutzer %1$s entsperren?',
+    'modal_reset_user_question' => 'Möchtest Du das Passwort von %1$s wirklich zurücksetzen?</p></p>' .
+        '%1$s ist danach nicht mehr in der Lage, sich anzumelden ohne die Mitteilung des neuen Passworts.',
+    'modal_reset_user_success' => 'Das Passwort von %1$s wurde erfolgreich zurückgesetzt. Das neue Passwort lautet:</p><p>%2$s',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ' ',
@@ -113,5 +116,5 @@ return [
     'ajax_response_user_disable_yourself' => 'Du kannst dich nicht selbst sperren.',
     'ajax_response_user_enable_already' => 'Account ist schon entsperrt.',
     'ajax_response_user_enable_yourself' => 'Du kannst dich nicht selbst entsperren.',
-
+    'ajax_response_user_reset_yourself' => 'Du kannst dein eigenes Passwort nicht zurücksetzen.',
 ];

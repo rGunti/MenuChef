@@ -51,6 +51,10 @@ class AjaxUserRequest extends BaseAjaxRequest {
                     $PARAM_user_id = AppUtils::getKeyDefault($vars, 'id', null);
                     $this->updateBlockedStatus($PARAM_user_id, 0);
                     break;
+                case 'resetUser':
+                    $PARAM_user_id = AppUtils::getKeyDefault($vars, 'id', null);
+                    $this->resetUserPassword($PARAM_user_id);
+                    break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
                     break;
@@ -58,14 +62,20 @@ class AjaxUserRequest extends BaseAjaxRequest {
         }
     }
 
-    private function updateBlockedStatus($user_id, $to_disabled) {
+    private function checkUserID($user_id, $prevent_self = false, $prevent_self_message = null) {
         if (empty($user_id)) {
             $this->sendErrorResponse(t('ajax_response_user_no_id'), self::HTTP_CODE_BAD_REQUEST);
-        } else if ($user_id == Session::getUserInfo()->id) {
-            $this->sendErrorResponse(
-                ($to_disabled ? t('ajax_response_user_disable_yourself') : t('ajax_response_user_enable_yourself')),
-                self::HTTP_CODE_BAD_REQUEST);
+        } else if ($prevent_self && $user_id == Session::getUserInfo()->id) {
+            $this->sendErrorResponse($prevent_self_message, self::HTTP_CODE_BAD_REQUEST);
         }
+    }
+
+    private function updateBlockedStatus($user_id, $to_disabled) {
+        $this->checkUserID(
+            $user_id,
+            true,
+            ($to_disabled ? t('ajax_response_user_disable_yourself') : t('ajax_response_user_enable_yourself'))
+        );
 
         $users = DatabaseTools::getWhereSimple(
             MUser::TABLE_NAME,
@@ -79,6 +89,7 @@ class AjaxUserRequest extends BaseAjaxRequest {
                 ($to_disabled ? t('ajax_response_user_disable_already') : t('ajax_response_user_enable_already')),
                 self::HTTP_CODE_NOT_ACCEPTABLE);
         } else {
+            /** @var MUser $user */
             $user = $users[0];
             $res = DatabaseTools::update(
                 MUser::TABLE_NAME,
@@ -92,5 +103,55 @@ class AjaxUserRequest extends BaseAjaxRequest {
                 $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
             }
         }
+    }
+
+    private function resetUserPassword($user_id) {
+        $this->checkUserID($user_id, true, t('ajax_response_user_reset_yourself'));
+
+        $users = DatabaseTools::getWhereSimple(
+            MUser::TABLE_NAME,
+            new MUser(),
+            [ MUser::KEY_NAME => $user_id ]
+        );
+        if (count($users) != 1) {
+            $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
+        } else {
+            /** @var MUser $user */
+            $user = $users[0];
+
+            $new_password = self::generateRandomString();
+            $new_pass_hash = DatabaseTools::hashNSaltPassword($new_password);
+
+            $res = DatabaseTools::update(
+                MUser::TABLE_NAME,
+                MUser::KEY_NAME,
+                $user->id,
+                [ 'passhash' => $new_pass_hash ]
+            );
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse([
+                    'HasError' => 0,
+                    'UserName' => $user->username,
+                    'NewPassword' => $new_password
+                ], self::HTTP_CODE_OK);
+            }
+        }
+    }
+
+    /**
+     * Source: http://stackoverflow.com/questions/4356289/php-random-string-generator
+     * @param int $length Length of Random String
+     * @return string Random String
+     */
+    public static function generateRandomString($length = 10) {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;:-_/|\*+"%&=?!()[]{}@€<>$';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
     }
 }

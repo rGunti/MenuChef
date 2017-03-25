@@ -1,4 +1,5 @@
 <?php require_once __DIR__ . '/modals/lockUser.inc' ?>
+<?php require_once __DIR__ . '/modals/resetUser.inc' ?>
 <table class="table table-hover table-condensed table-striped" id="userTable">
     <thead>
         <tr>
@@ -14,6 +15,7 @@
 </table>
 <script>
     var userTable = null;
+    var ownUserID = <?= Session::getUserInfo()->id ?>;
     var ajaxSource = "<?= PathUtils::getLink("/AJAX/Users") ?>";
     $(document).ready(function() {
         userTable = $('#userTable').DataTable({
@@ -44,6 +46,8 @@
                     return getHtmlCheckbox(d);
                 } },
                 { data: null, render: function(d,t,r) {
+                    //if (r.id == ownUserID) { return ""; }
+
                     var disableLink = '<a href="#" class="btn btn-default btn-xs" id="disableLogin' + r.id + '" ' +
                         'data-toggle="modal" data-target="#modalLockUser" data-user-id="' + r.id + '" data-user-name="' + escapeHtml(r.username) + '"' +
                         'title="<?= htmlspecialchars(t('disable_login')) ?>">' +
@@ -54,7 +58,9 @@
                         'title="<?= htmlspecialchars(t('enable_login')) ?>">' +
                         '<span class="glyphicon glyphicon-check"></span>' +
                         '</a>';
-                    var resetPasswordLink = '<a href="#" class="btn btn-default btn-xs" id="resetPassword' + r.id + '" title="<?= htmlspecialchars(t('reset_password')) ?>">' +
+                    var resetPasswordLink = '<a href="#" class="btn btn-default btn-xs" id="resetPassword' + r.id + '" ' +
+                        'data-toggle="modal" data-target="#modalResetUser" data-user-id="' + r.id + '" data-user-name="' + escapeHtml(r.username) + '"' +
+                        'title="<?= htmlspecialchars(t('reset_password')) ?>">' +
                         '<span class="glyphicon glyphicon-refresh"></span>' +
                         '</a>';
                     var deleteLink = '<a href="#" class="btn btn-default btn-xs" id="deleteUser' + r.id + '" title="<?= htmlspecialchars(t('delete_user')) ?>">' +
@@ -62,9 +68,6 @@
                         '</a>';
 
                     setTimeout(function(data) {
-                        $('#resetPassword' + data.id).off('click').click(function() {
-                            alert('bar');
-                        });
                         $('#deleteUser' + data.id).off('click').click(function() {
                             alert('del');
                         });

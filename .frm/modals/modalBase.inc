@@ -6,7 +6,7 @@
  * @param $cancelLabel string
  * @param $okLabel string
  */
-function MODAL_createSimpleDialog($id, $title, $text, $cancelLabel, $okLabel) {
+function MODAL_createSimpleDialog($id, $title, $text, $cancelLabel, $okLabel = null) {
     echo "\n<!-- START OF DIALOG $id -->\n" .
         '<div class="modal fade" tabindex="-1" role="dialog" id="' . $id . '">' .
         '<div class="modal-dialog" role="document">' .
@@ -21,7 +21,7 @@ function MODAL_createSimpleDialog($id, $title, $text, $cancelLabel, $okLabel) {
         "<p>$text</p>" . '</div>' .
         '<div class="modal-footer">' .
         '<button type="button" class="btn btn-default" data-dismiss="modal">' . $cancelLabel . '</button>' .
-        '<button type="submit" class="btn btn-primary">' . $okLabel . '</button>' .
+        (!empty($okLabel) ? '<button type="submit" class="btn btn-primary">' . $okLabel . '</button>' : '') .
         '</div>' .
         '</form>' .
         '</div>' .
