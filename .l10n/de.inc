@@ -9,6 +9,8 @@ return [
 
     'copyright_title' => 'Copyright',
     'copyright_content' => 'Copyright &COPY; %1$s rGunti',
+    'copyright_show_more' => 'Mehr zeigen...',
+    'copyright_full_content' => '@file:.cfg/docs/copyright/de.html',
 
     'language' => 'Sprache',
     'languages' => 'Sprachen',
@@ -35,8 +37,17 @@ return [
     'confirm_password' => 'Geändertes Passwort bestätigen',
     'change_password_help' => 'Wenn du das Passwort nicht ändern möchtest, lass die Passwortfelder leer.',
 
+    'app_documents_title' => 'Applikationsdokumente',
+    'app_documents_content' => 'Diese Seite verweist auf Dokumente, die zum Betrieb und zur Nutzung dieser ' .
+        'Web-Applikation notwendig sind.',
+
     'tos_title' => 'Nutzungsbedingungen',
     'tos_content' => 'Nutzungsbedingungen wurden noch nicht erstellt.',
+    'tos_full_content' => '@file:.cfg/docs/tos/de.html',
+
+    'imprint_box_title' => 'Impressum & Nutzungsbedingungen',
+    'imprint_title' => 'Impressum',
+    'imprint_full_content' => '@file:.cfg/docs/imprint/de.html',
 
     'message_logged_in' => 'Willkommen, %1$s',
     'message_logged_in_content' => 'Du wurdest erfolgreich angemeldet!',

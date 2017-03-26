@@ -2,12 +2,17 @@
     <div class="col-md-4">
         <h4><?= t('copyright_title') ?></h4>
         <p><?= t('copyright_content', date('Y')) ?></p>
+        <p>
+            <a href="<?= PathUtils::getLink('/_Docs/Copyright') ?>">
+                <?= t('copyright_show_more') ?>
+            </a>
+        </p>
     </div>
     <div class="col-md-4">
         <h4>App Info</h4>
         <div class="row">
             <div class="col-md-4"><b><?= t('app_version') ?></b></div>
-            <div class="col-md-8">0.1</div>
+            <div class="col-md-8"><?= AppConfig::APP_VERSION ?></div>
         </div>
         <?php if (AppConfig::SHOW_INSTANCE_NAME) { ?>
             <div class="row">
@@ -24,7 +29,10 @@
         </div>
     </div>
     <div class="col-md-4">
-        <h4><?= t('tos_title') ?></h4>
-        <p><?= t('tos_content') ?></p>
+        <h4><?= t('imprint_box_title') ?></h4>
+        <ul>
+            <li><a href="<?= PathUtils::getLink('/_Docs/Imprint') ?>"><?= t('imprint_title') ?></a></li>
+            <li><a href="<?= PathUtils::getLink('/_Docs/ToS') ?>"><?= t('tos_title') ?></a></li>
+        </ul>
     </div>
 </div>

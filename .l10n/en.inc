@@ -9,6 +9,8 @@ return [
 
     'copyright_title' => 'Copyright',
     'copyright_content' => 'Copyright &COPY; %1$s rGunti',
+    'copyright_show_more' => 'Show more...',
+    'copyright_full_content' => '@file:.cfg/docs/copyright/en.html',
 
     'language' => 'Language',
     'languages' => 'Languages',
@@ -35,8 +37,17 @@ return [
     'confirm_password' => 'Confirm new Password',
     'change_password_help' => 'If you don\'t want to change your password, leave the password fields empty.',
 
+    'app_documents_title' => 'Application Documents',
+    'app_documents_content' => 'This page links to documents which are essential for operation and usage of ' .
+        'this web application.',
+
     'tos_title' => 'Terms Of Use',
     'tos_content' => 'Terms of use have not been defined yet.',
+    'tos_full_content' => '@file:.cfg/docs/tos/en.html',
+
+    'imprint_box_title' => 'Imprint & ToS',
+    'imprint_title' => 'Imprint',
+    'imprint_full_content' => '@file:.cfg/docs/imprint/en.html',
 
     'message_logged_in' => 'Welcome, %1$s',
     'message_logged_in_content' => 'Your login was successful!',

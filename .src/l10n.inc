@@ -47,10 +47,15 @@ class L10N {
 
         // Get Text if exists
         if (key_exists($key, self::$l10n)) {
-            if (empty($args)) {
-                return self::$l10n[$key];
+            $value = self::$l10n[$key];
+            if (StringUtils::startsWith($value, '@file:')) {
+                $file_path = __DIR__ . '/../' . substr($value, 6);
+                $content = file_get_contents($file_path);
+                return $content;
+            } else if (empty($args)) {
+                return $value;
             } else {
-                return vsprintf(self::$l10n[$key], $args);
+                return vsprintf($value, $args);
             }
         } else {
             return sprintf(self::L10N_UNKNOWN_STRING, $key);
