@@ -1,6 +1,7 @@
 <?php
 class AppConfig {
     const APP_NAME = "DriverLog";
+    const APP_VERSION = "0.1";
     const INSTANCE_NAME = "dev";
     const SHOW_INSTANCE_NAME = true;
 
