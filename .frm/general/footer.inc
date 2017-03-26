@@ -22,34 +22,6 @@
                 <?= t('_LANG_BY_STRING', [L10N::getLanguageAuthor()]) ?>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-4"><b>Session Info</b></div>
-            <div class="col-md-8">
-                <?php if (Session::isLoggedIn()) { ?>
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingSessionInfo">
-                            <a role="button" data-toggle="collapse" data-parent="#sessionInfoAccordion" href="#collapseSessionInfo">
-                                <b><?= t('debug_session_info') ?></b>
-                            </a>
-                        </div>
-                        <div id="collapseSessionInfo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingSessionInfo">
-                            <div class="panel-body">
-                                <div class="container-fluid">
-                                    <?php foreach (Session::getAllSessionInfo() as $key => $value) { ?>
-                                        <div class="row">
-                                            <b><?= $key ?></b>:
-                                            <i><?= $value ?></i>
-                                        </div>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                <?php } else { ?>
-                    <i>not logged in</i>
-                <?php } ?>
-            </div>
-        </div>
     </div>
     <div class="col-md-4">
         <h4><?= t('tos_title') ?></h4>
