@@ -4,7 +4,7 @@
 -- NOTE: This script does not create a schema!
 -- NOTE: This script is optimized for MySQL databases!
 
--- User Table
+-- User Table (and views)
 CREATE TABLE user (
   ID int(11) NOT NULL AUTO_INCREMENT,
   USERNAME varchar(45) NOT NULL,
@@ -15,7 +15,14 @@ CREATE TABLE user (
   MAIL varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY USERNAME_UNIQUE (USERNAME)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE VIEW v_user AS
+  SELECT
+    ID, USERNAME, IS_BLOCKED, IS_ADMIN, IS_BATCH, MAIL
+  FROM
+    user
+;
 
 -- Insert Test Data
 --    Initial Login Data:
@@ -31,4 +38,5 @@ INSERT INTO user
       (1  , 'admin'  , 'b85c4821cc44c42ac26d9b1bb87a55c57399c8cdae6fa63028c33ed52b68da75',          0,        1,        0, 'admin@example.com'),
       (2  , 'batch'  , '----------------------------------------------------------------',          0,        0,        1, 'batch@example.com')
 ;
+ALTER TABLE user AUTO_INCREMENT=10000;
 COMMIT;
