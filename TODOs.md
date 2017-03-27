@@ -9,6 +9,16 @@ get more control over the currently running sessions. An admin should be able to
 session from within the application. Also user modifications should be applied directly. This 
 may result in higher database traffic but we gain more control over a sessions life cycle.
 
+- **Exclude Configuration File from VCS**<br>
+Currently the Application's Configuration is realized through a class with constants. While this
+works quite well, it makes working with and updating VCS (in this case: git) unpleasant. We may
+want to exclude it to a separate config file in a data directory (_Has PHP built in support for 
+INI, XML, JSON or any suitable config file format?_). The file will be automatically created on
+the first request and the defaults will be filled in. While this might work for minor things, 
+the first request may result in a fatal crash. This could also be handled with an installer
+script which helps creating the config file initially.
+Also, a Config Documentation should be added to help explain the Config values.
+
 - **Notification System**<br>
 Implemented and working, although in some cases notifications are kept over one (1) page load 
 and disappears afterwards.
