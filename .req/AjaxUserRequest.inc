@@ -62,6 +62,12 @@ class AjaxUserRequest extends BaseAjaxRequest {
                         AppUtils::getKeyDefault($vars, 'mail', '')
                     );
                     break;
+                case 'changeUserLevel':
+                    $this->changeUserLevel(
+                        $PARAM_user_id,
+                        AppUtils::getKeyDefault($vars, 'value', 0)
+                    );
+                    break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
                     break;
@@ -217,6 +223,40 @@ class AjaxUserRequest extends BaseAjaxRequest {
                     'UserName' => $user->username,
                     'NewPassword' => $new_password
                 ], self::HTTP_CODE_CREATED);
+            }
+        }
+    }
+
+    private function changeUserLevel($user_id, $is_admin) {
+        $this->checkUserID($user_id, true, t('ajax_response_user_privilege_yourself'));
+
+        if (in_array($user_id, MUser::PROTECTED_USER_IDS)) {
+            $this->sendErrorResponse(t('ajax_response_user_privilege_protected'), self::HTTP_CODE_BAD_REQUEST);
+            return;
+        }
+
+        $users = DatabaseTools::getWhereSimple(
+            MUser::TABLE_NAME,
+            new MUser(),
+            [ MUser::KEY_NAME => $user_id ]
+        );
+        if (count($users) != 1) {
+            $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
+        } else if ($users[0]->is_batch == true) {
+            $this->sendErrorResponse(t('ajax_response_user_privilege_batch'), self::HTTP_CODE_BAD_REQUEST);
+        } else {
+            /** @var MUser $user */
+            $user = $users[0];
+            $res = DatabaseTools::update(
+                MUser::TABLE_NAME,
+                MUser::KEY_NAME,
+                $user->id,
+                [ 'is_admin' => $is_admin ]
+            );
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
             }
         }
     }

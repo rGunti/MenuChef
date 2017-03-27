@@ -21,8 +21,15 @@ MODAL_createSimpleDialog(
     }
 
     function onUserModificationError(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR.responseJSON);
-        showError('<?= t('modal_default_error_title') ?>', jqXHR.responseJSON.ErrorInfo);
+        var response = jqXHR.responseJSON;
+        console.log(response);
+        if (typeof response.ErrorInfo == 'string') {
+            showError('<?= t('modal_default_error_title') ?>', response.ErrorInfo);
+        } else if (response.ErrorInfo.type == 'permission_error') {
+            showError('<?= t('modal_default_error_title') ?>', 'Permission Error: ' + response.ErrorInfo.message);
+        } else {
+            onAjaxError(jqXHR, textStatus, errorThrown);
+        }
     }
 
     $('#modalLockUser,#modalUnlockUser').on('show.bs.modal', function (event) {

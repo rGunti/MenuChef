@@ -194,11 +194,13 @@ abstract class BaseAjaxRequest extends BaseMultiRequest {
 
     /**
      * Gets the current Permission Level for AJAX requests
+     * @param boolean|false $from_session If true, only the session will be checked
+     * for permissions
      * @return int
      */
-    protected function getCurrentPermissionLevel() {
+    protected function getCurrentPermissionLevel($from_session = false) {
         if (Session::isLoggedIn()) {
-            if (Session::isAdmin()) {
+            if (Session::isAdmin(!$from_session)) {
                 return self::PERM_LEVEL_ADMIN;
             } else {
                 return self::PERM_LEVEL_LOGGED_IN;
@@ -213,8 +215,10 @@ abstract class BaseAjaxRequest extends BaseMultiRequest {
      * does not meet the permission level the user has, a response will be sent containing
      * error detail about the failed permission check and the request will be dropped.
      * @param int $neededPermission Permission Level (BaseAjaxRequest provides constants)
+     * @param boolean|false $only_from_session If true, only the session will be checked
+     * for permissions
      */
-    protected function checkPermissions($neededPermission = 0) {
+    protected function checkPermissions($neededPermission = 0, $only_from_session = false) {
         if ($neededPermission == self::PERM_LEVEL_NOT_LOGGED_IN) {
             if (Session::isLoggedIn()) {
                 $this->sendErrorResponse(
@@ -226,7 +230,7 @@ abstract class BaseAjaxRequest extends BaseMultiRequest {
                 );
             }
         } else {
-            $currentPermission = $this->getCurrentPermissionLevel();
+            $currentPermission = $this->getCurrentPermissionLevel($only_from_session);
             if ($currentPermission < $neededPermission) {
                 $this->sendErrorResponse(
                     new AjaxPermissionErrorObject(
@@ -281,6 +285,7 @@ class AjaxPermissionErrorObject {
     public $requiredPermission;
     public $currentPermission;
     public $message;
+    public $type = 'permission_error';
 }
 
 class AjaxDataTableParameter {

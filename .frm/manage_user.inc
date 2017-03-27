@@ -2,6 +2,7 @@
 <?php require_once __DIR__ . '/modals/resetUser.inc' ?>
 <?php require_once __DIR__ . '/modals/deleteUser.inc' ?>
 <?php require_once __DIR__ . '/modals/createUser.inc' ?>
+<?php require_once __DIR__ . '/modals/privilegeUser.inc' ?>
 <table class="table table-hover table-condensed table-striped" id="userTable">
     <thead>
         <tr>
@@ -76,10 +77,17 @@
                         'title="<?= htmlspecialchars(t('delete_user')) ?>">' +
                         '<span class="glyphicon glyphicon-trash"></span>' +
                         '</a>';
+                    var privilegeLink = '<a href="#" class="btn btn-default btn-xs" id="privilegeUser' + r.id + '" ' +
+                        'data-toggle="modal" data-target="#modalPrivilegeUser" data-user-id="' + r.id + '" data-user-name="' + escapeHtml(r.username) + '"' +
+                        'data-is-admin="' + (r.is_admin ? 1 : 0) + '" data-is-batch="' + r.is_batch + '" ' +
+                        'title="<?= htmlspecialchars(t('privilege_user')) ?>">' +
+                        '<span class="glyphicon glyphicon-cog"></span>' +
+                        '</a>';
 
                     return '<div class="btn-group btn-group-xs">' +
                         (r.is_blocked ? enableLink : disableLink) +
                         (r.is_blocked || r.is_batch ? '' : resetPasswordLink) +
+                        (r.is_blocked ? '' : privilegeLink) +
                         deleteLink +
                         '</div>';
                 } }

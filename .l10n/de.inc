@@ -90,6 +90,10 @@ return [
     'reset_password' => 'Passwort zurücksetzen',
     'delete_user' => 'Account löschen',
     'create_user' => 'Account anlegen',
+    'privilege_user' => 'Berechtigungen anpassen',
+
+    'privilege_level_admin' => 'Administrator',
+    'privilege_level_default' => 'Standard-Benutzer',
 
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
     'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
@@ -106,6 +110,7 @@ return [
         'Das Löschen dieses Accounts führt ebenfalls zur Löschung aller personenbezogenen Daten.',
     'modal_create_user_success' => 'Der Account für %1$s wurde erfolgreich angelegt.</p><p>' .
         'Bitte teile dem neuen Besitzer dieses Account folgendes Passwort mit: %2$s',
+    'modal_privilege_user_content' => 'Wähle eine Berechtigungsstufe für %1$s aus:</p><p>%2$s',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ' ',
@@ -144,4 +149,7 @@ return [
     'ajax_response_user_create_name_info' => 'Der Benutzername darf nicht leer sein und ' .
         'muss mindestens 3 alphanumerische Zeichen beinhalten.',
     'ajax_response_user_create_mail_invalid' => 'Die angegebene E-Mail-Adresse ist ungültig.',
+    'ajax_response_user_privilege_yourself' => 'Du kannst deine eigene Berechtigungsstufe nicht anpassen.',
+    'ajax_response_user_privilege_batch' => 'Du kannst die Berechtigungsstufe eines Batch-Users nicht verändern.',
+    'ajax_response_user_privilege_protected' => 'Dieser Account ist geschützt und kann nicht verändert werden.',
 ];

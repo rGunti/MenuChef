@@ -49,6 +49,7 @@ class Session {
     }
 
     private static $loggedInUser;
+    private static $loggedInUserIsAdmin = null;
 
     /**
      * @return MUser|null Info about logged in user, NULL is not logged in
@@ -69,10 +70,24 @@ class Session {
 
     /**
      * Returns true if, and only if, the user is logged in and has Administrative Privileges.
+     * @param boolean|true $check_on_db If true, the database will be checked if the user has
+     * Admin privileges. The check will only occur once per page load.
      * @return bool
      */
-    public static function isAdmin() {
-        return self::isLoggedIn() && self::getUserInfo()->is_admin;
+    public static function isAdmin($check_on_db = true) {
+        if (!self::isLoggedIn()) { return false; }
+        if ($check_on_db) {
+            if (self::$loggedInUserIsAdmin == null) {
+                $users = DatabaseTools::getWhereSimple(MUser::TABLE_NAME, new MUser(), [
+                    MUser::KEY_NAME => self::getUserInfo()->id,
+                    'is_admin' => true
+                ]);
+                self::$loggedInUserIsAdmin = (count($users) == 1) ? 'Y' : 'N';
+            }
+            return self::$loggedInUserIsAdmin == 'Y';
+        } else {
+            return self::getUserInfo()->is_admin;
+        }
     }
 
     /**
