@@ -3,6 +3,12 @@ This file contains a list of working items which should be done to either increa
 applications capabilities or to allow a specific feature to work, work better or more 
 reliable.
 
+- **Session Handler**<br>
+PHP's default Session Handler is in use which is fine. But the application's framework should
+get more control over the currently running sessions. An admin should be able to terminate
+session from within the application. Also user modifications should be applied directly. This 
+may result in higher database traffic but we gain more control over a sessions life cycle.
+
 - **Notification System**<br>
 Implemented and working, although in some cases notifications are kept over one (1) page load 
 and disappears afterwards.
@@ -18,9 +24,3 @@ A system that allows data to be retrieved via AJAX and be displayed on-screen.
 previously been used in (non-public) projects like _Momoka Web Interface_.
 **Update**: The user list uses this technique now. In the future, this could maybe be abstracted
 so we don't have to write such a big chunck of code. But we might want to delay this for a while.
-
-- **Extend PDO Methods**<br>
-The currently available PDO methods (found in [.src/db.inc](.src/db.inc)) are not
-enough. We need Inserts, Updates and Deletes as well as Transactional Support. Most of these
-functions can be taken from _Momoka Web Interface_ although they have to be rewritten to match
-this projects coding style.
