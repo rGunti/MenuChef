@@ -90,20 +90,15 @@ class AjaxUserRequest extends BaseAjaxRequest {
             ($to_disabled ? t('ajax_response_user_disable_yourself') : t('ajax_response_user_enable_yourself'))
         );
 
-        $users = DatabaseTools::getWhereSimple(
-            MUser::TABLE_NAME,
-            new MUser(),
-            [ MUser::KEY_NAME => $user_id ]
-        );
-        if (count($users) != 1) {
+        $user = new MUser();
+        $user = $user->getByKey($user_id);
+        if (empty($user)) {
             $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
-        } else if ($users[0]->is_blocked == $to_disabled) {
+        } else if ($user->is_blocked == $to_disabled) {
             $this->sendErrorResponse(
                 ($to_disabled ? t('ajax_response_user_disable_already') : t('ajax_response_user_enable_already')),
                 self::HTTP_CODE_NOT_ACCEPTABLE);
         } else {
-            /** @var MUser $user */
-            $user = $users[0];
             $res = DatabaseTools::update(
                 MUser::TABLE_NAME,
                 MUser::KEY_NAME,
@@ -121,17 +116,11 @@ class AjaxUserRequest extends BaseAjaxRequest {
     private function resetUserPassword($user_id) {
         $this->checkUserID($user_id, true, t('ajax_response_user_reset_yourself'));
 
-        $users = DatabaseTools::getWhereSimple(
-            MUser::TABLE_NAME,
-            new MUser(),
-            [ MUser::KEY_NAME => $user_id ]
-        );
-        if (count($users) != 1) {
+        $user = new MUser();
+        $user = $user->getByKey($user_id);
+        if (empty($user)) {
             $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
         } else {
-            /** @var MUser $user */
-            $user = $users[0];
-
             $new_password = self::generateRandomString();
             $new_pass_hash = DatabaseTools::hashNSaltPassword($new_password);
 
@@ -161,17 +150,11 @@ class AjaxUserRequest extends BaseAjaxRequest {
             return;
         }
 
-        $users = DatabaseTools::getWhereSimple(
-            MUser::TABLE_NAME,
-            new MUser(),
-            [ MUser::KEY_NAME => $user_id ]
-        );
-        if (count($users) != 1) {
+        $user = new MUser();
+        $user = $user->getByKey($user_id);
+        if (empty($user)) {
             $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
         } else {
-            /** @var MUser $user */
-            $user = $users[0];
-
             $res = DatabaseTools::delete(MUser::TABLE_NAME, MUser::KEY_NAME, $user->id);
             if ($res != 1) {
                 $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
@@ -235,18 +218,14 @@ class AjaxUserRequest extends BaseAjaxRequest {
             return;
         }
 
-        $users = DatabaseTools::getWhereSimple(
-            MUser::TABLE_NAME,
-            new MUser(),
-            [ MUser::KEY_NAME => $user_id ]
-        );
-        if (count($users) != 1) {
+        $user = new MUser();
+        $user = $user->getByKey($user_id);
+
+        if (empty($user)) {
             $this->sendErrorResponse(t('ajax_response_user_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
-        } else if ($users[0]->is_batch == true) {
+        } else if ($user->is_batch == true) {
             $this->sendErrorResponse(t('ajax_response_user_privilege_batch'), self::HTTP_CODE_BAD_REQUEST);
         } else {
-            /** @var MUser $user */
-            $user = $users[0];
             $res = DatabaseTools::update(
                 MUser::TABLE_NAME,
                 MUser::KEY_NAME,
