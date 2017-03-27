@@ -56,6 +56,12 @@ class AjaxUserRequest extends BaseAjaxRequest {
                 case 'deleteUser':
                     $this->deleteUser($PARAM_user_id);
                     break;
+                case 'createUser':
+                    $this->createUser(
+                        AppUtils::getKeyDefault($vars, 'username', ''),
+                        AppUtils::getKeyDefault($vars, 'mail', '')
+                    );
+                    break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
                     break;
@@ -165,6 +171,52 @@ class AjaxUserRequest extends BaseAjaxRequest {
                 $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
             } else {
                 $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+            }
+        }
+    }
+
+    /** Source: http://emailregex.com/ */
+    const MAIL_REGEX = '/^(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){255,})(?!(?:(?:\x22?\x5C[\x00-\x7E]\x22?)|(?:\x22?[^\x5C\x22]\x22?)){65,}@)(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22))(?:\.(?:(?:[\x21\x23-\x27\x2A\x2B\x2D\x2F-\x39\x3D\x3F\x5E-\x7E]+)|(?:\x22(?:[\x01-\x08\x0B\x0C\x0E-\x1F\x21\x23-\x5B\x5D-\x7F]|(?:\x5C[\x00-\x7F]))*\x22)))*@(?:(?:(?!.*[^.]{64,})(?:(?:(?:xn--)?[a-z0-9]+(?:-[a-z0-9]+)*\.){1,126}){1,}(?:(?:[a-z][a-z0-9]*)|(?:(?:xn--)[a-z0-9]+))(?:-[a-z0-9]+)*)|(?:\[(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){7})|(?:(?!(?:.*[a-f0-9][:\]]){7,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,5})?)))|(?:(?:IPv6:(?:(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){5}:)|(?:(?!(?:.*[a-f0-9]:){5,})(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3})?::(?:[a-f0-9]{1,4}(?::[a-f0-9]{1,4}){0,3}:)?)))?(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))(?:\.(?:(?:25[0-5])|(?:2[0-4][0-9])|(?:1[0-9]{2})|(?:[1-9]?[0-9]))){3}))\]))$/iD';
+
+    private function createUser($username, $mail) {
+        $user = new MUser();
+        $user->username = strtolower($username);
+        $user->mail = $mail;
+        $new_password = self::generateRandomString();
+        $user->PassHash = DatabaseTools::hashNSaltPassword($new_password);
+
+        if (empty($user->username) || strlen($user->username) < 3 || !preg_match('/^[a-z0-9]+$/', $user->username)) {
+            $this->sendErrorResponse(t('ajax_response_user_create_name_info'), self::HTTP_CODE_BAD_REQUEST);
+        } else if (!empty($user->mail) && !preg_match(self::MAIL_REGEX, $user->mail)) {
+            $this->sendErrorResponse(t('ajax_response_user_create_mail_invalid'), self::HTTP_CODE_BAD_REQUEST);
+        }
+
+        $existingUsers = DatabaseTools::getWhereSimple(
+            MUser::TABLE_NAME, new MUser(),
+            [ MUser::KEY_NAME => $user->username ]
+        );
+        if (count($existingUsers) > 0) {
+            $this->sendErrorResponse(
+                t('ajax_response_user_create_exists', [$user->username]),
+                self::HTTP_CODE_BAD_REQUEST
+            );
+        } else {
+            $res = DatabaseTools::insert(MUser::TABLE_NAME, [
+                'username' => $user->username,
+                'passhash' => $user->PassHash,
+                'mail' => $user->mail,
+                'is_admin' => 0,
+                'is_batch' => 0,
+                'is_blocked' => 0
+            ]);
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse([
+                    'HasError' => 0,
+                    'UserName' => $user->username,
+                    'NewPassword' => $new_password
+                ], self::HTTP_CODE_CREATED);
             }
         }
     }

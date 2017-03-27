@@ -21,6 +21,7 @@ MODAL_createSimpleDialog(
     }
 
     function onUserModificationError(jqXHR, textStatus, errorThrown) {
+        console.log(jqXHR.responseJSON);
         showError('<?= t('modal_default_error_title') ?>', jqXHR.responseJSON.ErrorInfo);
     }
 

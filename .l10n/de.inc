@@ -27,8 +27,11 @@ return [
     'home' => 'Home',
 
     'username' => 'Benutzername',
+    'username_helptext' => 'Der Benutzername darf nicht schon vergeben sein, darf nur aus Kleinbuchstaben bestehen und ' .
+        'muss mindestens 3 Zeichen enthalten.',
     'password' => 'Passwort',
     'mail_address' => 'E-Mail-Adresse',
+    'mail_address_helptext' => 'Die Angabe der E-Mail-Adresse ist nicht zwingend.',
 
     'toggle_nav' => 'Navigation anzeigen / ausblenden',
 
@@ -86,6 +89,7 @@ return [
     'enable_login' => 'Account entsperren',
     'reset_password' => 'Passwort zurücksetzen',
     'delete_user' => 'Account löschen',
+    'create_user' => 'Account anlegen',
 
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
     'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
@@ -100,6 +104,8 @@ return [
     'modal_reset_user_success' => 'Das Passwort von %1$s wurde erfolgreich zurückgesetzt. Das neue Passwort lautet:</p><p>%2$s',
     'modal_delete_user_question' => 'Möchtest Du den Account von %1$s wirklich löschen?</p><p>' .
         'Das Löschen dieses Accounts führt ebenfalls zur Löschung aller personenbezogenen Daten.',
+    'modal_create_user_success' => 'Der Account für %1$s wurde erfolgreich angelegt.</p><p>' .
+        'Bitte teile dem neuen Besitzer dieses Account folgendes Passwort mit: %2$s',
 
     'datatable_decimal' => '.',
     'datatable_thousands' => ' ',
@@ -134,4 +140,8 @@ return [
     'ajax_response_user_reset_yourself' => 'Du kannst dein eigenes Passwort nicht zurücksetzen.',
     'ajax_response_user_delete_yourself' => 'Du kannst dich nicht selbst löschen.',
     'ajax_response_user_delete_protected' => 'Dieser Account ist geschützt und kann nicht gelöscht werden.',
+    'ajax_response_user_create_exists' => 'Es existiert bereits ein Account mit dem Namen "%1$s".',
+    'ajax_response_user_create_name_info' => 'Der Benutzername darf nicht leer sein und ' .
+        'muss mindestens 3 alphanumerische Zeichen beinhalten.',
+    'ajax_response_user_create_mail_invalid' => 'Die angegebene E-Mail-Adresse ist ungültig.',
 ];

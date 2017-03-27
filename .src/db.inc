@@ -234,6 +234,34 @@ class DatabaseTools {
     }
 
     /**
+     * @param $table string Table to insert
+     * @param $key_value_map array A map of properties and their values to insert
+     * @return int Rows effected
+     */
+    public static function insert($table, $key_value_map) {
+        $cols = implode(",", array_keys($key_value_map));
+        $param_cols = ":" . implode(",:", array_keys($key_value_map));
+        $sql = "INSERT INTO $table ($cols) VALUES($param_cols)";
+
+        $pdo = self::startNewTransaction();
+        try {
+            $stmt = self::getPdoStatement($sql, $pdo);
+            foreach ($key_value_map as $col => $val) {
+                Logger::verbose(" - Statement Parameter $col = $val");
+                $stmt->bindValue(":$col", $val);
+            }
+            $stmt->execute();
+            Logger::verbose("Inserting values in Table $table, rows affected: " . $stmt->rowCount());
+            self::commitTransaction($pdo);
+            return $stmt->rowCount();
+        } catch (PDOException $ex) {
+            Logger::fatal("An exception occurred while inserting data: " . $ex->getMessage());
+            self::rollbackTransaction($pdo);
+            return 0;
+        }
+    }
+
+    /**
      * @param $table string Table to update
      * @param $key_col string The column containing the primary key
      * @param $key_value mixed The value of the primary key

@@ -1,6 +1,7 @@
 <?php require_once __DIR__ . '/modals/lockUser.inc' ?>
 <?php require_once __DIR__ . '/modals/resetUser.inc' ?>
 <?php require_once __DIR__ . '/modals/deleteUser.inc' ?>
+<?php require_once __DIR__ . '/modals/createUser.inc' ?>
 <table class="table table-hover table-condensed table-striped" id="userTable">
     <thead>
         <tr>
@@ -14,6 +15,12 @@
         </tr>
     </thead>
 </table>
+<div class="container">
+    <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modalCreateUser">
+        <span class="glyphicon glyphicon-plus"></span>
+        <?= t('create_user') ?>
+    </a>
+</div>
 <script>
     var userTable = null;
     var ownUserID = <?= Session::getUserInfo()->id ?>;
