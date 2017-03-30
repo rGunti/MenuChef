@@ -7,6 +7,13 @@
 -- Stop Execution to prevent accidental execution
 EXIT;
 
+-- Drop Everything
+DROP TABLE meal_ingredient;
+DROP TABLE meal;
+DROP TABLE ingredient;
+DROP TABLE measuring_units;
+
 -- User
 TRUNCATE user;
+DROP VIEW v_user;
 DROP TABLE user;

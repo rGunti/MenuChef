@@ -1,7 +1,7 @@
 <?php
 class L10N {
     const L10N_DICTIONARY = "/.l10n";
-    const L10N_DEFAULT = "en";
+    const L10N_DEFAULT = "de";
     const L10N_UNKNOWN_STRING = 'Unknown Text "%1$s"';
 
     const L10N_LANG_INFO_NAME = '_LANG_NAME';

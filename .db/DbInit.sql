@@ -40,3 +40,84 @@ INSERT INTO user
 ;
 ALTER TABLE user AUTO_INCREMENT=10000;
 COMMIT;
+
+-- Meal Table
+CREATE TABLE meal (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  NAME varchar(100) NOT NULL,
+  BASE_PORTION_SIZE int(5) DEFAULT 1,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE measuring_units (
+  NAME varchar(50) NOT NULL,
+  SYMBOL varchar(10) DEFAULT NULL,
+  SUPER_UNIT varchar(50) DEFAULT NULL,
+  SUPER_UNIT_MULTIPLIER int(5) DEFAULT NULL,
+  PRIMARY KEY (`NAME`),
+  INDEX (`SUPER_UNIT`),
+  FOREIGN KEY (`SUPER_UNIT`)
+    REFERENCES measuring_units(`NAME`)
+    ON DELETE RESTRICT,
+  CONSTRAINT CHECK (
+    (`SUPER_UNIT` IS NULL AND `SUPER_UNIT_MULTIPLIER` IS NULL) OR
+    (`SUPER_UNIT` IS NOT NULL AND `SUPER_UNIT_MULTIPLIER` IS NOT NULL)
+  ),
+  UNIQUE KEY UNIT_SYMBOL_UNIQUE (SYMBOL)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE ingredient (
+  ID int(11) NOT NULL AUTO_INCREMENT,
+  NAME varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE meal_ingredient (
+  REF_ID int(11) NOT NULL AUTO_INCREMENT,
+  MEAL_ID int(11) NOT NULL,
+  INGREDIENT_ID int(11) NOT NULL,
+  AMOUNT decimal(10,3) NOT NULL,
+  AMOUNT_UNIT varchar(50) NOT NULL,
+  PRIMARY KEY (`REF_ID`),
+  FOREIGN KEY (`MEAL_ID`)
+    REFERENCES meal(`ID`)
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`INGREDIENT_ID`)
+    REFERENCES ingredient(`ID`)
+    ON DELETE RESTRICT,
+  FOREIGN KEY (`AMOUNT_UNIT`)
+    REFERENCES measuring_units(`NAME`)
+    ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- Insert Default Data
+INSERT INTO measuring_units
+      (NAME, SYMBOL, SUPER_UNIT, SUPER_UNIT_MULTIPLIER)
+    VALUES
+      -- Leer
+      ('unit_none', '', null, null),
+      -- Gewicht
+      ('unit_mg', 'mg', null, null),
+      ('unit_g', 'g', 'unit_mg', 1000),
+      ('unit_kg', 'kg', 'unit_g', 1000),
+      -- Flüssigmasse
+      ('unit_ml', 'ml', null, null),
+      ('unit_cl', 'cl', 'unit_ml', 10),
+      ('unit_dl', 'dl', 'unit_cl', 10),
+      ('unit_l', 'l', 'unit_dl', 10),
+      -- Weitere
+      ('unit_pack', 'Päck.', null, null),
+      ('unit_tl', 'TL', null, null),
+      ('unit_el', 'EL', null, null),
+      ('unit_tr', 'Tr', null, null),
+      ('unit_sp', 'Sp', null, null),
+      ('unit_pr', 'Pr', null, null),
+      ('unit_tas', 'Tas', null, null),
+      ('unit_bd', 'Bd', null, null),
+      ('unit_sc', 'Sc', null, null)
+;
+
+-- Set Auto Increments
+ALTER TABLE meal AUTO_INCREMENT=10000;
+ALTER TABLE ingredient AUTO_INCREMENT=10000;
+ALTER TABLE meal_ingredient AUTO_INCREMENT=10000;

@@ -152,4 +152,33 @@ return [
     'ajax_response_user_privilege_yourself' => 'Du kannst deine eigene Berechtigungsstufe nicht anpassen.',
     'ajax_response_user_privilege_batch' => 'Du kannst die Berechtigungsstufe eines Batch-Users nicht verändern.',
     'ajax_response_user_privilege_protected' => 'Dieser Account ist geschützt und kann nicht verändert werden.',
+
+    // Units
+    'unit_none' => '-',
+    'unit_bd' => 'Bund',
+    'unit_cl' => 'Centiliter',
+    'unit_dl' => 'Deziliter',
+    'unit_el' => 'Esslöffel',
+    'unit_g' => 'Gramm',
+    'unit_kg' => 'Kilogramm',
+    'unit_l' => 'Liter',
+    'unit_mg' => 'Milligramm',
+    'unit_ml' => 'Milliliter',
+    'unit_pack' => 'Päckchen',
+    'unit_pr' => 'Prise',
+    'unit_sc' => 'Scheibe',
+    'unit_sp' => 'Spritzer',
+    'unit_tas' => 'Tasse',
+    'unit_tl' => 'Teelöffel',
+    'unit_tr' => 'Tropfen',
+
+    // Classes
+    'meal' => 'Gericht',
+    'meal_pl' => 'Gerichte',
+    'measuring_unit' => 'Masseinheit',
+    'measuring_unit_pl' => 'Masseinheiten',
+    'ingredient' => 'Zutat',
+    'ingredient_pl' => 'Zutaten',
+    'meal_ingredient' => 'Gericht-Zutat',
+    'meal_ingredient_pl' => 'Gericht-Zutaten',
 ];
