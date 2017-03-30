@@ -1,6 +1,11 @@
 <?php
-//$nav_left = new TopNavigationBarCollection();
-//$nav_left->setSide(TopNavigationBarCollection::SIDE_LEFT);
+$nav_left = new TopNavigationBarCollection();
+$nav_left->setSide(TopNavigationBarCollection::SIDE_LEFT);
+
+if (Session::isLoggedIn()) {
+    $nav_left->addItem(new NavigationBarElement("/Meal", t('meal_pl')));
+    $nav_left->addItem(new NavigationBarElement("/Ingredient", t('ingredient_pl')));
+}
 
 $nav_right = new TopNavigationBarCollection();
 $nav_right->setSide(TopNavigationBarCollection::SIDE_RIGHT);
@@ -12,6 +17,8 @@ if (Session::isLoggedIn()) {
         $nav_admin->setTitle(t('admin_tools'));
         $nav_admin->setLink('/AdminTools');
         $nav_admin->addItem(new NavigationBarElement("/AdminTools/Users", "<span class='glyphicon glyphicon-briefcase'></span> " . t('admin_tools_users')));
+        $nav_admin->addItem(new NavigationBarSeparatorElement());
+        $nav_admin->addItem(new NavigationBarElement("/AdminTools/Units", "<span class='glyphicon glyphicon-wrench'></span> " . t('measuring_unit_pl')));
 
         $nav_right->addItem($nav_admin);
     }
@@ -45,7 +52,7 @@ foreach (L10N::getLanguageList() as $lang_code => $lang_info) {
 $nav_lang->addItem($nav_lang_dropdown);
 
 $nav_els = [
-//    $nav_left,
+    $nav_left,
     $nav_lang,
     $nav_right,
 ];

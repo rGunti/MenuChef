@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/ModelBaseClass.inc';
+
 class MMeal extends ModelBaseClass {
     const TABLE_NAME = 'MEAL';
     const KEY_NAME = 'ID';

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/ModelBaseClass.inc';
+
 class MIngredient {
     const TABLE_NAME = 'INGREDIENT';
     const KEY_NAME = 'ID';

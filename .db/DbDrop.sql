@@ -8,6 +8,7 @@
 EXIT;
 
 -- Drop Everything
+DROP VIEW v_meal_ingredient;
 DROP TABLE meal_ingredient;
 DROP TABLE meal;
 DROP TABLE ingredient;

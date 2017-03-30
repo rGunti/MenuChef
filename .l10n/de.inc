@@ -172,6 +172,12 @@ return [
     'unit_tl' => 'Teelöffel',
     'unit_tr' => 'Tropfen',
 
+    'meal_editor' => 'Gerichte-Editor',
+    'meal_editor_titled' => 'Gerichte-Editor: %1$s',
+    'error_meal_id_invalid' => 'Keine Gericht-ID angegeben.',
+    'error_meal_not_found_title' => 'Kein Gericht mit der ID %1$s gefunden',
+    'error_meal_not_found_message' => 'Es konnte kein Gericht mit dieser ID gefunden werden.',
+
     // Classes
     'meal' => 'Gericht',
     'meal_pl' => 'Gerichte',
@@ -181,4 +187,21 @@ return [
     'ingredient_pl' => 'Zutaten',
     'meal_ingredient' => 'Gericht-Zutat',
     'meal_ingredient_pl' => 'Gericht-Zutaten',
+
+    // Properties Meal
+    'meal_name' => 'Name',
+    'meal_portion_size' => 'Portionsgrösse',
+    'meal_portion_size_unit' => '%1$s Person(en)',
+
+    // Properties Ingredient
+    'ingr_name' => 'Name',
+
+    // Properties Meal Ingredient
+    'mein_ingredient' => 'Zutat',
+    'mein_amount' => 'Menge / Port.',
+
+    'ajax_response_meal_no_id' => 'Keine Gericht-ID gefunden.',
+    'ajax_response_meal_id_not_found' => 'Das Gericht konnte nicht gefunden werden.',
+    'ajax_response_meal_name_empty' => 'Der Name des Gerichts darf nicht leer sein.',
+    'ajax_response_meal_name_equal' => 'Der Name des Gerichts wurde nicht verändert.',
 ];

@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/ModelBaseClass.inc';
+
 class MMeasuringUnit extends ModelBaseClass {
     const TABLE_NAME = 'MEASURING_UNITS';
     const KEY_NAME = 'NAME';

@@ -17,6 +17,11 @@ return [
     "/AdminTools" => new PageNotFoundRequest(),
     "/AdminTools/Users" => new UserManagerRequest(),
 
+    "/Meal" => new MealRequest(),
+    "/Meal/*/Editor" => new MealEditorRequest(),
+
     // AJAX Requests
     "/AJAX/Users" => new AjaxUserRequest(),
+    "/AJAX/Meal" => new AjaxMealRequest(),
+    "/AJAX/MealIngredients/*" => new AjaxMealIngredientRequest(),
 ];

@@ -90,6 +90,24 @@ CREATE TABLE meal_ingredient (
     ON DELETE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- Create Views
+CREATE VIEW v_meal_ingredient AS
+  SELECT
+    REF_ID,
+    MEAL_ID,
+    m.NAME AS MEAL_NAME,
+    INGREDIENT_ID,
+    i.NAME AS INGREDIENT_NAME,
+    AMOUNT,
+    AMOUNT_UNIT,
+    TRIM(CONCAT(floor(AMOUNT), ' ', u.SYMBOL)) AS AMOUNT_TEXT
+  FROM
+    meal_ingredient mi
+    LEFT JOIN ingredient i ON mi.INGREDIENT_ID = i.ID
+    LEFT JOIN measuring_units u ON mi.AMOUNT_UNIT = u.NAME
+    LEFT JOIN meal m ON mi.MEAL_ID = m.ID
+;
+
 -- Insert Default Data
 INSERT INTO measuring_units
       (NAME, SYMBOL, SUPER_UNIT, SUPER_UNIT_MULTIPLIER)
