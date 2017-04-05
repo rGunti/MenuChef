@@ -7,7 +7,8 @@ class DatabaseTools {
         try {
             return new PDO(
                 "mysql:host=" . DbConfig::HOST .
-                ";dbname=" . DbConfig::DB,
+                ";dbname=" . DbConfig::DB .
+                ";charset=" . DbConfig::CHAR_SET,
                 DbConfig::USER,
                 DbConfig::PASS, [
                 PDO::ATTR_CASE                  => PDO::CASE_LOWER,
