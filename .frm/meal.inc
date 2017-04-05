@@ -27,7 +27,7 @@
             serverSide : true,
             ajax : ajaxSource,
             columns : [
-                { data: "name" },
+                { data: "name", render: htmlEscapedCellRenderer },
                 //{ data: "base_portion_size" },
                 { data: null, render: function(d,t,r) {
                     var editorUrl = editorPathPrefix + r.id + editorPathSuffix;

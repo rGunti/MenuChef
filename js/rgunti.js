@@ -29,6 +29,26 @@ function escapeHtml(text) {
 }
 
 /**
+ * Source: http://jsfiddle.net/sehmaschine/genvxhrm/
+ * @param data String
+ * @returns {string}
+ */
+function jQueryEscapeHtml(data) {
+    return $('<div/>').text(data).html();
+}
+
+/**
+ * Render Callback for DataTable Cells
+ * @param d
+ * @param t
+ * @param r
+ * @returns {string}
+ */
+function htmlEscapedCellRenderer(d,t,r) {
+    return jQueryEscapeHtml(d);
+}
+
+/**
  * Displays the Unhandled Error Modal Box along with some given information about the error reported
  * @param errorText string
  */

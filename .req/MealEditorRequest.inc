@@ -10,7 +10,7 @@ class MealEditorRequest extends BaseMultiRequest {
         if (empty($meal)) {
             return t('meal_editor');
         } else {
-            return t('meal_editor_titled', $meal->name);
+            return t('meal_editor_titled', htmlspecialchars($meal->name));
         }
     }
 

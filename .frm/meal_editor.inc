@@ -62,9 +62,9 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
             serverSide : true,
             ajax : ajaxSource,
             columns : [
-                { data: 'ref_id' },
-                { data: 'amount_text' },
-                { data: 'ingredient_name' },
+                { data: 'ref_id', render: htmlEscapedCellRenderer },
+                { data: 'amount_text', render: htmlEscapedCellRenderer },
+                { data: 'ingredient_name', render: htmlEscapedCellRenderer },
                 { data: null, render: function(d,t,r) {
                     return "-";
                 } }
