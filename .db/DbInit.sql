@@ -54,6 +54,7 @@ CREATE TABLE measuring_units (
   SYMBOL varchar(10) DEFAULT NULL,
   SUPER_UNIT varchar(50) DEFAULT NULL,
   SUPER_UNIT_MULTIPLIER int(5) DEFAULT NULL,
+  UNIT_GROUP varchar(50) DEFAULT 'unit_group_none',
   PRIMARY KEY (`NAME`),
   INDEX (`SUPER_UNIT`),
   FOREIGN KEY (`SUPER_UNIT`)
@@ -110,29 +111,29 @@ CREATE VIEW v_meal_ingredient AS
 
 -- Insert Default Data
 INSERT INTO measuring_units
-      (NAME, SYMBOL, SUPER_UNIT, SUPER_UNIT_MULTIPLIER)
+      (UNIT_GROUP, NAME, SYMBOL, SUPER_UNIT, SUPER_UNIT_MULTIPLIER)
     VALUES
       -- Leer
-      ('unit_none', '', null, null),
+      ('unit_group_null', 'unit_none', '', null, null),
       -- Gewicht
-      ('unit_mg', 'mg', null, null),
-      ('unit_g', 'g', 'unit_mg', 1000),
-      ('unit_kg', 'kg', 'unit_g', 1000),
+      ('unit_group_weight', 'unit_mg', 'mg', null, null),
+      ('unit_group_weight', 'unit_g', 'g', 'unit_mg', 1000),
+      ('unit_group_weight', 'unit_kg', 'kg', 'unit_g', 1000),
       -- Flüssigmasse
-      ('unit_ml', 'ml', null, null),
-      ('unit_cl', 'cl', 'unit_ml', 10),
-      ('unit_dl', 'dl', 'unit_cl', 10),
-      ('unit_l', 'l', 'unit_dl', 10),
+      ('unit_group_fluid', 'unit_ml', 'ml', null, null),
+      ('unit_group_fluid', 'unit_cl', 'cl', 'unit_ml', 10),
+      ('unit_group_fluid', 'unit_dl', 'dl', 'unit_cl', 10),
+      ('unit_group_fluid', 'unit_l', 'l', 'unit_dl', 10),
       -- Weitere
-      ('unit_pack', 'Päck.', null, null),
-      ('unit_tl', 'TL', null, null),
-      ('unit_el', 'EL', null, null),
-      ('unit_tr', 'Tr', null, null),
-      ('unit_sp', 'Sp', null, null),
-      ('unit_pr', 'Pr', null, null),
-      ('unit_tas', 'Tas', null, null),
-      ('unit_bd', 'Bd', null, null),
-      ('unit_sc', 'Sc', null, null)
+      ('unit_group_other', 'unit_pack', 'Päck.', null, null),
+      ('unit_group_other', 'unit_tl', 'TL', null, null),
+      ('unit_group_other', 'unit_el', 'EL', null, null),
+      ('unit_group_other', 'unit_tr', 'Tr', null, null),
+      ('unit_group_other', 'unit_sp', 'Sp', null, null),
+      ('unit_group_other', 'unit_pr', 'Pr', null, null),
+      ('unit_group_other', 'unit_tas', 'Tas', null, null),
+      ('unit_group_other', 'unit_bd', 'Bd', null, null),
+      ('unit_group_other', 'unit_sc', 'Sc', null, null)
 ;
 
 -- Set Auto Increments

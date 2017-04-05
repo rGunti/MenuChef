@@ -177,6 +177,11 @@ return [
     'unit_tl' => 'Teelöffel',
     'unit_tr' => 'Tropfen',
 
+    'unit_group_null' => 'Keine Gruppe',
+    'unit_group_weight' => 'Gewicht',
+    'unit_group_fluid' => 'Flüssigmass',
+    'unit_group_other' => 'Andere',
+
     'meal_editor' => 'Gerichte-Editor',
     'meal_editor_titled' => 'Gerichte-Editor: %1$s',
     'error_meal_id_invalid' => 'Keine Gericht-ID angegeben.',
@@ -207,6 +212,8 @@ return [
     // Properties Meal Ingredient
     'mein_ingredient' => 'Zutat',
     'mein_amount' => 'Menge / Port.',
+
+    'add_ingredient' => 'Zutat hinzufügen',
 
     'modal_create_meal_success' => 'Das Gericht wurde erfolgreich erstellt. ' .
         'Du kannst es jetzt im Gerichte-Editor bearbeiten.',

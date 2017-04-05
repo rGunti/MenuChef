@@ -23,6 +23,8 @@ class MMeasuringUnit extends ModelBaseClass {
     public $super_unit;
     /** @var int|null */
     public $super_unit_multiplier;
+    /** @var string */
+    public $unit_group;
 
     /** @return bool */
     public function hasSuperUnit() { return !is_null($this->super_unit); }
@@ -33,5 +35,22 @@ class MMeasuringUnit extends ModelBaseClass {
         } else {
             return null;
         }
+    }
+
+    /**
+     * Returns a sorted map of Measuring Units (Key of Array: Super Unit)
+     * @return MMeasuringUnit[]
+     */
+    public function getUnitMap() {
+        /** @var MMeasuringUnit[] $units */
+        $units = DatabaseTools::getAll($this->getTableName(), $this);
+        $map = [];
+        foreach ($units as $unit) {
+            if (!array_key_exists($unit->unit_group, $map)) {
+                $map[$unit->unit_group] = [];
+            }
+            array_push($map[$unit->unit_group], $unit);
+        }
+        return $map;
     }
 }

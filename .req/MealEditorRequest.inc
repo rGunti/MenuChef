@@ -24,6 +24,16 @@ class MealEditorRequest extends BaseMultiRequest {
      */
     public function setEditingMeal($meal) { $this->setStorageValue('_meal', $meal); }
 
+    /**
+     * @return MMeasuringUnit[]
+     */
+    public function getMeasuringUnits() { return $this->getStorageValue('_units'); }
+
+    /**
+     * @param $units MMeasuringUnit[]
+     */
+    protected function setMeasuringUnits($units) { $this->setStorageValue('_units', $units); }
+
     public function get($vars = []) {
         // Check Permission
         Session::enforceLoggedIn();
@@ -63,5 +73,11 @@ class MealEditorRequest extends BaseMultiRequest {
         }
 
         $this->setEditingMeal($meal);
+
+
+        // Get Measuring Units
+        $unit = new MMeasuringUnit();
+        $units_map = $unit->getUnitMap();
+        $this->setMeasuringUnits($units_map);
     }
 }

@@ -4,6 +4,7 @@ require_once __DIR__ . '/modals/modalBase.inc';
 /** @var MealEditorRequest $req */
 $req = RequestProcessor::getProcessedRequest();
 $meal = $req->getEditingMeal();
+$units = $req->getMeasuringUnits();
 
 require_once __DIR__ . '/modals/deleteMeal.inc';
 ?>
@@ -37,6 +38,48 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 </form>
 
 <h2><?= t('ingredient_pl') ?></h2>
+<div class="form-group">
+    <div class="row">
+        <div class="col-lg-5">
+            <input type="text"
+                   class="form-control"
+                   id="mealEditorAddIngredientName"
+                   name="mealEditorAddIngredientName"
+                   placeholder="<?= t('ingredient') ?>"
+            >
+        </div>
+        <div class="col-lg-2">
+            <input type="number"
+                   class="form-control"
+                   id="mealEditorAddIngredientAmount"
+                   name="mealEditorAddIngredientAmount"
+                   placeholder="<?= t('mein_amount') ?>"
+            >
+        </div>
+        <div class="col-lg-2">
+            <select class="form-control"
+                    id="mealEditorAddIngredientAmountUnit"
+                    name="mealEditorAddIngredientAmountUnit"
+            >
+                <?php foreach ($units as $unit_group_name => $subunits) { ?>
+                    <optgroup label="<?= htmlspecialchars(t($unit_group_name)) ?>">
+                        <?php foreach ($subunits as $unit) { ?>
+                            <option value="<?= $unit->getPrimaryKey() ?>" <?= $unit->symbol == '' ? 'selected' : '' ?>>
+                                <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol ?>
+                            </option>
+                        <?php } ?>
+                    </optgroup>
+                <?php } ?>
+            </select>
+        </div>
+        <div class="col-lg-3">
+            <a href="#" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                <?= t('add_ingredient') ?>
+            </a>
+        </div>
+    </div>
+</div>
 <table class="table table-hover table-condensed table-striped" id="mealIngredientTable">
     <thead>
     <tr>
