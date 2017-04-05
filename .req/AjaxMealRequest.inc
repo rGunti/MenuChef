@@ -44,6 +44,10 @@ class AjaxMealRequest extends BaseAjaxRequest {
                     $PARAM_meal_name = AppUtils::getKeyDefault($vars, 'name', null);
                     $this->updateMealName($PARAM_meal_id, $PARAM_meal_name);
                     break;
+                case 'createMeal':
+                    $PARAM_meal_name = AppUtils::getKeyDefault($vars, 'name', null);
+                    $this->createNewMeal($PARAM_meal_name);
+                    break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
                     break;
@@ -82,6 +86,27 @@ class AjaxMealRequest extends BaseAjaxRequest {
             } else {
                 $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
             }
+        }
+    }
+
+    private function createNewMeal($meal_name) {
+        if (empty($meal_name)) {
+            $this->sendErrorResponse(t('ajax_response_meal_name_empty'), self::HTTP_CODE_BAD_REQUEST);
+        }
+
+        $meal = new MMeal();
+        $meal->name = $meal_name;
+        $res = DatabaseTools::insert(
+            $meal->getTableName(),
+            [ 'name' => $meal->name ],
+            true
+        );
+        if (empty($res)) {
+            $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+        } else {
+            $this->sendObjectResponse([
+                'mealID' => $res
+            ], self::HTTP_CODE_CREATED);
         }
     }
 }

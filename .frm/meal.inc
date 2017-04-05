@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/modals/createMeal.inc' ?>
 <table class="table table-hover table-condensed table-striped" id="mealTable">
     <thead>
     <tr>
@@ -6,11 +7,20 @@
     </tr>
     </thead>
 </table>
+<div class="container">
+    <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modalCreateMeal">
+        <span class="glyphicon glyphicon-plus"></span>
+        <?= t('create_meal') ?>
+    </a>
+</div>
 <script>
     var mealTable = null;
     var ajaxSource = "<?= PathUtils::getLink("/AJAX/Meal") ?>";
     var editorPathPrefix = "<?= PathUtils::getLink("/Meal/") ?>";
     var editorPathSuffix = "/Editor";
+    function reloadMealTable() {
+        mealTable.ajax.reload(null, false);
+    }
     $(document).ready(function() {
         mealTable = $('#mealTable').DataTable({
             processing : true,

@@ -236,9 +236,11 @@ class DatabaseTools {
     /**
      * @param $table string Table to insert
      * @param $key_value_map array A map of properties and their values to insert
-     * @return int Rows effected
+     * @param $get_insert_id bool|false If true, the inserted ID will be returned
+     * instead of the row count
+     * @return int|mixed Rows effected or inserted ID
      */
-    public static function insert($table, $key_value_map) {
+    public static function insert($table, $key_value_map, $get_insert_id = false) {
         $cols = implode(",", array_keys($key_value_map));
         $param_cols = ":" . implode(",:", array_keys($key_value_map));
         $sql = "INSERT INTO $table ($cols) VALUES($param_cols)";
@@ -251,9 +253,10 @@ class DatabaseTools {
                 $stmt->bindValue(":$col", $val);
             }
             $stmt->execute();
-            Logger::verbose("Inserting values in Table $table, rows affected: " . $stmt->rowCount());
+            $insert_id = $pdo->lastInsertId();
+            Logger::verbose("Inserting values in Table $table (New ID: $insert_id), rows affected: " . $stmt->rowCount());
             self::commitTransaction($pdo);
-            return $stmt->rowCount();
+            return ($get_insert_id ? $insert_id : $stmt->rowCount());
         } catch (PDOException $ex) {
             Logger::fatal("An exception occurred while inserting data: " . $ex->getMessage());
             self::rollbackTransaction($pdo);

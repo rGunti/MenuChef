@@ -95,6 +95,9 @@ return [
     'privilege_level_admin' => 'Administrator',
     'privilege_level_default' => 'Standard-Benutzer',
 
+    'open_in' => 'Öffnen mit <b>%1$s</b>&hellip;',
+    'close' => 'Schliessen',
+
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
     'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
 
@@ -193,12 +196,17 @@ return [
     'meal_portion_size' => 'Portionsgrösse',
     'meal_portion_size_unit' => '%1$s Person(en)',
 
+    'create_meal' => 'Gericht hinzufügen',
+
     // Properties Ingredient
     'ingr_name' => 'Name',
 
     // Properties Meal Ingredient
     'mein_ingredient' => 'Zutat',
     'mein_amount' => 'Menge / Port.',
+
+    'modal_create_meal_success' => 'Das Gericht wurde erfolgreich erstellt. ' .
+        'Du kannst es jetzt im Gerichte-Editor bearbeiten.',
 
     'ajax_response_meal_no_id' => 'Keine Gericht-ID gefunden.',
     'ajax_response_meal_id_not_found' => 'Das Gericht konnte nicht gefunden werden.',
