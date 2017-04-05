@@ -18,4 +18,5 @@ class DbConfig {
     const USER = "menuchef";
     const PASS = "menuchef";
     const DB = "dev-menuchef";
+    const CHAR_SET = "utf8";
 }
