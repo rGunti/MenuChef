@@ -84,6 +84,8 @@ return [
     'cancel' => 'Abbrechen',
     'yes' => 'Ja',
     'no' => 'Nein',
+    'delete' => 'Löschen',
+    'delete_named' => '"%1$s" löschen',
 
     'disable_login' => 'Account sperren',
     'enable_login' => 'Account entsperren',
@@ -197,6 +199,7 @@ return [
     'meal_portion_size_unit' => '%1$s Person(en)',
 
     'create_meal' => 'Gericht hinzufügen',
+    'delete_meal' => 'Gericht löschen',
 
     // Properties Ingredient
     'ingr_name' => 'Name',
@@ -207,6 +210,7 @@ return [
 
     'modal_create_meal_success' => 'Das Gericht wurde erfolgreich erstellt. ' .
         'Du kannst es jetzt im Gerichte-Editor bearbeiten.',
+    'modal_delete_meal_question' => 'Möchtest du das Gericht "%1$s" wirklich löschen?',
 
     'ajax_response_meal_no_id' => 'Keine Gericht-ID gefunden.',
     'ajax_response_meal_id_not_found' => 'Das Gericht konnte nicht gefunden werden.',

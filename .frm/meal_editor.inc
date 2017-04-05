@@ -4,6 +4,8 @@ require_once __DIR__ . '/modals/modalBase.inc';
 /** @var MealEditorRequest $req */
 $req = RequestProcessor::getProcessedRequest();
 $meal = $req->getEditingMeal();
+
+require_once __DIR__ . '/modals/deleteMeal.inc';
 ?>
 <form id="mealEditorForm">
     <div class="form-group">
@@ -16,11 +18,21 @@ $meal = $req->getEditingMeal();
                required>
     </div>
     <div class="form-group">
-        <a href="<?= PathUtils::getLink("/Meal") ?>"
-           class="btn btn-default">
-            <?= t('cancel') ?>
-        </a>
-        <button type="submit" class="btn btn-primary"><?= t('save') ?></button>
+        <div class="row">
+            <div class="col-lg-6">
+                <a href="<?= PathUtils::getLink("/Meal") ?>"
+                   class="btn btn-default">
+                    <?= t('cancel') ?>
+                </a>
+                <button type="submit" class="btn btn-primary"><?= t('save') ?></button>
+            </div>
+            <div class="col-lg-6" style="text-align: right">
+                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteMeal">
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                    <?= t('delete') ?>
+                </a>
+            </div>
+        </div>
     </div>
 </form>
 

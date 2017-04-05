@@ -103,6 +103,21 @@ class StringUtils {
         }
         return $s;
     }
+
+    /**
+     * Abbreviates a given string to a given length, if the String is longer than requested
+     * @param $s string String to abbreviate
+     * @param $maxLength int Max length of String (including Ellipse Character if needed)
+     * @param $ellipse_char string Ellipse character (default: '&hellips;')
+     * @return string Abbreviated String with a length of ($maxLength - 1 + $ellipse_char)
+     */
+    public static function abbreviate($s, $maxLength, $ellipse_char = '&hellip;') {
+        if (strlen($s) > $maxLength) {
+            return substr($s, 0, $maxLength - 1) . $ellipse_char;
+        } else {
+            return $s;
+        }
+    }
 }
 
 /**
