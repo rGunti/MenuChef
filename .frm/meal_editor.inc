@@ -56,6 +56,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                    class="form-control"
                    id="mealEditorAddIngredientAmount"
                    name="mealEditorAddIngredientAmount"
+                   style="text-align: right"
                    placeholder="<?= t('mein_amount') ?>"
             >
         </div>
