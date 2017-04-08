@@ -70,7 +70,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                     <optgroup label="<?= htmlspecialchars(t($unit_group_name)) ?>">
                         <?php foreach ($subunits as $unit) { ?>
                             <option value="<?= $unit->getPrimaryKey() ?>" <?= $unit->symbol == '' ? 'selected' : '' ?>>
-                                <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol ?>
+                                <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol . " (" . t($unit->name) . ")" ?>
                             </option>
                         <?php } ?>
                     </optgroup>
