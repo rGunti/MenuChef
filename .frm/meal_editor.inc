@@ -40,7 +40,8 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 <h2><?= t('ingredient_pl') ?></h2>
 <div class="form-group">
     <div class="row">
-        <div class="col-lg-5">
+        <div class="col-lg-6">
+            <label for="mealEditorAddIngredientName"><?= t('ingredient') ?></label>
             <input type="text"
                    class="form-control"
                    id="mealEditorAddIngredientName"
@@ -49,6 +50,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
             >
         </div>
         <div class="col-lg-2">
+            <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
             <input type="number"
                    class="form-control"
                    id="mealEditorAddIngredientAmount"
@@ -57,6 +59,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
             >
         </div>
         <div class="col-lg-2">
+            <label for="mealEditorAddIngredientAmountUnit"><?= t('measuring_unit') ?></label>
             <select class="form-control"
                     id="mealEditorAddIngredientAmountUnit"
                     name="mealEditorAddIngredientAmountUnit"
@@ -72,11 +75,12 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                 <?php } ?>
             </select>
         </div>
-        <div class="col-lg-3">
-            <a href="#" class="btn btn-default">
-                <span class="glyphicon glyphicon-plus"></span>&nbsp;
+        <div class="col-lg-2">
+            <label><?= t('actions') ?></label>
+            <button type="submit" class="form-control btn btn-success">
+                <span class="glyphicon glyphicon-plus"></span>
                 <?= t('add_ingredient') ?>
-            </a>
+            </button>
         </div>
     </div>
 </div>
