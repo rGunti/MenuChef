@@ -48,6 +48,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                    name="mealEditorAddIngredientName"
                    placeholder="<?= t('ingredient') ?>"
             >
+            <input type="hidden" id="mealEditorAddIngredientIngrID" value="">
         </div>
         <div class="col-lg-2">
             <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
@@ -104,6 +105,29 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
     }
 
     $(document).ready(function() {
+        $('#mealEditorAddIngredientName').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '<?= PathUtils::getLink('/AJAX/Ingredients/AutoComplete') ?>',
+                    //method: 'post',
+                    data: {
+                        term: request.term
+                    },
+                    // Expected Output: {id,label,value}
+                    success: function(data) { response(data); },
+                    error: onErrorAutoHandle
+                })
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                //console.log(event, ui);
+                //console.log(ui.item);
+                $('#mealEditorAddIngredientIngrID').val(ui.item.id);
+            }
+        });
+        $('#mealEditorAddIngredientName').on('input propertychange paste', function(e) {
+            $('#mealEditorAddIngredientIngrID').val(0);
+        });
         ingredientTable = $('#mealIngredientTable').DataTable({
             processing : true,
             serverSide : true,

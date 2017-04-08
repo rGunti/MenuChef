@@ -39,12 +39,17 @@ $usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], 'darkmode
         <link rel="stylesheet" href="<?= PathUtils::getLink($usedTheme) ?>" />
         <?php } ?>
 
+        <!-- jQuery UI -->
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/jquery-ui/jquery-ui.min.css') ?>" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/jquery-ui/jquery-ui.min.css') ?>" />
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/jquery-ui/jquery-ui.min.css') ?>" />
+
         <!-- jQuery DataTables -->
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/dataTables.bootstrap.min.css') ?>" />
-        <!--
+        <?php /*
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/responsive.dataTables.min.css') ?>" />
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap-checkbox/awesome-bootstrap-checkbox.css') ?>" />
-        -->
+        */?>
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/rgunti.css') ?>" />
 
         <!-- JAVASCRIPT -->
@@ -52,14 +57,15 @@ $usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], 'darkmode
         <script src="<?= PathUtils::getLink('/js/tether.min.js') ?>"></script>
         <script src="<?= PathUtils::getLink('/js/bootstrap.min.js') ?>"></script>
         <script src="<?= PathUtils::getLink('/js/parallax.min.js') ?>"></script>
+        <script src="<?= PathUtils::getLink('/js/jquery-ui/jquery-ui.min.js') ?>"></script>
 
         <!-- jQuery DataTables (+ Addons) -->
         <script src="<?= PathUtils::getLink('/js/jquery.dataTables.min.js') ?>"></script>
         <script src="<?= PathUtils::getLink('/js/dataTables.bootstrap.min.js') ?>"></script>
         <script src="<?= PathUtils::getLink('/js/dataTables.fixedColumns.min.js') ?>"></script>
-        <!--
+        <?php /*
         <script src="<?= PathUtils::getLink('/js/dataTables.responsive.min.js') ?>"></script>
-        -->
+        */?>
 
         <!-- Other Libraries -->
         <script src="<?= PathUtils::getLink('/js/js.cookie.js') ?>"></script>

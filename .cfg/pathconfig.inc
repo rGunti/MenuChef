@@ -24,4 +24,5 @@ return [
     "/AJAX/Users" => new AjaxUserRequest(),
     "/AJAX/Meal" => new AjaxMealRequest(),
     "/AJAX/MealIngredients/*" => new AjaxMealIngredientRequest(),
+    "/AJAX/Ingredients/*" => new AjaxIngredientRequest(),
 ];
