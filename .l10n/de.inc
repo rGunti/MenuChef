@@ -217,7 +217,8 @@ return [
 
     'modal_create_meal_success' => 'Das Gericht wurde erfolgreich erstellt. ' .
         'Du kannst es jetzt im Gerichte-Editor bearbeiten.',
-    'modal_delete_meal_question' => 'Möchtest du das Gericht "%1$s" wirklich löschen?',
+    'modal_delete_meal_question' => 'Möchtest du das Gericht "%1$s" wirklich löschen?</p><p>' .
+        'Wenn du das Gericht gelöscht hast, kannst du es nicht wiederherstellen!',
 
     'ajax_response_meal_no_id' => 'Keine Gericht-ID gefunden.',
     'ajax_response_meal_id_not_found' => 'Das Gericht konnte nicht gefunden werden.',
