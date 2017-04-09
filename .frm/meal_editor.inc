@@ -38,44 +38,50 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 </form>
 
 <h2><?= t('ingredient_pl') ?></h2>
-<div class="form-group">
+<form id="mealEditorAddIngredientForm">
     <div class="row">
         <div class="col-lg-6">
-            <label for="mealEditorAddIngredientName"><?= t('ingredient') ?></label>
-            <input type="text"
-                   class="form-control"
-                   id="mealEditorAddIngredientName"
-                   name="mealEditorAddIngredientName"
-                   placeholder="<?= t('ingredient') ?>"
-            >
-            <input type="hidden" id="mealEditorAddIngredientIngrID" value="">
+            <div class="form-group">
+                <label for="mealEditorAddIngredientName"><?= t('ingredient') ?></label>
+                <input type="text"
+                       class="form-control"
+                       id="mealEditorAddIngredientName"
+                       name="mealEditorAddIngredientName"
+                       placeholder="<?= t('ingredient') ?>"
+                >
+                <input type="hidden" id="mealEditorAddIngredientIngrID" value="">
+            </div>
         </div>
         <div class="col-lg-2">
-            <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
-            <input type="number"
-                   class="form-control"
-                   id="mealEditorAddIngredientAmount"
-                   name="mealEditorAddIngredientAmount"
-                   style="text-align: right"
-                   placeholder="<?= t('mein_amount') ?>"
-            >
+            <div class="form-group">
+                <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
+                <input type="number"
+                       class="form-control"
+                       id="mealEditorAddIngredientAmount"
+                       name="mealEditorAddIngredientAmount"
+                       style="text-align: right"
+                       placeholder="<?= t('mein_amount') ?>"
+                >
+            </div>
         </div>
         <div class="col-lg-2">
-            <label for="mealEditorAddIngredientAmountUnit"><?= t('measuring_unit') ?></label>
-            <select class="form-control"
-                    id="mealEditorAddIngredientAmountUnit"
-                    name="mealEditorAddIngredientAmountUnit"
-            >
-                <?php foreach ($units as $unit_group_name => $subunits) { ?>
-                    <optgroup label="<?= htmlspecialchars(t($unit_group_name)) ?>">
-                        <?php foreach ($subunits as $unit) { ?>
-                            <option value="<?= $unit->getPrimaryKey() ?>" <?= $unit->symbol == '' ? 'selected' : '' ?>>
-                                <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol . " (" . t($unit->name) . ")" ?>
-                            </option>
-                        <?php } ?>
-                    </optgroup>
-                <?php } ?>
-            </select>
+            <div class="form-group">
+                <label for="mealEditorAddIngredientAmountUnit"><?= t('measuring_unit') ?></label>
+                <select class="form-control"
+                        id="mealEditorAddIngredientAmountUnit"
+                        name="mealEditorAddIngredientAmountUnit"
+                >
+                    <?php foreach ($units as $unit_group_name => $subunits) { ?>
+                        <optgroup label="<?= htmlspecialchars(t($unit_group_name)) ?>">
+                            <?php foreach ($subunits as $unit) { ?>
+                                <option value="<?= $unit->getPrimaryKey() ?>" <?= $unit->symbol == '' ? 'selected' : '' ?>>
+                                    <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol . " (" . t($unit->name) . ")" ?>
+                                </option>
+                            <?php } ?>
+                        </optgroup>
+                    <?php } ?>
+                </select>
+            </div>
         </div>
         <div class="col-lg-2">
             <label><?= t('actions') ?></label>
@@ -85,7 +91,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
             </button>
         </div>
     </div>
-</div>
+</form>
 <table class="table table-hover table-condensed table-striped" id="mealIngredientTable">
     <thead>
     <tr>
@@ -103,6 +109,41 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 
     function reloadIngrList() {
         ingredientTable.ajax.reload(null, false); // false: Keep page
+    }
+
+    function onMealEditorError(jqXHR, textStatus, errorThrown) {
+        var response = jqXHR.responseJSON;
+        console.log(response);
+        if (typeof response.ErrorInfo == 'string') {
+            showError('<?= t('modal_default_error_title') ?>', response.ErrorInfo);
+        } else if (response.ErrorInfo.type == 'permission_error') {
+            showError('<?= t('modal_default_error_title') ?>', 'Permission Error: ' + response.ErrorInfo.message);
+        } else {
+            onAjaxError(jqXHR, textStatus, errorThrown);
+        }
+    }
+
+    function validateAddIngredient(ing) {
+        console.log(ing);
+        $('#mealEditorAddIngredientForm .form-group').removeClass('has-error');
+        var isValid = true;
+
+        if ((!ing.id || ing.id === 0) && (!ing.name)) {
+            $('#mealEditorAddIngredientName').parent().addClass('has-error');
+            isValid = false;
+        }
+
+        if (!ing.amount || ing.amount <= 0) {
+            $('#mealEditorAddIngredientAmount').parent().addClass('has-error');
+            isValid = false;
+        }
+
+        if (!ing.unit) {
+            $('#mealEditorAddIngredientAmountUnit').parent().addClass('has-error');
+            isValid = false;
+        }
+
+        return isValid;
     }
 
     $(document).ready(function() {
@@ -161,19 +202,41 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                 function(data, textStatus, jqXHR) {
                     window.location.href = window.location.href;
                 },
-                function(jqXHR, textStatus, errorThrown) {
-                    var response = jqXHR.responseJSON;
-                    console.log(response);
-                    if (typeof response.ErrorInfo == 'string') {
-                        showError('<?= t('modal_default_error_title') ?>', response.ErrorInfo);
-                    } else if (response.ErrorInfo.type == 'permission_error') {
-                        showError('<?= t('modal_default_error_title') ?>', 'Permission Error: ' + response.ErrorInfo.message);
-                    } else {
-                        onAjaxError(jqXHR, textStatus, errorThrown);
-                    }
-                },
+                onMealEditorError,
                 function() {
                     $('#mealEditorForm button[type=submit]').prop('disabled', false);
+                }
+            );
+        });
+        $('#mealEditorAddIngredientForm').submit(function(e) {
+            e.preventDefault();
+            var addIngData = {
+                action: 'addIngredient',
+                ingredient: {
+                    id: $('#mealEditorAddIngredientIngrID').val(),
+                    name: $('#mealEditorAddIngredientName').val(),
+                    unit: $('#mealEditorAddIngredientAmountUnit').val(),
+                    amount: $('#mealEditorAddIngredientAmount').val()
+                }
+            };
+            if (!validateAddIngredient(addIngData.ingredient)) {
+                return;
+            }
+            submitSimplePostRequest(ajaxSource, addIngData,
+                function() {
+                    $('#mealEditorAddIngredientForm button[type=submit]').prop('disabled', true);
+                },
+                function(data, textStatus, jqXHR) {
+                    reloadIngrList();
+                    $('#mealEditorAddIngredientIngrID').val(0);
+                    $('#mealEditorAddIngredientName').val('');
+                    $('#mealEditorAddIngredientAmountUnit').val('');
+                    $('#mealEditorAddIngredientAmount').val('');
+                    $('#mealEditorAddIngredientName').focus();
+                },
+                onMealEditorError,
+                function () {
+                    $('#mealEditorAddIngredientForm button[type=submit]').prop('disabled', false);
                 }
             );
         });

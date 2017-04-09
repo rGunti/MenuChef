@@ -136,6 +136,7 @@ return [
     'datatable_aria_sort_asc' => ': zum aufsteigenden Sortieren klicken',
     'datatable_aria_sort_desc' => ': zum absteigenden Sortieren klicken',
 
+    'ajax_response_no_data' => 'Es wurden keine oder nicht genügend erforderliche Daten übermittelt.',
     'ajax_response_no_action' => 'Keine Action übergeben.',
     'ajax_response_unknown_action' => 'Aktion "%1$s" wird nicht unterstützt.',
 
@@ -224,4 +225,11 @@ return [
     'ajax_response_meal_id_not_found' => 'Das Gericht konnte nicht gefunden werden.',
     'ajax_response_meal_name_empty' => 'Der Name des Gerichts darf nicht leer sein.',
     'ajax_response_meal_name_equal' => 'Der Name des Gerichts wurde nicht verändert.',
+
+    'ajax_response_meal_editor_ingredient_not_found' => 'Es konnte keine passende Zutat gefunden werden (ID: %1$s).',
+    'ajax_response_meal_editor_ingredient_name_empty' => 'Der Name der Zutat darf nicht leer sein.',
+    'ajax_response_meal_editor_ingredient_no_ingredient' => 'Keine Zutat angegeben.',
+    'ajax_response_meal_editor_ingredient_no_amount' => 'Keine Menge angegeben.',
+    'ajax_response_meal_editor_ingredient_no_unit' => 'Keine Einheit angegeben',
+    'ajax_response_meal_editor_ingredient_no_meal' => 'Kein Gericht angegeben.'
 ];
