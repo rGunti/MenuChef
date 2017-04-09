@@ -121,15 +121,20 @@ class AjaxMealRequest extends BaseAjaxRequest {
         if (empty($meal)) {
             $this->sendErrorResponse(t('ajax_response_meal_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
         } else {
-            $res = DatabaseTools::delete(
-                $meal->getTableName(),
-                $meal->getPrimaryKeyName(),
-                $meal->getPrimaryKey()
+            // Get all Ingredients
+            $mingrs = DatabaseTools::getWhereSimple(
+                MMealIngredient::TABLE_NAME,
+                new MMealIngredient(),
+                [ 'meal_id' => $meal_id ]
             );
-            if (empty($res)) {
-                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
-            } else {
-                $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+            array_push($mingrs, $meal);
+            if (count($mingrs) > 0) {
+                $res = DatabaseTools::massDelete($mingrs);
+                if ($res < 1) {
+                    $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+                } else {
+                    $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+                }
             }
         }
     }

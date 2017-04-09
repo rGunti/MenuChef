@@ -337,6 +337,41 @@ class DatabaseTools {
             return 0;
         }
     }
+
+    /**
+     * Deletes a list of objects in the arrays order.
+     * This happens within 1 single transaction.
+     * @param $objects ModelBaseClass[]
+     * @return int Rows affected
+     */
+    public static function massDelete($objects) {
+        $pdo = self::startNewTransaction();
+        try {
+            $rowCount = 0;
+            foreach ($objects as $object) {
+                $table = $object->getTableName();
+                $key_col = $object->getPrimaryKeyName();
+                $key_value = $object->getPrimaryKey();
+
+                $sql = "DELETE FROM $table WHERE $key_col = :KEY";
+                $stmt = self::getPdoStatement($sql, $pdo);
+                $stmt->bindValue(':KEY', $object->getPrimaryKey());
+                $stmt->execute();
+
+                Logger::verbose(
+                    "Deleted entry in Table $table with Primary Key $key_col = $key_value, rows affected: " .
+                    $stmt->rowCount()
+                );
+                $rowCount += $stmt->rowCount();
+            }
+            self::commitTransaction($pdo);
+            return $rowCount;
+        } catch (PDOException $ex) {
+            Logger::fatal("An exception occurred while mass-deleting data: " . $ex->getMessage());
+            self::rollbackTransaction($pdo);
+            return 0;
+        }
+    }
 }
 
 class TableWhereObject {

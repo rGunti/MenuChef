@@ -81,14 +81,18 @@ class AjaxMealIngredientRequest extends BaseAjaxRequest {
     private function addIngredientToMeal($meal_ingredient, $ingredient) {
         // Check if ID is given
         if (!empty($ingredient->id)) {
+            Logger::debug('An ingredient ID has been provided, trying to resolve the ID ' . $ingredient->id);
             $db_ingredient = $ingredient->getByKey($ingredient->id);
             if (empty($db_ingredient)) {
+                Logger::warn('An ingredient ID has been provided, but the ID could not be resolved! (' . $ingredient->id . ')');
                 $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_not_found', [$ingredient->id]), self::HTTP_CODE_BAD_REQUEST);
             } else {
+                Logger::debug('The ingredient could be found, using this for further operations');
                 $meal_ingredient->ingredient_id = $db_ingredient->id;
             }
         } else {
             // Create Ingredient first (with validation)
+            Logger::debug('No ingredient ID has been provided, creating a new ingredient instead...');
             if (empty($ingredient->name)) {
                 $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_name_empty'), self::HTTP_CODE_BAD_REQUEST);
             } else {
@@ -101,6 +105,7 @@ class AjaxMealIngredientRequest extends BaseAjaxRequest {
         }
 
         // Validate
+        Logger::debug('Validating Meal Ingredient...');
         if (empty($meal_ingredient->ingredient_id)) {
             $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_no_ingredient'), self::HTTP_CODE_BAD_REQUEST);
         }
@@ -115,6 +120,7 @@ class AjaxMealIngredientRequest extends BaseAjaxRequest {
         }
 
         // Add Meal Ingredient
+        Logger::debug('Inserting Meal Ingredient for Meal ' . $meal_ingredient->meal_id . ' and Ingredient ' . $meal_ingredient->ingredient_id . '...');
         $res = DatabaseTools::insert(
             MMealIngredient::TABLE_NAME,
             [
