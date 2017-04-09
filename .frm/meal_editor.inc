@@ -230,7 +230,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                     reloadIngrList();
                     $('#mealEditorAddIngredientIngrID').val(0);
                     $('#mealEditorAddIngredientName').val('');
-                    $('#mealEditorAddIngredientAmountUnit').val('');
+                    $('#mealEditorAddIngredientAmountUnit').val('unit_none');
                     $('#mealEditorAddIngredientAmount').val('');
                     $('#mealEditorAddIngredientName').focus();
                 },
