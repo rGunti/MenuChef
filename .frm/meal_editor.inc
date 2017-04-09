@@ -23,9 +23,13 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
             <div class="col-lg-6">
                 <a href="<?= PathUtils::getLink("/Meal") ?>"
                    class="btn btn-default">
-                    <?= t('cancel') ?>
+                    <span class="glyphicon glyphicon-arrow-left"></span>
+                    <?= t('back_to', [t('meal_pl')]) ?>
                 </a>
-                <button type="submit" class="btn btn-primary"><?= t('save') ?></button>
+                <button type="submit" class="btn btn-primary">
+                    <span class="glyphicon glyphicon-ok"></span>
+                    <?= t('rename') ?>
+                </button>
             </div>
             <div class="col-lg-6" style="text-align: right">
                 <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteMeal">

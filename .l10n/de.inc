@@ -18,6 +18,9 @@ return [
     'login' => 'Login',
     'logout' => 'Logout',
     'save' => 'Speichern',
+    'back' => 'Zurück',
+    'back_to' => 'Zurück zu <b>%1$s</b>',
+    'rename' => 'Umbenennen',
 
     'debug_title' => 'Debug Info',
     'debug_no_items' => 'keine Elemente',
