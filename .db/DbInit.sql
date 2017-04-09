@@ -140,3 +140,13 @@ INSERT INTO measuring_units
 ALTER TABLE meal AUTO_INCREMENT=10000;
 ALTER TABLE ingredient AUTO_INCREMENT=10000;
 ALTER TABLE meal_ingredient AUTO_INCREMENT=10000;
+
+-- Add View for Meal List
+CREATE VIEW v_meal_list AS
+  SELECT
+    m.ID as ID,
+    m.NAME as NAME,
+    (SELECT COUNT(mi.REF_ID) FROM meal_ingredient mi WHERE mi.MEAL_ID = m.ID) AS INGR_COUNT
+  FROM
+    meal m
+;

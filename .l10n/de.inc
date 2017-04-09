@@ -212,6 +212,7 @@ return [
 
     // Properties Meal Ingredient
     'mein_ingredient' => 'Zutat',
+    'mein_ingredient_pl' => 'Zutaten',
     'mein_amount' => 'Menge / Port.',
 
     'add_ingredient' => 'Zutat hinzufügen',

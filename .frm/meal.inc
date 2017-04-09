@@ -3,6 +3,7 @@
     <thead>
     <tr>
         <th><?= t('meal_name') ?></th>
+        <th><?= t('mein_ingredient_pl') ?></th>
         <th><?= t('actions') ?></th>
     </tr>
     </thead>
@@ -28,6 +29,13 @@
             ajax : ajaxSource,
             columns : [
                 { data: "name", render: htmlEscapedCellRenderer },
+                { data: "ingr_count", render: function(d,t,r) {
+                    if (d === 1) {
+                        return d + ' <?= t('mein_ingredient') ?>';
+                    } else {
+                        return d + ' <?= t('mein_ingredient_pl') ?>';
+                    }
+                } },
                 //{ data: "base_portion_size" },
                 { data: null, render: function(d,t,r) {
                     var editorUrl = editorPathPrefix + r.id + editorPathSuffix;

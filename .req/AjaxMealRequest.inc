@@ -19,8 +19,8 @@ class AjaxMealRequest extends BaseAjaxRequest {
 
         // Get Data
         $meals = DatabaseTools::getWhereAdv(
-            MMeal::TABLE_NAME,
-            new MMeal(),
+            MVMeal::TABLE_NAME,
+            new MVMeal(),
             $conditions,
             $order,
             $params->start,
