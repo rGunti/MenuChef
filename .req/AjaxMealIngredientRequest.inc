@@ -67,6 +67,11 @@ class AjaxMealIngredientRequest extends BaseAjaxRequest {
 
                     $this->addIngredientToMeal($mingr, $ingr);
                     break;
+                case 'deleteIngredient':
+                    $PARAM_mingr_id = AppUtils::getKeyDefault($vars, 'id', null);
+
+                    $this->removeIngredientFromMeal($meal_id, $PARAM_mingr_id);
+                    break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
                     break;
@@ -134,6 +139,37 @@ class AjaxMealIngredientRequest extends BaseAjaxRequest {
             $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
         } else {
             $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+        }
+    }
+
+    /**
+     * @param $meal_id int
+     * @param $mingr_id int
+     */
+    private function removeIngredientFromMeal($meal_id, $mingr_id) {
+        /** @var MMealIngredient[] $mingr_result */
+        $mingr_result = DatabaseTools::getWhereSimple(
+            MMealIngredient::TABLE_NAME,
+            new MMealIngredient(),
+            [
+                'ref_id' => $mingr_id,
+                'meal_id' => $meal_id
+            ]
+        );
+        if (count($mingr_result) != 1) {
+            $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_not_found', [$mingr_id]), self::HTTP_CODE_BAD_REQUEST);
+        } else {
+            $mingr = $mingr_result[0];
+            $res = DatabaseTools::delete(
+                $mingr->getTableName(),
+                $mingr->getPrimaryKeyName(),
+                $mingr->getPrimaryKey()
+            );
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+            }
         }
     }
 }

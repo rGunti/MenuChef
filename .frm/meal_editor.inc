@@ -183,7 +183,26 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                 { data: 'amount_text', render: htmlEscapedCellRenderer },
                 { data: 'ingredient_name', render: htmlEscapedCellRenderer },
                 { data: null, render: function(d,t,r) {
-                    return "-";
+                    var deleteIngredientTitle = '<?= htmlspecialchars(t('delete')) ?>';
+                    var deleteIngredientLink = '<a href="#" class="btn btn-default btn-xs deleteIngredientLink" data-id="' + r.ref_id + '" title="' + deleteIngredientTitle + '">' +
+                        '<span class="glyphicon glyphicon-trash"></span>' +
+                        '</a>';
+                    window.setTimeout(function() {
+                        $('.deleteIngredientLink').off('click').on('click', function(e) {
+                            var itemID = $(e.delegateTarget).data('id');
+                            var data = {
+                                action : 'deleteIngredient',
+                                id : itemID
+                            };
+                            submitSimplePostRequest(ajaxSource, data,
+                                function() { },
+                                reloadIngrList,
+                                onMealEditorError,
+                                function() { }
+                            );
+                        });
+                    }, 500);
+                    return deleteIngredientLink;
                 } }
             ],
             columnDefs : [
