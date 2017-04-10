@@ -37,7 +37,7 @@
                     }
                 } },
                 //{ data: "base_portion_size" },
-                { data: null, render: function(d,t,r) {
+                { data: null, width: 50, render: function(d,t,r) {
                     var editorUrl = editorPathPrefix + r.id + editorPathSuffix;
                     var editorLink = '<a href="' + editorUrl + '" class="btn btn-default btn-xs" ' +
                         'title="<?= t('meal_editor') ?>">' +
