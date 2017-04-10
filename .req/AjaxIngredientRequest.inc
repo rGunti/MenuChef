@@ -19,9 +19,9 @@ class AjaxIngredientRequest extends BaseAjaxRequest {
             }
 
             // Get Data
-            $meals = DatabaseTools::getWhereAdv(
-                MIngredient::TABLE_NAME,
-                new MIngredient(),
+            $ingredients = DatabaseTools::getWhereAdv(
+                MVIngredientMealObject::TABLE_NAME,
+                new MVIngredientMealObject(),
                 $conditions,
                 $order,
                 $params->start,
@@ -29,7 +29,7 @@ class AjaxIngredientRequest extends BaseAjaxRequest {
             );
 
             // Send Data
-            $this->sendObjectResponse($meals);
+            $this->sendObjectResponse($ingredients);
         } else if (PathUtils::currentPathMatches('/AJAX/Ingredients/*')) {
             $req_type = PathUtils::getLastPathElement(PathUtils::getCurrentPath());
             switch ($req_type) {

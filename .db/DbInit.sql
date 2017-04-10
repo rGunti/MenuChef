@@ -150,3 +150,12 @@ CREATE VIEW v_meal_list AS
   FROM
     meal m
 ;
+
+CREATE VIEW v_ingredient_meal_list AS
+  SELECT
+    i.ID as ID,
+    i.NAME as NAME,
+    (SELECT COUNT(mi.REF_ID) FROM meal_ingredient mi WHERE mi.INGREDIENT_ID = i.ID) as MEAL_COUNT
+  FROM
+    ingredient i
+;

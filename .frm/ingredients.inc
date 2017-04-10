@@ -3,6 +3,7 @@
     <tr>
         <th><?= t('id') ?></th>
         <th><?= t('ingredient') ?></th>
+        <th><?= t('meal_pl') ?></th>
         <th><?= t('actions') ?></th>
     </tr>
     </thead>
@@ -18,6 +19,7 @@
             columns : [
                 { data: "id", width: 50 },
                 { data: "name", render: htmlEscapedCellRenderer },
+                { data: "meal_count", render: htmlEscapedCellRenderer },
                 { data: null, width: 50, render: function(d,t,r) {
                     return null;
                 } }
