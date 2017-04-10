@@ -181,6 +181,10 @@ return [
     'unit_tl' => 'Teelöffel',
     'unit_tr' => 'Tropfen',
 
+    'unit_symbol' => 'Symbol',
+    'unit_group' => 'Einheitsgruppe',
+    'unit_super_unit' => 'Übergeordnete Einheit',
+
     'unit_group_null' => 'Keine Gruppe',
     'unit_group_weight' => 'Gewicht',
     'unit_group_fluid' => 'Flüssigmass',

@@ -26,6 +26,13 @@ class MMeasuringUnit extends ModelBaseClass {
     /** @var string */
     public $unit_group;
 
+    /** @var string */
+    public $t_name;
+    /** @var string */
+    public $t_super_unit;
+    /** @var string */
+    public $t_unit_group;
+
     /** @return bool */
     public function hasSuperUnit() { return !is_null($this->super_unit); }
     /** @return MMeasuringUnit|null */

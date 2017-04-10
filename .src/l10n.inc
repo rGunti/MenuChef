@@ -62,6 +62,10 @@ class L10N {
         }
     }
 
+    public static function getDictionary() {
+        return self::$l10n;
+    }
+
     public static function getLanguageName() {
         return self::getString(self::L10N_LANG_INFO_NAME);
     }
