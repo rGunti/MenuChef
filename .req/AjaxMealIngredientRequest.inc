@@ -96,16 +96,31 @@ class AjaxMealIngredientRequest extends BaseAjaxRequest {
                 $meal_ingredient->ingredient_id = $db_ingredient->id;
             }
         } else {
-            // Create Ingredient first (with validation)
-            Logger::debug('No ingredient ID has been provided, creating a new ingredient instead...');
-            if (empty($ingredient->name)) {
-                $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_name_empty'), self::HTTP_CODE_BAD_REQUEST);
+            // Try finding an ingredient first
+            Logger::debug('No ingredient ID has been provided, first trying to find one myself...');
+            $db_ingredients = DatabaseTools::getWhereAdv(
+                $ingredient->getTableName(),
+                new MIngredient(),
+                [ TableWhereObject::getEq('LOWER(name)', strtolower($ingredient->name)) ],
+                ['name asc'], 0, 1
+            );
+            if ($db_ingredients->recordsFiltered >= 1) {
+                Logger::debug('Found ingredient with matching name, taking it...');
+                /** @var MIngredient $db_ingredient */
+                $db_ingredient = $db_ingredients->data[0];
+                $meal_ingredient->ingredient_id = $db_ingredient->id;
             } else {
-                $meal_ingredient->ingredient_id = DatabaseTools::insert(
-                    MIngredient::TABLE_NAME,
-                    [ 'name' => $ingredient->name ],
-                    true
-                );
+                // Create Ingredient first (with validation)
+                Logger::debug('No ingredient ID has been provided, creating a new ingredient instead...');
+                if (empty($ingredient->name)) {
+                    $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_name_empty'), self::HTTP_CODE_BAD_REQUEST);
+                } else {
+                    $meal_ingredient->ingredient_id = DatabaseTools::insert(
+                        MIngredient::TABLE_NAME,
+                        [ 'name' => $ingredient->name ],
+                        true
+                    );
+                }
             }
         }
 
