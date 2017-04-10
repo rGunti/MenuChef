@@ -2,7 +2,34 @@
 class AjaxIngredientRequest extends BaseAjaxRequest {
     public function get($vars = []) {
         if (PathUtils::currentPathMatches('/AJAX/Ingredients')) {
-            $this->sendErrorResponse('Not yet implemented', self::HTTP_CODE_NOT_IMPLEMENTED);
+            // Check Permission
+            $this->checkPermissions(self::PERM_LEVEL_LOGGED_IN);
+
+            // Get Parameters
+            $params = $this->prepareDataTableArguments($vars);
+            $order = $params->getSqlOrderColumns();
+
+            // Get Conditions
+            $conditions = [];
+            if ($params->hasSearchTerm()) {
+                $searchText = $params->getSearchTerm();
+                $conditions = [
+                    TableWhereObject::getLike('NAME', $searchText)
+                ];
+            }
+
+            // Get Data
+            $meals = DatabaseTools::getWhereAdv(
+                MIngredient::TABLE_NAME,
+                new MIngredient(),
+                $conditions,
+                $order,
+                $params->start,
+                $params->length
+            );
+
+            // Send Data
+            $this->sendObjectResponse($meals);
         } else if (PathUtils::currentPathMatches('/AJAX/Ingredients/*')) {
             $req_type = PathUtils::getLastPathElement(PathUtils::getCurrentPath());
             switch ($req_type) {

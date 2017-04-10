@@ -4,7 +4,6 @@ $nav_left->setSide(TopNavigationBarCollection::SIDE_LEFT);
 
 if (Session::isLoggedIn()) {
     $nav_left->addItem(new NavigationBarElement("/Meal", t('meal_pl')));
-    $nav_left->addItem(new NavigationBarElement("/Ingredient", t('ingredient_pl')));
 }
 
 $nav_right = new TopNavigationBarCollection();
@@ -18,6 +17,7 @@ if (Session::isLoggedIn()) {
         $nav_admin->setLink('/AdminTools');
         $nav_admin->addItem(new NavigationBarElement("/AdminTools/Users", "<span class='glyphicon glyphicon-briefcase'></span> " . t('admin_tools_users')));
         $nav_admin->addItem(new NavigationBarSeparatorElement());
+        $nav_admin->addItem(new NavigationBarElement("/AdminTools/Ingredient", "<span class='glyphicon glyphicon-list'></span> " . t('ingredient_pl')));
         $nav_admin->addItem(new NavigationBarElement("/AdminTools/Units", "<span class='glyphicon glyphicon-wrench'></span> " . t('measuring_unit_pl')));
 
         $nav_right->addItem($nav_admin);
