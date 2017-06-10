@@ -29,6 +29,18 @@
         </div>
     </div>
     <div class="col-md-4">
+        <?php if (AppConfig::FEEDBACK_MAIL) { ?>
+            <h4><?= t('feedback_title') ?></h4>
+            <p>
+                <?= t('feedback_content', [
+                    '<a href="mailto:' . AppConfig::FEEDBACK_MAIL . '?subject='
+                    . t(AppConfig::FEEDBACK_SUBJECT) . '">'
+                    . AppConfig::FEEDBACK_MAIL
+                    . '</a>'
+                ]) ?>
+            </p>
+        <?php } ?>
+
         <h4><?= t('imprint_box_title') ?></h4>
         <ul>
             <li><a href="<?= PathUtils::getLink('/_Docs/Imprint') ?>"><?= t('imprint_title') ?></a></li>

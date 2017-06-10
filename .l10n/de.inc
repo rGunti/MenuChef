@@ -12,6 +12,10 @@ return [
     'copyright_show_more' => 'Mehr zeigen...',
     'copyright_full_content' => '@file:.cfg/docs/copyright/de.html',
 
+    'feedback_title' => 'Feedback',
+    'feedback_content' => 'Falls du einen Bug gefunden oder Verbesserungsvorschläge hast, sende sie mir zu an %1$s.',
+    'feedback_subject' => '[MenuChef - FEEDBACK] ',
+
     'language' => 'Sprache',
     'languages' => 'Sprachen',
 

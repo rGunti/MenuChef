@@ -11,12 +11,15 @@ class AppConfig {
     const LOG_DYN_REQUIRES = false;
     const LOG_REQUESTS = true;
     const LOG_PATH = "C:/temp/menuchef.%date%.log";
+
+    const FEEDBACK_MAIL = "feedback@rgunti.ch";
+    const FEEDBACK_SUBJECT = "feedback_subject";
 }
 
 class DbConfig {
-    const HOST = "192.168.1.200";
-    const USER = "menuchef";
-    const PASS = "menuchef";
+    const HOST = "192.168.1.250";
+    const USER = "dev-menuchef";
+    const PASS = "dev-menuchef";
     const DB = "dev-menuchef";
     const CHAR_SET = "utf8";
 }
