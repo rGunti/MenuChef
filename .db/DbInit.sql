@@ -159,3 +159,6 @@ CREATE VIEW v_ingredient_meal_list AS
   FROM
     ingredient i
 ;
+
+-- Add Notes to Meal
+ALTER TABLE meal ADD COLUMN NOTES LONGTEXT NULL AFTER BASE_PORTION_SIZE;

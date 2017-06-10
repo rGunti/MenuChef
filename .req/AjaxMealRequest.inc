@@ -48,6 +48,11 @@ class AjaxMealRequest extends BaseAjaxRequest {
                     $PARAM_meal_name = AppUtils::getKeyDefault($vars, 'name', null);
                     $this->createNewMeal($PARAM_meal_name);
                     break;
+                case 'editMealNote':
+                    $PARAM_meal_id = AppUtils::getKeyDefault($vars, 'id', null);
+                    $PARAM_meal_note = AppUtils::getKeyDefault($vars, 'note', null);
+                    $this->editMealNote($PARAM_meal_id, $PARAM_meal_note);
+                    break;
                 case 'deleteMeal':
                     $this->deleteMeal($PARAM_meal_id);
                     break;
@@ -83,6 +88,28 @@ class AjaxMealRequest extends BaseAjaxRequest {
                 MMeal::KEY_NAME,
                 $meal->id,
                 [ 'name' => $new_name ]
+            );
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+            }
+        }
+    }
+
+    private function editMealNote($meal_id, $new_note) {
+        $this->checkMealID($meal_id);
+
+        $meal = new MMeal();
+        $meal->getByKey($meal_id);
+        if (empty($meal)) {
+            $this->sendErrorResponse(t('ajax_response_meal_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
+        } else {
+            $res = DatabaseTools::update(
+                MMeal::TABLE_NAME,
+                MMeal::KEY_NAME,
+                $meal_id,
+                [ 'notes' => $new_note ]
             );
             if ($res != 1) {
                 $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);

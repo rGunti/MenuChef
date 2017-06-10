@@ -7,6 +7,7 @@ $meal = $req->getEditingMeal();
 $units = $req->getMeasuringUnits();
 
 require_once __DIR__ . '/modals/deleteMeal.inc';
+require_once __DIR__ . '/modals/editMealNote.inc';
 ?>
 <form id="mealEditorForm">
     <div class="form-group">
@@ -106,6 +107,21 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
     </tr>
     </thead>
 </table>
+
+<h2><?= t('meal_notes') ?></h2>
+<div class="row"><div class="col-lg-12"><?= $req->getMarkdownMessage() ?></div></div>
+<div class="row">
+    <div class="col-lg-12">
+        <a href="#"
+           id="mealEditorEditMealNotesLink"
+           data-id="<?= $meal->id ?>"
+           class="btn btn-primary">
+            <span class="glyphicon glyphicon-pencil"></span>
+            <?= t('edit_named', [t('meal_notes')]) ?>
+        </a>
+    </div>
+</div>
+
 <script>
     var ingredientTable = null;
     var ajaxSource = "<?= PathUtils::getLink("/AJAX/MealIngredients/$meal->id") ?>";

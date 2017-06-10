@@ -34,6 +34,16 @@ class MealEditorRequest extends BaseMultiRequest {
      */
     protected function setMeasuringUnits($units) { $this->setStorageValue('_units', $units); }
 
+    /**
+     * @return string
+     */
+    public function getMarkdownMessage() { return $this->getStorageValue('_parsedNote'); }
+
+    /**
+     * @param $note string
+     */
+    protected function setMarkdownMessage($note) { $this->setStorageValue('_parsedNote', $note); }
+
     public function get($vars = []) {
         // Check Permission
         Session::enforceLoggedIn();
@@ -70,10 +80,16 @@ class MealEditorRequest extends BaseMultiRequest {
             http_response_code(BaseAjaxRequest::HTTP_CODE_NOT_FOUND);
             PathUtils::internalRedirect("/Meal");
             return;
+        } else {
+            $parse = new Parsedown();
+            $parsedMarkdown = $parse->text($meal->notes);
+            if (empty($parsedMarkdown)) {
+                $parsedMarkdown = $parse->text(t('meal_notes_empty_markdown'));
+            }
+            $this->setMarkdownMessage($parsedMarkdown);
         }
 
         $this->setEditingMeal($meal);
-
 
         // Get Measuring Units
         $unit = new MMeasuringUnit();

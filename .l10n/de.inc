@@ -25,6 +25,8 @@ return [
     'back' => 'Zurück',
     'back_to' => 'Zurück zu <b>%1$s</b>',
     'rename' => 'Umbenennen',
+    'edit' => 'Bearbeiten',
+    'edit_named' => '<b>%1$s</b> bearbeiten',
 
     'debug_title' => 'Debug Info',
     'debug_no_items' => 'keine Elemente',
@@ -214,6 +216,10 @@ return [
     'meal_name' => 'Name',
     'meal_portion_size' => 'Portionsgrösse',
     'meal_portion_size_unit' => '%1$s Person(en)',
+    'meal_notes' => 'Notiz',
+    'meal_notes_empty_markdown' => '_< Es ist keine Notiz hinterlegt >_',
+    'meal_notes_markdown' => 'In diesem Feld kann Markdown verwendet werden. ' .
+        '<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Mehr Infos</a>',
 
     'create_meal' => 'Gericht hinzufügen',
     'delete_meal' => 'Gericht löschen',

@@ -21,4 +21,6 @@ class MMeal extends ModelBaseClass {
     public $name;
     /** @var int */
     public $base_portion_size;
+    /** @var string */
+    public $notes;
 }
