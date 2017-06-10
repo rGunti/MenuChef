@@ -25,5 +25,5 @@ class MVMealIngredient extends ModelBaseClass {
     public $ingredient_name;
     public $amount;
     public $amount_unit;
-    public $amount_text;
+    public $unit_symbol;
 }

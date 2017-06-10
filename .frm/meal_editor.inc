@@ -61,6 +61,7 @@ require_once __DIR__ . '/modals/editMealNote.inc';
             <div class="form-group">
                 <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
                 <input type="number"
+                       step="any"
                        class="form-control"
                        id="mealEditorAddIngredientAmount"
                        name="mealEditorAddIngredientAmount"
@@ -196,7 +197,10 @@ require_once __DIR__ . '/modals/editMealNote.inc';
             ajax : ajaxSource,
             columns : [
                 //{ data: 'ref_id', render: htmlEscapedCellRenderer },
-                { data: 'amount_text', render: htmlEscapedCellRenderer },
+                { data: null, render: function(d,t,r) {
+                    // htmlEscapedCellRenderer
+                    return (Number(r.amount) + ' ' + r.unit_symbol).trim();
+                } },
                 { data: 'ingredient_name', render: htmlEscapedCellRenderer },
                 { data: null, render: function(d,t,r) {
                     var deleteIngredientTitle = '<?= htmlspecialchars(t('delete')) ?>';
