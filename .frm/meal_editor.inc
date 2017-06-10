@@ -99,7 +99,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 <table class="table table-hover table-condensed table-striped" id="mealIngredientTable">
     <thead>
     <tr>
-        <th><?= t('id') ?></th>
+        <!-- <th><?= t('id') ?></th> -->
         <th><?= t('mein_amount') ?></th>
         <th><?= t('mein_ingredient') ?></th>
         <th><?= t('actions') ?></th>
@@ -179,7 +179,7 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
             serverSide : true,
             ajax : ajaxSource,
             columns : [
-                { data: 'ref_id', render: htmlEscapedCellRenderer },
+                //{ data: 'ref_id', render: htmlEscapedCellRenderer },
                 { data: 'amount_text', render: htmlEscapedCellRenderer },
                 { data: 'ingredient_name', render: htmlEscapedCellRenderer },
                 { data: null, render: function(d,t,r) {
@@ -206,12 +206,13 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
                 } }
             ],
             columnDefs : [
-                { targets: 0, width: 75, orderable: false },
-                { targets: 1, width: 110, orderable: false },
+                //{ targets: 0, width: 75, orderable: false },
+                { targets: 0, width: 110, orderable: false },
+                { targets: 1, orderable: true },
                 { targets: -1, orderable: false, width: 100 }
             ],
             order : [
-                [ 2, "asc" ]
+                [ 1, "asc" ]
             ],
             pagingType : "full_numbers",
             language : <?php require __DIR__ . '/general/datatable.l10n.inc' ?>
