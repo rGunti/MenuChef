@@ -10,196 +10,185 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 require_once __DIR__ . '/modals/editMealNote.inc';
 require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
 ?>
-<form id="mealEditorForm">
-    <div class="form-group">
-        <label for="mealEditorName"><?= t('meal_name') ?></label>
-        <input type="text"
-               class="form-control"
-               id="mealEditorName"
-               name="mealEditorName"
-               value="<?= htmlspecialchars($meal->name) ?>"
-               required>
-    </div>
-    <div class="form-group">
-        <div class="row">
-            <div class="col-lg-6">
-                <a href="<?= PathUtils::getLink("/Meal") ?>"
-                   class="btn btn-default">
-                    <span class="glyphicon glyphicon-arrow-left"></span>
-                    <?= t('back_to', [t('meal_pl')]) ?>
-                </a>
-                <button type="submit" class="btn btn-primary">
-                    <span class="glyphicon glyphicon-ok"></span>
-                    <?= t('rename') ?>
-                </button>
-            </div>
-            <div class="col-lg-6" style="text-align: right">
-                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteMeal">
-                    <span class="glyphicon glyphicon-trash"></span>&nbsp
-                    <?= t('delete') ?>
-                </a>
-            </div>
+<div class="mealTabs">
+   <ul class="nav nav-tabs" role="tablist" id="mealTabNav">
+       <li role="presentation" class="active"><a href="#home" aria-controls="home" data-toggle="tab"><?= t('meal') ?></a></li>
+       <li role="presentation"><a href="#mealIngredients" aria-controls="mealIngredients" data-toggle="tab"><?= t('ingredient_pl') ?></a></li>
+       <li role="presentation"><a href="#mealNotes" aria-controls="mealNotes" data-toggle="tab"><?= t('meal_notes') ?></a></li>
+       <li role="presentation"><a href="#linkedMeals" aria-controls="linkedMeals" data-toggle="tab"><?= t('linked_meal_pl') ?></a></li>
+       <li role="presentation"><a href="#connectedMeals" aria-controls="connectedMeals" data-toggle="tab"><?= t('connected_meal_pl') ?></a></li>
+   </ul>
+
+    <div class="tab-content">
+        <!-- Tab: Home -->
+        <div role="tabpanel" class="tab-pane fade in active" id="home">
+            <form id="mealEditorForm">
+                <div class="form-group">
+                    <label for="mealEditorName"><?= t('meal_name') ?></label>
+                    <input type="text"
+                           class="form-control"
+                           id="mealEditorName"
+                           name="mealEditorName"
+                           value="<?= htmlspecialchars($meal->name) ?>"
+                           required>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="<?= PathUtils::getLink("/Meal") ?>"
+                               class="btn btn-default">
+                                <span class="glyphicon glyphicon-arrow-left"></span>
+                                <?= t('back_to', [t('meal_pl')]) ?>
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="glyphicon glyphicon-ok"></span>
+                                <?= t('rename') ?>
+                            </button>
+                        </div>
+                        <div class="col-lg-6" style="text-align: right">
+                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteMeal">
+                                <span class="glyphicon glyphicon-trash"></span>&nbsp
+                                <?= t('delete') ?>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
-    </div>
-</form>
 
-<hr>
+        <!-- Tab: Ingredients -->
+        <div role="tabpanel" class="tab-pane fade" id="mealIngredients">
+            <form id="mealEditorAddIngredientForm">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="mealEditorAddIngredientName"><?= t('ingredient') ?></label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="mealEditorAddIngredientName"
+                                   name="mealEditorAddIngredientName"
+                                   placeholder="<?= t('ingredient') ?>"
+                            >
+                            <input type="hidden" id="mealEditorAddIngredientIngrID" value="">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
+                            <input type="number"
+                                   step="any"
+                                   class="form-control"
+                                   id="mealEditorAddIngredientAmount"
+                                   name="mealEditorAddIngredientAmount"
+                                   style="text-align: right"
+                                   placeholder="<?= t('mein_amount') ?>"
+                            >
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="form-group">
+                            <label for="mealEditorAddIngredientAmountUnit"><?= t('measuring_unit') ?></label>
+                            <select class="form-control"
+                                    id="mealEditorAddIngredientAmountUnit"
+                                    name="mealEditorAddIngredientAmountUnit"
+                            >
+                                <?php foreach ($units as $unit_group_name => $subunits) { ?>
+                                    <optgroup label="<?= htmlspecialchars(t($unit_group_name)) ?>">
+                                        <?php foreach ($subunits as $unit) { ?>
+                                            <option value="<?= $unit->getPrimaryKey() ?>" <?= $unit->symbol == '' ? 'selected' : '' ?>>
+                                                <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol . " (" . t($unit->name) . ")" ?>
+                                            </option>
+                                        <?php } ?>
+                                    </optgroup>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <label><?= t('actions') ?></label>
+                        <button type="submit" class="form-control btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <?= t('add_ingredient') ?>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-hover table-condensed table-striped" id="mealIngredientTable">
+                <thead>
+                <tr>
+                    <!-- <th><?= t('id') ?></th> -->
+                    <th><?= t('mein_amount') ?></th>
+                    <th><?= t('mein_ingredient') ?></th>
+                    <th><?= t('actions') ?></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
 
-<h2 id="index"><?= t('index') ?></h2>
-<div class="row">
-    <div class="col-lg-12">
-        <div class="btn-group" role="group">
-            <button type="button" class="quick-nav-link btn btn-default" data-target="#mealIngrediens"><?= t('ingredient_pl') ?></button>
-            <button type="button" class="quick-nav-link btn btn-default" data-target="#mealNotes"><?= t('meal_notes') ?></button>
-            <button type="button" class="quick-nav-link btn btn-default" data-target="#linkedMeals"><?= t('linked_meal_pl') ?></button>
-            <button type="button" class="quick-nav-link btn btn-default" data-target="#connectedMeals"><?= t('connected_meal_pl') ?></button>
+        <!-- Tab: Meal Notes -->
+        <div role="tabpanel" class="tab-pane fade" id="mealNotes">
+            <div class="row">
+                <div class="col-lg-12">
+                    <a href="#mealNotes"
+                       id="mealEditorEditMealNotesLink"
+                       data-id="<?= $meal->id ?>"
+                       class="btn btn-primary">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <?= t('edit_named', [t('meal_notes')]) ?>
+                    </a>
+                </div>
+            </div>
+            <div class="row" style="margin-top: 10px"><div class="col-lg-12"><?= $req->getMarkdownMessage() ?></div></div>
+        </div>
+
+        <!-- Tab: Linked Meals -->
+        <div role="tabpanel" class="tab-pane fade" id="linkedMeals">
+            <form id="mealEditorLinkForm">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="form-group">
+                            <label for="mealEditorLinkMealName"><?= t('meal') ?></label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="mealEditorLinkMealName"
+                                   name="mealEditorLinkMealName"
+                                   placeholder="<?= t('meal') ?>"
+                            >
+                            <input type="hidden" id="mealEditorLinkMealID" value="">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <label><?= t('actions') ?></label>
+                        <button type="submit" class="form-control btn btn-success">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            <?= t('add_named', [ t('linked_meal_sh') ]) ?>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <table class="table table-hover table-condensed table-striped" id="linkedMealTable">
+                <thead>
+                <tr>
+                    <th><?= t('meal') ?></th>
+                    <th><?= t('actions') ?></th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <!-- Tab: Connected Meals -->
+        <div role="tabpanel" class="tab-pane fade" id="connectedMeals">
+            <table class="table table-hover table-condensed table-striped" id="connectedMealTable">
+                <thead>
+                <tr>
+                    <th><?= t('meal') ?></th>
+                    <th><?= t('actions') ?></th>
+                </tr>
+                </thead>
+            </table>
         </div>
     </div>
 </div>
-
-<hr>
-
-<h2 id="mealIngrediens">
-    <?= t('ingredient_pl') ?>
-    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
-</h2>
-<form id="mealEditorAddIngredientForm">
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="form-group">
-                <label for="mealEditorAddIngredientName"><?= t('ingredient') ?></label>
-                <input type="text"
-                       class="form-control"
-                       id="mealEditorAddIngredientName"
-                       name="mealEditorAddIngredientName"
-                       placeholder="<?= t('ingredient') ?>"
-                >
-                <input type="hidden" id="mealEditorAddIngredientIngrID" value="">
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="form-group">
-                <label for="mealEditorAddIngredientAmount"><?= t('mein_amount') ?></label>
-                <input type="number"
-                       step="any"
-                       class="form-control"
-                       id="mealEditorAddIngredientAmount"
-                       name="mealEditorAddIngredientAmount"
-                       style="text-align: right"
-                       placeholder="<?= t('mein_amount') ?>"
-                >
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <div class="form-group">
-                <label for="mealEditorAddIngredientAmountUnit"><?= t('measuring_unit') ?></label>
-                <select class="form-control"
-                        id="mealEditorAddIngredientAmountUnit"
-                        name="mealEditorAddIngredientAmountUnit"
-                >
-                    <?php foreach ($units as $unit_group_name => $subunits) { ?>
-                        <optgroup label="<?= htmlspecialchars(t($unit_group_name)) ?>">
-                            <?php foreach ($subunits as $unit) { ?>
-                                <option value="<?= $unit->getPrimaryKey() ?>" <?= $unit->symbol == '' ? 'selected' : '' ?>>
-                                    <?= empty($unit->symbol) ? t($unit->name) : $unit->symbol . " (" . t($unit->name) . ")" ?>
-                                </option>
-                            <?php } ?>
-                        </optgroup>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-        <div class="col-lg-2">
-            <label><?= t('actions') ?></label>
-            <button type="submit" class="form-control btn btn-success">
-                <span class="glyphicon glyphicon-plus"></span>
-                <?= t('add_ingredient') ?>
-            </button>
-        </div>
-    </div>
-</form>
-<table class="table table-hover table-condensed table-striped" id="mealIngredientTable">
-    <thead>
-    <tr>
-        <!-- <th><?= t('id') ?></th> -->
-        <th><?= t('mein_amount') ?></th>
-        <th><?= t('mein_ingredient') ?></th>
-        <th><?= t('actions') ?></th>
-    </tr>
-    </thead>
-</table>
-
-<hr>
-
-<h2 id="mealNotes">
-    <?= t('meal_notes') ?>
-    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
-</h2>
-<div class="row"><div class="col-lg-12"><?= $req->getMarkdownMessage() ?></div></div>
-<div class="row">
-    <div class="col-lg-12">
-        <a href="#mealNotes"
-           id="mealEditorEditMealNotesLink"
-           data-id="<?= $meal->id ?>"
-           class="btn btn-primary">
-            <span class="glyphicon glyphicon-pencil"></span>
-            <?= t('edit_named', [t('meal_notes')]) ?>
-        </a>
-    </div>
-</div>
-
-<hr>
-
-<h2 id="linkedMeals">
-    <?= t('linked_meal_pl') ?>
-    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
-</h2>
-<form id="mealEditorLinkForm">
-    <div class="row">
-        <div class="col-lg-9">
-            <div class="form-group">
-                <label for="mealEditorLinkMealName"><?= t('meal') ?></label>
-                <input type="text"
-                       class="form-control"
-                       id="mealEditorLinkMealName"
-                       name="mealEditorLinkMealName"
-                       placeholder="<?= t('meal') ?>"
-                >
-                <input type="hidden" id="mealEditorLinkMealID" value="">
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <label><?= t('actions') ?></label>
-            <button type="submit" class="form-control btn btn-success">
-                <span class="glyphicon glyphicon-plus"></span>
-                <?= t('add_named', [ t('linked_meal_sh') ]) ?>
-            </button>
-        </div>
-    </div>
-</form>
-<table class="table table-hover table-condensed table-striped" id="linkedMealTable">
-    <thead>
-    <tr>
-        <th><?= t('meal') ?></th>
-        <th><?= t('actions') ?></th>
-    </tr>
-    </thead>
-</table>
-
-<hr>
-
-<h2 id="connectedMeals">
-    <?= t('connected_meal_pl') ?>
-    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
-</h2>
-<table class="table table-hover table-condensed table-striped" id="connectedMealTable">
-    <thead>
-    <tr>
-        <th><?= t('meal') ?></th>
-        <th><?= t('actions') ?></th>
-    </tr>
-    </thead>
-</table>
 
 <script>
     var ingredientTable = null;
@@ -353,7 +342,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
                 [ 1, "asc" ]
             ],
             pagingType : "full_numbers",
-            language : dataTableLanguage
+            language : dataTableLanguage,
+            autoWidth : false
         });
 
         var linkedMealColumnDefs = [
@@ -397,7 +387,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
             columnDefs : linkedMealColumnDefs,
             order : linkedMealColumnOrder,
             pagingType : "full_numbers",
-            language : dataTableLanguage
+            language : dataTableLanguage,
+            autoWidth : false
         });
         connectedMealTable = $('#connectedMealTable').DataTable({
             processing : true,
@@ -431,7 +422,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
             columnDefs : linkedMealColumnDefs,
             order : linkedMealColumnOrder,
             pagingType : "full_numbers",
-            language : dataTableLanguage
+            language : dataTableLanguage,
+            autoWidth : false
         });
 
         $('#mealEditorForm').submit(function(e) {

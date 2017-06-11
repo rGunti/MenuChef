@@ -21,3 +21,7 @@ body {
 
 a.quick-nav-link { cursor: pointer !important; }
 small.back-to-index { font-size: small; }
+
+.tab-pane {
+    margin: 5px;
+}
