@@ -94,6 +94,8 @@ return [
     'cancel' => 'Abbrechen',
     'yes' => 'Ja',
     'no' => 'Nein',
+    'add' => 'Hinzufügen',
+    'add_named' => '%1$s hinzufügen',
     'delete' => 'Löschen',
     'delete_named' => '"%1$s" löschen',
 

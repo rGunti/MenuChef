@@ -43,6 +43,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
     </div>
 </form>
 
+<hr>
+
 <h2 id="index"><?= t('index') ?></h2>
 <div class="row">
     <div class="col-lg-12">
@@ -54,6 +56,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
         </div>
     </div>
 </div>
+
+<hr>
 
 <h2 id="mealIngrediens">
     <?= t('ingredient_pl') ?>
@@ -125,6 +129,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
     </thead>
 </table>
 
+<hr>
+
 <h2 id="mealNotes">
     <?= t('meal_notes') ?>
     <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
@@ -142,10 +148,35 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
     </div>
 </div>
 
+<hr>
+
 <h2 id="linkedMeals">
     <?= t('linked_meal_pl') ?>
     <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
 </h2>
+<form id="mealEditorLinkForm">
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="form-group">
+                <label for="mealEditorLinkMealName"><?= t('meal') ?></label>
+                <input type="text"
+                       class="form-control"
+                       id="mealEditorLinkMealName"
+                       name="mealEditorLinkMealName"
+                       placeholder="<?= t('meal') ?>"
+                >
+                <input type="hidden" id="mealEditorLinkMealID" value="">
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <label><?= t('actions') ?></label>
+            <button type="submit" class="form-control btn btn-success">
+                <span class="glyphicon glyphicon-plus"></span>
+                <?= t('add_named', [ t('linked_meal_sh') ]) ?>
+            </button>
+        </div>
+    </div>
+</form>
 <table class="table table-hover table-condensed table-striped" id="linkedMealTable">
     <thead>
     <tr>
@@ -154,6 +185,8 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
     </tr>
     </thead>
 </table>
+
+<hr>
 
 <h2 id="connectedMeals">
     <?= t('connected_meal_pl') ?>
@@ -176,6 +209,7 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
     var ajaxSourceLinkedMeals = "<?= PathUtils::getLink("/AJAX/Meal/$meal->id/LinkedMeals") ?>";
     var ajaxSourceConnectedMeals = "<?= PathUtils::getLink("/AJAX/Meal/$meal->id/ConnectedMeals") ?>";
     var ajaxMealEdit = "<?= PathUtils::getLink("/AJAX/Meal") ?>";
+    var ajaxDestinationLinkedMeals = "<?= PathUtils::getLink("/AJAX/LinkedMeal") ?>";
 
     function reloadIngrList() {
         ingredientTable.ajax.reload(null, false); // false: Keep page
@@ -244,6 +278,31 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
         });
         $('#mealEditorAddIngredientName').on('input propertychange paste', function(e) {
             $('#mealEditorAddIngredientIngrID').val(0);
+        });
+
+        $('#mealEditorLinkMealName').autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '<?= PathUtils::getLink('/AJAX/Meal/AutoComplete') ?>',
+                    //method: 'post',
+                    data: {
+                        term: request.term,
+                        currentMeal: <?= $meal->id ?>
+                    },
+                    // Expected Output: {id,label,value}
+                    success: function(data) { response(data); },
+                    error: onErrorAutoHandle
+                })
+            },
+            minLength: 2,
+            select: function (event, ui) {
+                //console.log(event, ui);
+                //console.log(ui.item);
+                $('#mealEditorLinkMealID').val(ui.item.id);
+            }
+        });
+        $('#mealEditorLinkMealName').on('input propertychange paste', function(e) {
+            $('#mealEditorLinkMealID').val(0);
         });
 
         var dataTableLanguage = <?php require __DIR__ . '/general/datatable.l10n.inc' ?>;
@@ -419,6 +478,30 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
                 onMealEditorError,
                 function () {
                     $('#mealEditorAddIngredientForm button[type=submit]').prop('disabled', false);
+                }
+            );
+        });
+
+        $('#mealEditorLinkForm').submit(function(e) {
+            e.preventDefault();
+            var linkMealData = {
+                action: 'addLinkedMeal',
+                sourceMeal: <?= $meal->id ?>,
+                linkMeal: $('#mealEditorLinkMealID').val()
+            };
+            submitSimplePostRequest(ajaxDestinationLinkedMeals, linkMealData,
+                function() {
+                    $('#mealEditorLinkForm button[type=submit]').prop('disabled', true);
+                },
+                function(data, textStatus, jqXHR) {
+                    reloadLinkedMealListsOnSuccess();
+                    $('#mealEditorLinkMealID').val(0);
+                    $('#mealEditorLinkMealName').val('');
+                    $('#mealEditorLinkMealName').focus();
+                },
+                onMealEditorError,
+                function () {
+                    $('#mealEditorLinkForm button[type=submit]').prop('disabled', false);
                 }
             );
         });

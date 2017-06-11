@@ -1,34 +1,69 @@
 <?php
 class AjaxMealRequest extends BaseAjaxRequest {
     public function get($vars = []) {
-        // Check Permission
-        $this->checkPermissions(self::PERM_LEVEL_LOGGED_IN);
+        if (PathUtils::currentPathMatches('/AJAX/Meal')) {
+            // Check Permission
+            $this->checkPermissions(self::PERM_LEVEL_LOGGED_IN);
 
-        // Get Parameters
-        $params = $this->prepareDataTableArguments($vars);
-        $order = $params->getSqlOrderColumns();
+            // Get Parameters
+            $params = $this->prepareDataTableArguments($vars);
+            $order = $params->getSqlOrderColumns();
 
-        // Get Conditions
-        $conditions = [];
-        if ($params->hasSearchTerm()) {
-            $searchText = $params->getSearchTerm();
-            $conditions = [
-                TableWhereObject::getLike('NAME', $searchText)
-            ];
+            // Get Conditions
+            $conditions = [];
+            if ($params->hasSearchTerm()) {
+                $searchText = $params->getSearchTerm();
+                $conditions = [
+                    TableWhereObject::getLike('NAME', $searchText)
+                ];
+            }
+
+            // Get Data
+            $meals = DatabaseTools::getWhereAdv(
+                MVMeal::TABLE_NAME,
+                new MVMeal(),
+                $conditions,
+                $order,
+                $params->start,
+                $params->length
+            );
+
+            // Send Data
+            $this->sendObjectResponse($meals);
+        } else if (PathUtils::currentPathMatches('/AJAX/Meal/AutoComplete')) {
+            $term = AppUtils::getKeyDefault($vars, 'term', '');
+            $currentMeal = AppUtils::getKeyDefault($vars, 'currentMeal', '');
+            $meals_request = DatabaseTools::getWhereAdv(
+                MMeal::TABLE_NAME,
+                new MMeal(),
+                [
+                    TableWhereObject::getLike('name', $term),
+                    new TableWhereObject(
+                        'id',
+                        '!=',
+                        $currentMeal,
+                        TableWhereObject::PREFIX_AND
+                    )
+                ],
+                [ 'name ASC' ],
+                0, 50
+            );
+
+            /** @var MMeal[] $meals */
+            $meals = $meals_request->data;
+            $response = [];
+            foreach ($meals as $meal) {
+                array_push($response, [
+                    'id' => $meal->id,
+                    'value' => $meal->name,
+                    'label' => $meal->name,
+                    'object' => $meal
+                ]);
+            }
+            $this->sendObjectResponse($response);
+        } else {
+            $this->sendErrorResponse(null, self::HTTP_CODE_BAD_REQUEST);
         }
-
-        // Get Data
-        $meals = DatabaseTools::getWhereAdv(
-            MVMeal::TABLE_NAME,
-            new MVMeal(),
-            $conditions,
-            $order,
-            $params->start,
-            $params->length
-        );
-
-        // Send Data
-        $this->sendObjectResponse($meals);
     }
 
     public function post($vars = []) {

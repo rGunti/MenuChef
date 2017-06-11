@@ -25,6 +25,7 @@ return [
     // AJAX Requests
     "/AJAX/Users" => new AjaxUserRequest(),
     "/AJAX/Meal" => new AjaxMealRequest(),
+    "/AJAX/Meal/*" => new AjaxMealRequest(),
     "/AJAX/Meal/*/LinkedMeals" => new AjaxLinkedMealRequest(),
     "/AJAX/Meal/*/ConnectedMeals" => new AjaxLinkedMealRequest(),
     "/AJAX/MealIngredients/*" => new AjaxMealIngredientRequest(),

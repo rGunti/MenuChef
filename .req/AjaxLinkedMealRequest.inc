@@ -58,10 +58,52 @@ class AjaxLinkedMealRequest extends BaseAjaxRequest {
                         $this->deleteLinkedMeal($PARAM_id);
                     }
                     break;
+                case 'addLinkedMeal':
+                    $PARAM_source_meal = AppUtils::getKeyDefault($vars, 'sourceMeal', null);
+                    $PARAM_selected_meal = AppUtils::getKeyDefault($vars, 'linkMeal', null);
+
+                    if (empty($PARAM_source_meal) || empty($PARAM_selected_meal)) {
+                        $this->sendErrorResponse(
+                            t('ajax_response_no_data'),
+                            self::HTTP_CODE_BAD_REQUEST
+                        );
+                    } else {
+                        $this->linkMeal($PARAM_source_meal, $PARAM_selected_meal);
+                    }
+                    break;
                 default:
                     $this->sendErrorResponse(t('ajax_response_unknown_action', [$PARAM_action]), self::HTTP_CODE_BAD_REQUEST);
                     break;
             }
+        }
+    }
+
+    private function linkMeal($source_meal, $selected_meal) {
+        $meals = DatabaseTools::getWhereAdv(
+            MMeal::TABLE_NAME,
+            new MMeal(),
+            [
+                TableWhereObject::getEq('ID', $source_meal),
+                TableWhereObject::getEq('ID', $selected_meal, TableWhereObject::PREFIX_OR)
+            ],
+            [], 0, 10
+        );
+
+        if ($meals->recordsFiltered == 2) {
+            $res = DatabaseTools::insert(
+                MLinkedMeal::TABLE_NAME,
+                [
+                    'meal_id' => $source_meal,
+                    'linked_meal_id' => $selected_meal
+                ]
+            );
+            if ($res != 1) {
+                $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);
+            } else {
+                $this->sendObjectResponse(null, self::HTTP_CODE_NO_CONTENT);
+            }
+        } else {
+            $this->sendErrorResponse(t('ajax_response_meal_id_not_found', [ $source_meal ]), self::HTTP_CODE_BAD_REQUEST);
         }
     }
 
@@ -72,7 +114,7 @@ class AjaxLinkedMealRequest extends BaseAjaxRequest {
             [ 'ref_id' => $refId ]
         );
         if (count($linked_meal) != 1) {
-            $this->sendErrorResponse(t('ajax_response_meal_editor_ingredient_not_found', [$refId]), self::HTTP_CODE_BAD_REQUEST);
+            $this->sendErrorResponse(t('ajax_response_meal_id_not_found', [$refId]), self::HTTP_CODE_BAD_REQUEST);
         } else {
             $res = DatabaseTools::delete(
                 MLinkedMeal::TABLE_NAME,

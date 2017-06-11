@@ -15,9 +15,16 @@ function onAjaxError(jqXHR, textStatus, errorThrown) {
         if (jqXHR.responseJSON) {
             errorText += 'Sever provided information:\n';
             if (typeof jqXHR.responseJSON.ErrorInfo == 'string') {
-                errorText += jqXHR.responseJSON.ErrorInfo;
+                var appendText;
+                try {
+                    appendText = JSON.parse(jqXHR.responseJSON.ErrorInfo);
+                    appendText = JSON.stringify(appendText, null, 2);
+                } catch (err) {
+                    appendText = jqXHR.responseJSON.ErrorInfo;
+                }
+                errorText += appendText;
             } else {
-                errorText += JSON.stringify(jqXHR.responseJSON.ErrorInfo, '   ');
+                errorText += JSON.stringify(jqXHR.responseJSON.ErrorInfo, null, 2);
             }
         } else {
             errorText += 'No additional information is available.\nThis is the first part of the response:\n\n';
