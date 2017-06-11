@@ -34,6 +34,7 @@ return [
     'debug_instance' => 'Instanz',
 
     'home' => 'Home',
+    'index' => 'Index',
 
     'username' => 'Benutzername',
     'username_helptext' => 'Der Benutzername darf nicht schon vergeben sein, darf nur aus Kleinbuchstaben bestehen und ' .
@@ -107,7 +108,9 @@ return [
     'privilege_level_default' => 'Standard-Benutzer',
 
     'open_in' => 'Öffnen mit <b>%1$s</b>&hellip;',
+    'open_in_nohtml' => 'Öffnen mit %1$s &hellip;',
     'close' => 'Schliessen',
+    'goto_index' => 'Zum Index',
 
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
     'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
@@ -211,6 +214,11 @@ return [
     'ingredient_pl' => 'Zutaten',
     'meal_ingredient' => 'Gericht-Zutat',
     'meal_ingredient_pl' => 'Gericht-Zutaten',
+    'linked_meal' => 'Verknüpftes Gericht',
+    'linked_meal_pl' => 'Verknüpfte Gerichte',
+    'linked_meal_sh' => 'Verknüpfung',
+    'connected_meal' => 'Verknüpft mit Gericht',
+    'connected_meal_pl' => 'Verknüpft mit Gerichten',
 
     // Properties Meal
     'meal_name' => 'Name',
@@ -238,6 +246,9 @@ return [
         'Du kannst es jetzt im Gerichte-Editor bearbeiten.',
     'modal_delete_meal_question' => 'Möchtest du das Gericht "%1$s" wirklich löschen?</p><p>' .
         'Wenn du das Gericht gelöscht hast, kannst du es nicht wiederherstellen!',
+
+    'modal_delete_linked_meal' => 'Verknüpfung löschen',
+    'modal_delete_linked_meal_question' => 'Möchtest Du die Verknüpfung zu %1$s aufheben?',
 
     'ajax_response_meal_no_id' => 'Keine Gericht-ID gefunden.',
     'ajax_response_meal_id_not_found' => 'Das Gericht konnte nicht gefunden werden.',

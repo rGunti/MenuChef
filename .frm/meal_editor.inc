@@ -8,6 +8,7 @@ $units = $req->getMeasuringUnits();
 
 require_once __DIR__ . '/modals/deleteMeal.inc';
 require_once __DIR__ . '/modals/editMealNote.inc';
+require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
 ?>
 <form id="mealEditorForm">
     <div class="form-group">
@@ -34,7 +35,7 @@ require_once __DIR__ . '/modals/editMealNote.inc';
             </div>
             <div class="col-lg-6" style="text-align: right">
                 <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteMeal">
-                    <span class="glyphicon glyphicon-trash"></span>&nbsp;
+                    <span class="glyphicon glyphicon-trash"></span>&nbsp
                     <?= t('delete') ?>
                 </a>
             </div>
@@ -42,7 +43,22 @@ require_once __DIR__ . '/modals/editMealNote.inc';
     </div>
 </form>
 
-<h2><?= t('ingredient_pl') ?></h2>
+<h2 id="index"><?= t('index') ?></h2>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="btn-group" role="group">
+            <button type="button" class="quick-nav-link btn btn-default" data-target="#mealIngrediens"><?= t('ingredient_pl') ?></button>
+            <button type="button" class="quick-nav-link btn btn-default" data-target="#mealNotes"><?= t('meal_notes') ?></button>
+            <button type="button" class="quick-nav-link btn btn-default" data-target="#linkedMeals"><?= t('linked_meal_pl') ?></button>
+            <button type="button" class="quick-nav-link btn btn-default" data-target="#connectedMeals"><?= t('connected_meal_pl') ?></button>
+        </div>
+    </div>
+</div>
+
+<h2 id="mealIngrediens">
+    <?= t('ingredient_pl') ?>
+    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
+</h2>
 <form id="mealEditorAddIngredientForm">
     <div class="row">
         <div class="col-lg-6">
@@ -109,11 +125,14 @@ require_once __DIR__ . '/modals/editMealNote.inc';
     </thead>
 </table>
 
-<h2><?= t('meal_notes') ?></h2>
+<h2 id="mealNotes">
+    <?= t('meal_notes') ?>
+    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
+</h2>
 <div class="row"><div class="col-lg-12"><?= $req->getMarkdownMessage() ?></div></div>
 <div class="row">
     <div class="col-lg-12">
-        <a href="#"
+        <a href="#mealNotes"
            id="mealEditorEditMealNotesLink"
            data-id="<?= $meal->id ?>"
            class="btn btn-primary">
@@ -123,13 +142,48 @@ require_once __DIR__ . '/modals/editMealNote.inc';
     </div>
 </div>
 
+<h2 id="linkedMeals">
+    <?= t('linked_meal_pl') ?>
+    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
+</h2>
+<table class="table table-hover table-condensed table-striped" id="linkedMealTable">
+    <thead>
+    <tr>
+        <th><?= t('meal') ?></th>
+        <th><?= t('actions') ?></th>
+    </tr>
+    </thead>
+</table>
+
+<h2 id="connectedMeals">
+    <?= t('connected_meal_pl') ?>
+    <small class="back-to-index"><a class="quick-nav-link" data-target="#index"><?= t('back_to', [t('index')]) ?></a></small>
+</h2>
+<table class="table table-hover table-condensed table-striped" id="connectedMealTable">
+    <thead>
+    <tr>
+        <th><?= t('meal') ?></th>
+        <th><?= t('actions') ?></th>
+    </tr>
+    </thead>
+</table>
+
 <script>
     var ingredientTable = null;
+    var linkedMealTable = null;
+    var connectedMealTable = null;
     var ajaxSource = "<?= PathUtils::getLink("/AJAX/MealIngredients/$meal->id") ?>";
+    var ajaxSourceLinkedMeals = "<?= PathUtils::getLink("/AJAX/Meal/$meal->id/LinkedMeals") ?>";
+    var ajaxSourceConnectedMeals = "<?= PathUtils::getLink("/AJAX/Meal/$meal->id/ConnectedMeals") ?>";
     var ajaxMealEdit = "<?= PathUtils::getLink("/AJAX/Meal") ?>";
 
     function reloadIngrList() {
         ingredientTable.ajax.reload(null, false); // false: Keep page
+    }
+
+    function reloadLinkedMealListsOnSuccess() {
+        linkedMealTable.ajax.reload(null, false); // false: Keep page
+        connectedMealTable.ajax.reload(null, false); // false: Keep page
     }
 
     function onMealEditorError(jqXHR, textStatus, errorThrown) {
@@ -191,6 +245,9 @@ require_once __DIR__ . '/modals/editMealNote.inc';
         $('#mealEditorAddIngredientName').on('input propertychange paste', function(e) {
             $('#mealEditorAddIngredientIngrID').val(0);
         });
+
+        var dataTableLanguage = <?php require __DIR__ . '/general/datatable.l10n.inc' ?>;
+
         ingredientTable = $('#mealIngredientTable').DataTable({
             processing : true,
             serverSide : true,
@@ -204,7 +261,9 @@ require_once __DIR__ . '/modals/editMealNote.inc';
                 { data: 'ingredient_name', render: htmlEscapedCellRenderer },
                 { data: null, render: function(d,t,r) {
                     var deleteIngredientTitle = '<?= htmlspecialchars(t('delete')) ?>';
-                    var deleteIngredientLink = '<a href="#" class="btn btn-default btn-xs deleteIngredientLink" data-id="' + r.ref_id + '" title="' + deleteIngredientTitle + '">' +
+                    var deleteIngredientLink = '<a href="#mealIngrediens" ' +
+                        'class="btn btn-default btn-xs deleteIngredientLink" ' +
+                        'data-id="' + r.ref_id + '" title="' + deleteIngredientTitle + '">' +
                         '<span class="glyphicon glyphicon-trash"></span>' +
                         '</a>';
                     window.setTimeout(function() {
@@ -235,8 +294,87 @@ require_once __DIR__ . '/modals/editMealNote.inc';
                 [ 1, "asc" ]
             ],
             pagingType : "full_numbers",
-            language : <?php require __DIR__ . '/general/datatable.l10n.inc' ?>
+            language : dataTableLanguage
         });
+
+        var linkedMealColumnDefs = [
+            //{ targets: 0, width: 110, orderable: false },
+            { targets: 0, orderable: true },
+            { targets: -1, orderable: false, width: 100 }
+        ];
+        var linkedMealColumnOrder = [
+            [ 0, "asc" ]
+        ];
+
+        linkedMealTable = $('#linkedMealTable').DataTable({
+            processing : true,
+            serverSide : true,
+            ajax : ajaxSourceLinkedMeals,
+            columns : [
+                { data: 'linked_meal_name', render: htmlEscapedCellRenderer },
+                { data: null, render: function(d,t,r) {
+                    var viewLinkTitle = '<?= t('open_in_nohtml', [ t('meal_editor') ]) ?>';
+                    var unlinkTitle = '<?= htmlspecialchars(t('delete_named', [ t('linked_meal_sh') ])) ?>';
+                    var viewLink = '<a ' +
+                        'href="<?= PathUtils::getLink('/Meal') ?>/' + r.linked_meal_id + '/Editor" ' +
+                        'class="btn btn-default btn-xs" ' +
+                        'title="' + viewLinkTitle + '">' +
+                        '<span class="glyphicon glyphicon-pencil"></span>' +
+                        '</a>';
+                    var deleteLink = '<a ' +
+                        'href="#linkedMeals" ' +
+                        'class="btn btn-default btn-xs remove-linked-meal-link" ' +
+                        'title="' + unlinkTitle + '" ' +
+                        'data-toggle="modal" ' +
+                        'data-target="#modalDeleteLinkedMeal" ' +
+                        'data-id="' + r.ref_id + '" ' +
+                        'data-meal-name="' + escapeHtml(r.linked_meal_name) + '"' +
+                        '>' +
+                        '<span class="glyphicon glyphicon-trash"></span>' +
+                        '</a>';
+                    return viewLink + deleteLink;
+                } }
+            ],
+            columnDefs : linkedMealColumnDefs,
+            order : linkedMealColumnOrder,
+            pagingType : "full_numbers",
+            language : dataTableLanguage
+        });
+        connectedMealTable = $('#connectedMealTable').DataTable({
+            processing : true,
+            serverSide : true,
+            ajax : ajaxSourceConnectedMeals,
+            columns : [
+                { data: 'meal_name', render: htmlEscapedCellRenderer },
+                { data: null, render: function(d,t,r) {
+                    var viewLinkTitle = '<?= t('open_in_nohtml', [ t('meal_editor') ]) ?>';
+                    var unlinkTitle = '<?= htmlspecialchars(t('delete_named', [ t('linked_meal_sh') ])) ?>';
+                    var viewLink = '<a ' +
+                        'href="<?= PathUtils::getLink('/Meal') ?>/' + r.meal_id + '/Editor" ' +
+                        'class="btn btn-default btn-xs" ' +
+                        'title="' + viewLinkTitle + '">' +
+                        '<span class="glyphicon glyphicon-pencil"></span>' +
+                        '</a>';
+                    var deleteLink = '<a ' +
+                        'href="#linkedMeals" ' +
+                        'class="btn btn-default btn-xs remove-linked-meal-link" ' +
+                        'title="' + unlinkTitle + '" ' +
+                        'data-toggle="modal" ' +
+                        'data-target="#modalDeleteLinkedMeal" ' +
+                        'data-id="' + r.ref_id + '" ' +
+                        'data-meal-name="' + escapeHtml(r.linked_meal_name) + '"' +
+                        '>' +
+                        '<span class="glyphicon glyphicon-trash"></span>' +
+                        '</a>';
+                    return viewLink + deleteLink;
+                } }
+            ],
+            columnDefs : linkedMealColumnDefs,
+            order : linkedMealColumnOrder,
+            pagingType : "full_numbers",
+            language : dataTableLanguage
+        });
+
         $('#mealEditorForm').submit(function(e) {
             e.preventDefault();
             submitSimplePostRequest(ajaxMealEdit, { id: <?= $meal->id ?>, action: 'changeName', name: $('#mealEditorName').val() },
@@ -283,6 +421,13 @@ require_once __DIR__ . '/modals/editMealNote.inc';
                     $('#mealEditorAddIngredientForm button[type=submit]').prop('disabled', false);
                 }
             );
+        });
+
+        $('.quick-nav-link').click(function(e) {
+            var sourceEl = $(e.delegateTarget);
+            $('html,body').animate({
+                scrollTop: $(sourceEl.data('target')).offset().top - 75
+            }, 2000);
         });
     });
 </script>

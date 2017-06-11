@@ -181,3 +181,31 @@ CREATE VIEW v_meal_ingredient AS
     LEFT JOIN measuring_units u ON mi.AMOUNT_UNIT = u.NAME
     LEFT JOIN meal m ON mi.MEAL_ID = m.ID
 ;
+
+-- Add Linked Meals
+CREATE TABLE linked_meal (
+  REF_ID int(11) NOT NULL AUTO_INCREMENT,
+  MEAL_ID int(11) NOT NULL,
+  LINKED_MEAL_ID int(11) NOT NULL,
+  PRIMARY KEY (REF_ID),
+  FOREIGN KEY (MEAL_ID)
+    REFERENCES meal(ID)
+    ON DELETE RESTRICT,
+  FOREIGN KEY (LINKED_MEAL_ID)
+    REFERENCES meal(ID)
+    ON DELETE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE linked_meal AUTO_INCREMENT=10000;
+
+CREATE VIEW v_linked_meal AS
+  SELECT
+    REF_ID,
+    MEAL_ID,
+    bm.NAME AS MEAL_NAME,
+    LINKED_MEAL_ID,
+    m.NAME AS LINKED_MEAL_NAME
+  FROM
+    linked_meal lmt
+    LEFT JOIN meal bm ON lmt.MEAL_ID = bm.ID
+    LEFT JOIN meal m ON lmt.LINKED_MEAL_ID = m.ID
+;
