@@ -46,8 +46,14 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
                             </button>
                         </div>
                         <div class="col-lg-6" style="text-align: right">
+                            <a href="<?= PathUtils::getLink("/Meal/$meal->id/Print") ?>"
+                               target="_blank"
+                               class="btn btn-default">
+                                <span class="glyphicon glyphicon-print"></span>&nbsp;
+                                <?= t('print') ?>
+                            </a>
                             <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDeleteMeal">
-                                <span class="glyphicon glyphicon-trash"></span>&nbsp
+                                <span class="glyphicon glyphicon-trash"></span>&nbsp;
                                 <?= t('delete') ?>
                             </a>
                         </div>

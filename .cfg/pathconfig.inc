@@ -21,6 +21,7 @@ return [
 
     "/Meal" => new MealRequest(),
     "/Meal/*/Editor" => new MealEditorRequest(),
+    "/Meal/*/Print" => new MealPrintRequest(),
 
     // AJAX Requests
     "/AJAX/Users" => new AjaxUserRequest(),

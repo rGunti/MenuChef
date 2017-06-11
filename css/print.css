@@ -1,0 +1,4 @@
+.hide-from-printer, footer { display:none; }
+body { font-size: x-large; }
+h1 { font-size: 40px; }
+h2 { font-size: xx-large; }

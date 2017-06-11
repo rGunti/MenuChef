@@ -27,6 +27,7 @@ return [
     'rename' => 'Umbenennen',
     'edit' => 'Bearbeiten',
     'edit_named' => '<b>%1$s</b> bearbeiten',
+    'print' => 'Drucken',
 
     'debug_title' => 'Debug Info',
     'debug_no_items' => 'keine Elemente',
