@@ -10,6 +10,14 @@ require_once __DIR__ . '/modals/deleteMeal.inc';
 require_once __DIR__ . '/modals/editMealNote.inc';
 require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
 ?>
+<div class="container">
+    <a href="<?= PathUtils::getLink("/Meal") ?>"
+       class="btn btn-default">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <?= t('back_to', [t('meal_pl')]) ?>
+    </a>
+</div>
+<hr>
 <div class="mealTabs">
    <ul class="nav nav-tabs" role="tablist" id="mealTabNav">
        <li role="presentation" class="active"><a href="#home" aria-controls="home" data-toggle="tab"><?= t('meal') ?></a></li>
@@ -35,11 +43,6 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
                 <div class="form-group">
                     <div class="row">
                         <div class="col-lg-6">
-                            <a href="<?= PathUtils::getLink("/Meal") ?>"
-                               class="btn btn-default">
-                                <span class="glyphicon glyphicon-arrow-left"></span>
-                                <?= t('back_to', [t('meal_pl')]) ?>
-                            </a>
                             <button type="submit" class="btn btn-primary">
                                 <span class="glyphicon glyphicon-ok"></span>
                                 <?= t('rename') ?>
@@ -510,5 +513,11 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
                 scrollTop: $(sourceEl.data('target')).offset().top - 75
             }, 2000);
         });
+
+        // Javascript to enable link to tab
+        var url = document.location.toString();
+        if (url.match('#')) {
+            $('.nav-tabs a[href="#' + url.split('#')[1] + '-tab"]').tab('show');
+        }
     });
 </script>
