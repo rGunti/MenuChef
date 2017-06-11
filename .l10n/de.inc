@@ -231,6 +231,7 @@ return [
     'meal_notes_empty_markdown' => '_< Es ist keine Notiz hinterlegt >_',
     'meal_notes_markdown' => 'In diesem Feld kann Markdown verwendet werden. ' .
         '<a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Mehr Infos</a>',
+    'meal_ignore_in_plan' => 'Nicht in den Menüplan einbinden',
 
     'create_meal' => 'Gericht hinzufügen',
     'delete_meal' => 'Gericht löschen',

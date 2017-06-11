@@ -48,8 +48,12 @@ $usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], 'darkmode
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/dataTables.bootstrap.min.css') ?>" />
         <?php /*
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/responsive.dataTables.min.css') ?>" />
-        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap-checkbox/awesome-bootstrap-checkbox.css') ?>" />
         */?>
+
+        <!-- Awesome Bootstrap Checkbox -->
+        <link rel="stylesheet" href="<?= PathUtils::getLink('/css/bootstrap-checkbox/awesome-bootstrap-checkbox.css') ?>" />
+
+        <!-- Custom -->
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/rgunti.css') ?>" />
         <link rel="stylesheet" href="<?= PathUtils::getLink('/css/print.css') ?>" media="print" />
 

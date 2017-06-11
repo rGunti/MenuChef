@@ -209,3 +209,8 @@ CREATE VIEW v_linked_meal AS
     LEFT JOIN meal bm ON lmt.MEAL_ID = bm.ID
     LEFT JOIN meal m ON lmt.LINKED_MEAL_ID = m.ID
 ;
+
+-- Add Flag to Ignore Meal in Meal Plan
+ALTER TABLE meal
+  ADD COLUMN IGNORE_IN_PLAN TINYINT NULL DEFAULT 0 AFTER NOTES
+;

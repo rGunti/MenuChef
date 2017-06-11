@@ -77,7 +77,8 @@ class AjaxMealRequest extends BaseAjaxRequest {
             switch ($PARAM_action) {
                 case 'changeName':
                     $PARAM_meal_name = AppUtils::getKeyDefault($vars, 'name', null);
-                    $this->updateMealName($PARAM_meal_id, $PARAM_meal_name);
+                    $PARAM_meal_ignore_in_plan = AppUtils::getKeyDefault($vars, 'ignoreInPlan', false);
+                    $this->updateMealName($PARAM_meal_id, $PARAM_meal_name, $PARAM_meal_ignore_in_plan);
                     break;
                 case 'createMeal':
                     $PARAM_meal_name = AppUtils::getKeyDefault($vars, 'name', null);
@@ -104,7 +105,7 @@ class AjaxMealRequest extends BaseAjaxRequest {
         }
     }
 
-    private function updateMealName($meal_id, $new_name) {
+    private function updateMealName($meal_id, $new_name, $ignore_in_plan) {
         $this->checkMealID($meal_id);
 
         if (empty($new_name)) {
@@ -115,14 +116,15 @@ class AjaxMealRequest extends BaseAjaxRequest {
         $meal = $meal->getByKey($meal_id);
         if (empty($meal)) {
             $this->sendErrorResponse(t('ajax_response_meal_id_not_found'), self::HTTP_CODE_BAD_REQUEST);
-        } else if ($meal->name == $new_name) {
-            $this->sendErrorResponse(t('ajax_response_meal_name_equal'), self::HTTP_CODE_BAD_REQUEST);
         } else {
             $res = DatabaseTools::update(
                 MMeal::TABLE_NAME,
                 MMeal::KEY_NAME,
                 $meal->id,
-                [ 'name' => $new_name ]
+                [
+                    'name' => $new_name,
+                    'ignore_in_plan' => ($ignore_in_plan === 'true' ? 1 : 0)
+                ]
             );
             if ($res != 1) {
                 $this->sendErrorResponse(t('ajax_response_db_save_fail'), self::HTTP_CODE_INTERNAL_ERROR);

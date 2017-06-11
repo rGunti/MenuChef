@@ -23,4 +23,6 @@ class MMeal extends ModelBaseClass {
     public $base_portion_size;
     /** @var string */
     public $notes;
+    /** @var bool */
+    public $ignore_in_plan;
 }

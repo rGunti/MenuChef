@@ -40,12 +40,22 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
                            value="<?= htmlspecialchars($meal->name) ?>"
                            required>
                 </div>
+                <div class="form-group checkbox checkbox-primary">
+                    <input type="checkbox"
+                           class="styled"
+                           id="mealEditorIgnoreInPlan"
+                           name="mealEditorIgnoreInPlan"
+                           <?= ($meal->ignore_in_plan) ? 'checked' : '' ?>
+                    >
+                    <label for="mealEditorIgnoreInPlan"><?= t('meal_ignore_in_plan') ?></label>
+                </div>
+                <hr>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-lg-6">
                             <button type="submit" class="btn btn-primary">
-                                <span class="glyphicon glyphicon-ok"></span>
-                                <?= t('rename') ?>
+                                <span class="glyphicon glyphicon-floppy-disk"></span>
+                                <?= t('save') ?>
                             </button>
                         </div>
                         <div class="col-lg-6" style="text-align: right">
@@ -437,7 +447,13 @@ require_once __DIR__ . '/modals/deleteLinkedMeal.inc';
 
         $('#mealEditorForm').submit(function(e) {
             e.preventDefault();
-            submitSimplePostRequest(ajaxMealEdit, { id: <?= $meal->id ?>, action: 'changeName', name: $('#mealEditorName').val() },
+            var data = {
+                id: <?= $meal->id ?>,
+                action: 'changeName',
+                name: $('#mealEditorName').val(),
+                ignoreInPlan: $('#mealEditorIgnoreInPlan').prop('checked')
+            };
+            submitSimplePostRequest(ajaxMealEdit, data,
                 function() {
                     $('#mealEditorForm button[type=submit]').prop('disabled', true);
                 },
