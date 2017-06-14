@@ -4,6 +4,13 @@ $nav_left->setSide(TopNavigationBarCollection::SIDE_LEFT);
 
 if (Session::isLoggedIn()) {
     $nav_left->addItem(new NavigationBarElement("/Meal", t('meal_pl')));
+    $nav_left->addItem(new NavigationBarElement(
+        "/PlanCreator",
+        t('plan_creator'),
+        false,
+        false,
+        '/PlanCreator/Step/*'
+    ));
 }
 
 $nav_right = new TopNavigationBarCollection();

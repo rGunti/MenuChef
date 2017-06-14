@@ -19,6 +19,8 @@ return [
     'language' => 'Sprache',
     'languages' => 'Sprachen',
 
+    'error' => 'Fehler',
+
     'login' => 'Login',
     'logout' => 'Logout',
     'save' => 'Speichern',
@@ -114,6 +116,24 @@ return [
     'open_in_nohtml' => 'Öffnen mit %1$s &hellip;',
     'close' => 'Schliessen',
     'goto_index' => 'Zum Index',
+
+    // Weekdays
+    'weekday_0' => 'Montag',
+    'weekday_1' => 'Dienstag',
+    'weekday_2' => 'Mittwoch',
+    'weekday_3' => 'Donnerstag',
+    'weekday_4' => 'Freitag',
+    'weekday_5' => 'Samstag',
+    'weekday_6' => 'Sonntag',
+
+    // Short Weekdays
+    'weekday_0_sh' => 'Mo.',
+    'weekday_1_sh' => 'Di.',
+    'weekday_2_sh' => 'Mi.',
+    'weekday_3_sh' => 'Do.',
+    'weekday_4_sh' => 'Fr.',
+    'weekday_5_sh' => 'Sa.',
+    'weekday_6_sh' => 'So.',
 
     'modal_unhandled_error_title' => 'Unerwarteter Fehler',
     'modal_unhandled_error_text' => 'Es ist ein unerwarteter Fehler aufgetreten. Folgende Informationen stehen zur Verfügung:',
@@ -264,5 +284,27 @@ return [
     'ajax_response_meal_editor_ingredient_no_ingredient' => 'Keine Zutat angegeben.',
     'ajax_response_meal_editor_ingredient_no_amount' => 'Keine Menge angegeben.',
     'ajax_response_meal_editor_ingredient_no_unit' => 'Keine Einheit angegeben',
-    'ajax_response_meal_editor_ingredient_no_meal' => 'Kein Gericht angegeben.'
+    'ajax_response_meal_editor_ingredient_no_meal' => 'Kein Gericht angegeben.',
+
+    // Meal Plan
+    'plan_creator' => 'Menüplan erstellen',
+    'plan_creator_intro' => 'Mit der Funktion <b>Menüplan erstellen</b> kannst du dir einen Menüplan für die Woche ' .
+        'erstellen. Für jeden Wochentag wird ein zufälliges Gericht ausgewählt. Daraus kannst du dir dann ebenfalls ' .
+        'eine Einkaufsliste erstellen.',
+
+    'plan_creator_prev_step' => 'Vorheriger Schritt',
+    'plan_creator_next_step' => 'Nächster Schritt',
+
+    'plan_creator_step_1' => 'Wähle aus, für welche Wochentage Du einen Menüplan erstellen willst:',
+    'plan_creator_step_2' => 'Hier ist Dein Menüplan für die ausgewählten Tage:',
+    'plan_creator_step_3' => 'Falls vorhanden, kannst Du noch ein verknüpftes Gericht hinzufügen (z.B. eine Sauce, ' .
+        'Marinade, o.ä.):',
+
+    'plan_creator_meal_for_weekday' => 'Gericht für %1$s',
+
+    'error_plan_creator_invalid_step' => 'Unbekannter Schritt <b>%1$s</b>.',
+
+    'warning_plan_creator_not_enough_meals' => 'Es wurden nicht genug Gerichte gefunden, um einen Menüplan zu ' .
+        'erstellen. Einige Gerichte werden wiederholt eingesetzt.',
+    'warning_plan_creator_loose_progress' => 'Wenn Du zurück gehst, gehen unter Umständen Eingaben verloren.',
 ];

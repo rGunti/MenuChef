@@ -23,6 +23,9 @@ return [
     "/Meal/*/Editor" => new MealEditorRequest(),
     "/Meal/*/Print" => new MealPrintRequest(),
 
+    '/PlanCreator' => new PlanCreatorRequest(),
+    '/PlanCreator/Step/*' => new PlanCreatorRequest(),
+
     // AJAX Requests
     "/AJAX/Users" => new AjaxUserRequest(),
     "/AJAX/Meal" => new AjaxMealRequest(),

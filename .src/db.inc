@@ -147,6 +147,42 @@ class DatabaseTools {
     }
 
     /**
+     * @param $tbl string Table to select form
+     * @param $classOrEmptyObj string|object Name of class or an empty instance of said class
+     * @param $whereMap array Map containing the property and the value to check
+     * @param $count int Limit of items
+     * @return array Returns an array of matching object
+     */
+    public static function getRandomWhere($tbl, $classOrEmptyObj, $whereMap, $count = 3) {
+        $objs = [];
+        $objClass = self::getClassName($classOrEmptyObj);
+
+        $whereSqlArr = [];
+        foreach ($whereMap as $whereCol => $whereVal) {
+            array_push($whereSqlArr, "$whereCol = :$whereCol");
+        }
+
+        $whereSql = implode(" AND ", $whereSqlArr);
+        $sql = "SELECT * FROM $tbl WHERE $whereSql ORDER BY RAND() LIMIT " . $count;
+        try {
+            $stmt = self::getPdoObjectStatement($objClass, $sql);
+
+            foreach ($whereMap as $whereCol => $whereVal) {
+                Logger::verbose(" - Statement Parameter $whereCol = $whereVal");
+                $stmt->bindValue(":$whereCol", $whereVal);
+            }
+
+            $stmt->execute();
+            while ($obj = $stmt->fetch()) {
+                array_push($objs, $obj);
+            }
+        } catch (PDOException $ex) {
+            Logger::error("An error occured while fetching data: " . $ex->getMessage());
+        }
+        return $objs;
+    }
+
+    /**
      * Performs a more complex Select Where statement and returns its results
      * @param $tbl string Table to select from
      * @param $classOrEmptyObj string|object Name of class or an empty instance of said class
