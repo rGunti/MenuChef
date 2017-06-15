@@ -12,6 +12,8 @@ class AppConfig {
     const LOG_REQUESTS = true;
     const LOG_PATH = "C:/temp/menuchef.%date%.log";
 
+    const DEFAULT_THEME = 'darkmode';
+
     const FEEDBACK_MAIL = "feedback@rgunti.ch";
     const FEEDBACK_SUBJECT = "feedback_subject";
 }

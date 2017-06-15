@@ -12,7 +12,7 @@ $themes = [
     'darkadmin' => '/css/darkadmin.min.css',
     'superhero' => '/css/superhero.min.css',
 ];
-$usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], 'darkmode')];
+$usedTheme = $themes[AppUtils::getDefaultValue(@$_COOKIE['UsedTheme'], AppConfig::DEFAULT_THEME)];
 ?>
 <!DOCTYPE html>
 <html>
