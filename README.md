@@ -7,7 +7,10 @@ Please visit DriverLog's README.md for more technical information regarding setu
 application.
 
 ## Features
-_pending_
+- A collective repository to store meals and their recipies.
+- Easy printout functions - so you don't have to endanger your electronic device while cooking.
+- Menu Plan Creator: create a MenuPlan for the week and let the dice roll.
+- _... and more to come_
 
 ## License
 This Project is licensed under the **MIT License**.
