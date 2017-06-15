@@ -1,7 +1,7 @@
 <?php
 class AppConfig {
     const APP_NAME = "MenuChef";
-    const APP_VERSION = "0.2";
+    const APP_VERSION = "0.3";
     const INSTANCE_NAME = "dev";
     const SHOW_INSTANCE_NAME = true;
 
